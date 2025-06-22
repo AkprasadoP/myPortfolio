@@ -2,7 +2,7 @@
 
 <div align="center">
   <br />
-  <a href="https://akprasad.vercel.app" target="_blank">
+  <a href="https://akprasad-portfolio.vercel.app/" target="_blank">
     <img src="./public/projects/profile.jpeg" alt="Ashish Prasad Portfolio Banner" width="160" style="border-radius: 50%; border: 4px solid #6366f1;" />
   </a>
   <br />
@@ -15,7 +15,8 @@
   </div>
   <h3 align="center">Explore my portfolio website — Projects, Skills, and a way to connect with me</h3>
   <div align="center">
-    <a href="https://akprasad-portfolio.vercel.app/" target="_blank"><b>🔗 Visit Portfolio</b></a>
+    Follow the full video tutorial on 
+    <a href="https://youtu.be/YOUR_VIDEO_ID" target="_blank"><b>YouTube</b></a>
   </div>
   <br />
 </div>
@@ -40,30 +41,42 @@ I’m Ashish Prasad, a full-stack developer pursuing B.Tech in Computer Science 
 
 ---
 
-## 💡 Features
+## ⚡️ Features
 
-- 🎨 Modern animated hero section with my image
-- 🌙 Dark/light mode toggle
-- 🧠 Skill filters with animated transitions
-- 🛠️ Live project showcase with GitHub/demo links
-- 📩 Contact form powered by Web3Forms + custom toast
-- 📱 Fully responsive — mobile and tablet ready
-- 🔍 Smooth scroll + sticky navbar with hide-on-scroll
+- 🌑 **Light/Dark Mode Toggle**
+  Save theme preference in local storage with beautiful transitions
+
+- 💫 **Animated Backgrounds**
+  Stars, meteors, scroll effects, and glowing UI elements
+
+- 📱 **Responsive Navigation**
+  Desktop and mobile menus with glassmorphism
+
+- 👨‍💻 **Hero & About Sections**
+  Showcase who you are with smooth intro animations and buttons
+
+- 📊 **Skills Grid**
+  Filterable progress bars and categories with animated width
+
+- 🖼️ **Projects Showcase**
+  Display screenshots, tech stacks, and GitHub/demo links
+
+- 📩 **Contact Section**
+  Social icons + responsive contact form with toast notifications
+
+- 🚀 **One-Click Deployment**
+  Easily host your site with Vercel and GitHub
 
 ---
 
-## 📁 Projects Included
+## 👌 Quick Start
 
-| Project                | Description                                                                   | Link                                 |
-| ---------------------- | ----------------------------------------------------------------------------- | ------------------------------------ |
-| **University Website** | Official IIITDM portal clone with SSR, SEO, admin panel                       | [Live](http://13.201.19.145:5000)    |
-| **AlphaIO**            | Social platform with real-time chat, JWT auth, Cloudinary media               | [Live](https://alphaio.onrender.com) |
-| **CodeArena**          | Competitive programming platform with Docker, Python scraping, real-time sync | -                                    |
-| **Portfolio Site**     | This site, made with React + TailwindCSS                                      | [Live](https://akprasad.vercel.app)  |
+### Prerequisites
 
----
+- [Node.js](https://nodejs.org/)
+- [Git](https://git-scm.com/)
 
-## 🖥️ Local Development
+### Clone and Run
 
 ```bash
 git clone https://github.com/AkprasadoP/myPortfolio.git
@@ -71,3 +84,39 @@ cd myPortfolio
 npm install
 npm run dev
 ```
+
+Your app will be available at: [http://localhost:5173](http://localhost:5173)
+
+---
+
+## 🖼️ Screenshots
+
+> 📸 Add screenshots of your Hero section, Projects grid, and Contact form here to show off your site.
+
+---
+
+## ☁️ Deployment
+
+### Deploy on Vercel
+
+1. Push your code to GitHub
+2. Go to [vercel.com](https://vercel.com)
+3. Import your repository
+4. Click **Deploy**
+
+Your live website will be hosted on a custom subdomain (e.g. `https://your-name.vercel.app`)
+
+---
+
+## 🔗 Useful Links
+
+- [React Documentation](https://reactjs.org/)
+- [Tailwind CSS Docs](https://tailwindcss.com/)
+- [Lucide Icons](https://lucide.dev/)
+- [Radix UI](https://www.radix-ui.com/)
+- [Vite](https://vitejs.dev/)
+- [Vercel](https://vercel.com/)
+
+---
+
+Let me know if you'd like me to generate a version with your actual GitHub repo, YouTube URL, or a banner image suggestion!
