@@ -1,4 +1,4 @@
-# 🚀 Ashish Prasad – Developer Portfolio
+#  Ashish Prasad – Developer Portfolio
 
 <div align="center">
   <br />
@@ -14,10 +14,11 @@
 <!--     <img src="https://img.shields.io/badge/-Deployed-Vercel-black?style=for-the-badge&logo=vercel" alt="Vercel" /> -->
   </div>
   <h3 align="center">Explore my portfolio website — Projects, Skills, and a way to connect with me</h3>
-  <div align="center">
-  Check out
-    <a href="[https://youtu.be/YOUR_VIDEO_ID](https://akprasad-portfolio.vercel.app/)" target="_blank"><b>Visit</b></a>
-  </div>
+<div align="center">
+  👉 Explore my live portfolio: 
+  <a href="https://akprasad-portfolio.vercel.app/" target="_blank"><b>Click Here</b></a>
+</div>
+
   <br />
 </div>
 
