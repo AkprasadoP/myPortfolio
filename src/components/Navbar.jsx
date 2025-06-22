@@ -3,7 +3,7 @@ import { Menu, X } from "lucide-react";
 import { useEffect, useState } from "react";
 
 const navItems = [
-  { name: "Home", href: "#hero" },
+  { name: "Home", href: "#home" },
   { name: "About", href: "#about" },
   { name: "Skills", href: "#skills" },
   { name: "Projects", href: "#projects" },
@@ -54,7 +54,7 @@ export const Navbar = () => {
             href="#hero"
           >
             <span className="relative z-10">
-              <span className="text-glow text-foreground">AkPrasad</span>{" "}
+              <span className="text-glow text-foreground">AkPrasad's</span>{" "}
               Portfolio
             </span>
           </a>
@@ -75,10 +75,10 @@ export const Navbar = () => {
           {/* mobile toggle button */}
           <button
             onClick={() => setIsMenuOpen((prev) => !prev)}
-            className="md:hidden p-2 text-foreground bg-background rounded-md z-50 shadow-md"
+            className="md:hidden p-2 text-foreground bg-background rounded-md z-50 shadow-md top-2 right-5"
             aria-label={isMenuOpen ? "Close Menu" : "Open Menu"}
           >
-            {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
+            {isMenuOpen ? <X size={20} /> : <Menu size={24} />}
           </button>
         </div>
       </nav>
