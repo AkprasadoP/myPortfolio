@@ -11,12 +11,12 @@
     <img src="https://img.shields.io/badge/-TailwindCSS-06B6D4?style=for-the-badge&logo=tailwindcss" alt="Tailwind CSS" />
     <img src="https://img.shields.io/badge/-Vite-646CFF?style=for-the-badge&logo=vite&logoColor=white" alt="Vite" />
     <img src="https://img.shields.io/badge/-Lucide Icons-FD4D4D?style=for-the-badge&logo=lucide" alt="Lucide Icons" />
-    <img src="https://img.shields.io/badge/-Deployed-Vercel-black?style=for-the-badge&logo=vercel" alt="Vercel" />
+<!--     <img src="https://img.shields.io/badge/-Deployed-Vercel-black?style=for-the-badge&logo=vercel" alt="Vercel" /> -->
   </div>
   <h3 align="center">Explore my portfolio website — Projects, Skills, and a way to connect with me</h3>
   <div align="center">
-    Follow the full video tutorial on 
-    <a href="https://youtu.be/YOUR_VIDEO_ID" target="_blank"><b>YouTube</b></a>
+  Check out
+    <a href="[https://youtu.be/YOUR_VIDEO_ID](https://akprasad-portfolio.vercel.app/)" target="_blank"><b>Visit</b></a>
   </div>
   <br />
 </div>
