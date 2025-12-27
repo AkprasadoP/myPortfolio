@@ -1,5 +1,106 @@
 @import "tailwindcss";
 
+/* Keyframes - moved outside @theme for production compatibility */
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+@keyframes pulse-subtle {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.8;
+  }
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slide-up {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes scale-in {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes glow {
+  from {
+    box-shadow: 0 0 20px rgba(239, 68, 68, 0.2);
+  }
+  to {
+    box-shadow: 0 0 30px rgba(239, 68, 68, 0.4);
+  }
+}
+
+@keyframes meteor {
+  0% {
+    transform: rotate(215deg) translateX(0);
+    opacity: 1;
+  }
+  70% {
+    opacity: 1;
+  }
+  100% {
+    transform: rotate(215deg) translateX(-600px);
+    opacity: 0;
+  }
+}
+
+@keyframes gradient-shift {
+  0%, 100% { 
+    background-position: 0% 50%; 
+  }
+  50% { 
+    background-position: 100% 50%; 
+  }
+}
+
+@keyframes float-light {
+  0%, 100% {
+    transform: translateY(0px) translateX(0px);
+  }
+  25% {
+    transform: translateY(-5px) translateX(2px);
+  }
+  50% {
+    transform: translateY(-10px) translateX(0px);
+  }
+  75% {
+    transform: translateY(-5px) translateX(-2px);
+  }
+}
+
 @theme {
   --color-border: hsl(var(--border));
   --color-background: hsl(var(--background));
@@ -23,76 +124,6 @@
   --animate-slide-up: slide-up 0.6s ease-out forwards;
   --animate-scale-in: scale-in 0.5s ease-out forwards;
   --animate-glow: glow 2s ease-in-out infinite alternate;
-
-  @keyframes float {
-    0%,
-    100% {
-      transform: translateY(0);
-    }
-    50% {
-      transform: translateY(-10px);
-    }
-  }
-  @keyframes pulse-subtle {
-    0%,
-    100% {
-      opacity: 1;
-    }
-    50% {
-      opacity: 0.8;
-    }
-  }
-  @keyframes fade-in {
-    from {
-      opacity: 0;
-      transform: translateY(20px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-  @keyframes slide-up {
-    from {
-      opacity: 0;
-      transform: translateY(30px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-  @keyframes scale-in {
-    from {
-      opacity: 0;
-      transform: scale(0.9);
-    }
-    to {
-      opacity: 1;
-      transform: scale(1);
-    }
-  }
-  @keyframes glow {
-    from {
-      box-shadow: 0 0 20px rgba(var(--primary), 0.2);
-    }
-    to {
-      box-shadow: 0 0 30px rgba(var(--primary), 0.4);
-    }
-  }
-  @keyframes meteor {
-    0% {
-      transform: rotate(215deg) translateX(0);
-      opacity: 1;
-    }
-    70% {
-      opacity: 1;
-    }
-    100% {
-      transform: rotate(215deg) translateX(-600px);
-      opacity: 0;
-    }
-  }
 }
 
 @layer base {
@@ -179,17 +210,18 @@
 }
 
 @utility cosmic-button {
-  @apply px-8 py-3 rounded-full bg-gradient-to-r from-primary to-primary/80 
+  @apply rounded-full bg-gradient-to-r from-primary to-primary/80 
          text-primary-foreground font-semibold transition-all duration-300 
          hover:scale-105 active:scale-95 border border-primary/20;
   background-size: 200% 200%;
   animation: gradient-shift 3s ease infinite;
-  box-shadow: 0 4px 14px 0 rgba(var(--primary), 0.3);
-}
-
-@keyframes gradient-shift {
-  0%, 100% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
+  box-shadow: 0 4px 14px 0 rgba(239, 68, 68, 0.3);
+  padding: clamp(0.75rem, 2vw, 1rem) clamp(1.5rem, 4vw, 2rem);
+  font-size: clamp(0.875rem, 2.5vw, 1.125rem);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
 }
 
 @utility modern-tag {
@@ -218,12 +250,12 @@
   animation: gradient-shift 4s ease-in-out infinite;
 }
 
-@utility title-decoration {
-  @apply absolute -top-4 left-1/2 transform -translate-x-1/2 w-20 h-1 bg-gradient-to-r from-primary/50 via-primary to-primary/50 rounded-full;
+@utility title-glow {
+  text-shadow: 0 0 30px rgba(239, 68, 68, 0.3);
 }
 
-@utility title-glow {
-  text-shadow: 0 0 30px rgba(var(--primary), 0.3);
+@utility title-decoration {
+  @apply absolute -top-4 left-1/2 transform -translate-x-1/2 w-20 h-1 bg-gradient-to-r from-primary/50 via-primary to-primary/50 rounded-full;
 }
 
 @utility floating-icon {
@@ -331,32 +363,204 @@
   animation-delay: 8s;
 }
 
-/* Enhanced float animation for light mode */
-@keyframes float-light {
-  0%, 100% {
-    transform: translateY(0px) translateX(0px);
-  }
-  25% {
-    transform: translateY(-5px) translateX(2px);
-  }
-  50% {
-    transform: translateY(-10px) translateX(0px);
-  }
-  75% {
-    transform: translateY(-5px) translateX(-2px);
-  }
+/* Animation utilities for production compatibility */
+.animate-meteor {
+  animation: meteor 5s linear infinite;
 }
 
+.animate-pulse-subtle {
+  animation: pulse-subtle 4s ease-in-out infinite;
+}
+
+.animate-float {
+  animation: float 6s ease-in-out infinite;
+}
+
+.animate-fade-in {
+  animation: fade-in 0.7s ease-out forwards;
+}
+
+.animate-slide-up {
+  animation: slide-up 0.6s ease-out forwards;
+}
+
+.animate-scale-in {
+  animation: scale-in 0.5s ease-out forwards;
+}
+
+.animate-glow {
+  animation: glow 2s ease-in-out infinite alternate;
+}
+
+.animate-gradient-shift {
+  animation: gradient-shift 4s ease-in-out infinite;
+}
+
+/* Light mode specific animations */
 :root .animate-float {
   animation: float-light 6s ease-in-out infinite;
+}
+
+.dark .animate-float {
+  animation: float 6s ease-in-out infinite;
 }
 
 @utility floating-element {
   animation: float 6s ease-in-out infinite;
 }
 
+@utility animate-meteor {
+  animation: meteor 5s linear infinite;
+}
+
+@utility animate-pulse-subtle {
+  animation: pulse-subtle 4s ease-in-out infinite;
+}
+
+@utility animate-float {
+  animation: float 6s ease-in-out infinite;
+}
+
 @utility stagger-animation {
   animation: slide-up 0.6s ease-out forwards;
+}
+
+/* Responsive spacing utilities */
+@utility hero-spacing {
+  @apply space-y-4 sm:space-y-6 md:space-y-8 lg:space-y-10 xl:space-y-12;
+}
+
+@utility hero-container {
+  @apply container max-w-6xl mx-auto text-center z-10 px-4 sm:px-6 md:px-8;
+}
+
+@utility responsive-text-hero {
+  @apply text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl leading-tight;
+}
+
+@utility responsive-text-subtitle {
+  @apply text-xl sm:text-2xl md:text-3xl lg:text-4xl;
+}
+
+@utility responsive-text-description {
+  @apply text-base sm:text-lg md:text-xl lg:text-2xl;
+}
+
+@utility responsive-profile {
+  @apply w-32 h-32 sm:w-40 sm:h-40 md:w-48 md:h-48 lg:w-56 lg:h-56 xl:w-64 xl:h-64;
+}
+
+@utility responsive-button {
+  @apply px-6 md:px-8 py-3 md:py-4 text-base md:text-lg w-full sm:w-auto;
+}
+
+/* Prevent text overflow and ensure proper spacing */
+@utility safe-spacing {
+  @apply min-h-screen flex flex-col items-center justify-center py-20 sm:py-24 md:py-28 lg:py-32;
+}
+
+/* Viewport-based responsive utilities for extreme zoom handling */
+@media (max-width: 480px) {
+  .hero-section {
+    padding: clamp(2rem, 8vh, 4rem) clamp(0.5rem, 4vw, 1rem) !important;
+  }
+  
+  .hero-content {
+    gap: clamp(0.75rem, 3vh, 1.5rem) !important;
+  }
+}
+
+/* Handle very high zoom levels (small viewports) */
+@media (max-width: 320px) {
+  .hero-section {
+    padding: clamp(1rem, 6vh, 2rem) clamp(0.25rem, 2vw, 0.5rem) !important;
+    min-height: 100vh !important;
+  }
+  
+  .hero-content {
+    gap: clamp(0.5rem, 2vh, 1rem) !important;
+  }
+}
+
+/* Handle very low zoom levels (large viewports) */
+@media (min-width: 1920px) {
+  .hero-section {
+    padding: clamp(4rem, 12vh, 8rem) clamp(2rem, 8vw, 4rem) !important;
+  }
+  
+  .hero-content {
+    gap: clamp(2rem, 6vh, 4rem) !important;
+  }
+}
+
+/* Ensure buttons don't get too small or too large */
+.cosmic-button {
+  min-width: clamp(8rem, 25vw, 12rem);
+  min-height: clamp(2.5rem, 6vh, 3.5rem);
+  max-width: 16rem;
+  max-height: 4rem;
+}
+
+/* Grid-based hero layout to prevent collisions */
+#hero {
+  display: grid !important;
+  grid-template-rows: 1fr auto auto !important;
+  gap: clamp(1rem, 4vh, 2rem) !important;
+  padding-top: clamp(5rem, 12vh, 8rem) !important; /* Extra top padding for navbar clearance */
+}
+
+/* Main content area top spacing */
+#hero > div:first-child {
+  padding-top: clamp(2rem, 8vh, 4rem) !important;
+}
+
+/* Ensure minimum spacing for scroll indicator section */
+#hero > div:last-child {
+  min-height: clamp(2rem, 8vh, 4rem) !important;
+}
+
+/* Button section spacing */
+#hero > div:nth-child(2) {
+  padding-bottom: clamp(3rem, 8vh, 5rem) !important;
+}
+
+/* Handle 90% zoom level specifically with moderate extra spacing */
+@media (min-width: 1400px) and (max-width: 1800px) {
+  #hero {
+    gap: clamp(1.5rem, 6vh, 3rem) !important;
+    padding-top: clamp(6rem, 15vh, 10rem) !important;
+  }
+  
+  #hero > div:first-child {
+    padding-top: clamp(3rem, 10vh, 5rem) !important;
+  }
+  
+  #hero > div:nth-child(2) {
+    padding-bottom: clamp(4rem, 10vh, 6rem) !important;
+  }
+  
+  #hero > div:last-child {
+    min-height: clamp(3rem, 10vh, 5rem) !important;
+  }
+}
+
+/* Handle 90% zoom level specifically */
+@media (min-width: 1400px) and (max-width: 1800px) {
+  #hero .flex.flex-col.sm\\:flex-row {
+    margin-bottom: clamp(6rem, 12vh, 10rem) !important;
+  }
+  
+  #hero > div:last-child {
+    bottom: clamp(3rem, 15vh, 7rem) !important;
+  }
+}
+
+/* Profile image constraints */
+.profile-image {
+  min-width: clamp(4rem, 12vw, 8rem) !important;
+  min-height: clamp(4rem, 12vw, 8rem) !important;
+  max-width: clamp(12rem, 20vw, 16rem) !important;
+  max-height: clamp(12rem, 20vw, 16rem) !important;
 }
 
 @utility tooltip-card {

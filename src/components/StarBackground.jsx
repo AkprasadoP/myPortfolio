@@ -5,7 +5,7 @@ export const StarBackground = () => {
   const [meteors, setMeteors] = useState([]);
   const [sunRays, setSunRays] = useState([]);
   const [lightParticles, setLightParticles] = useState([]);
-  const [isDarkMode, setIsDarkMode] = useState(false);
+  const [isDarkMode, setIsDarkMode] = useState(true); // Default to dark mode
 
   useEffect(() => {
     // Check initial theme
@@ -13,6 +13,12 @@ export const StarBackground = () => {
       const isDark = document.documentElement.classList.contains('dark');
       setIsDarkMode(isDark);
     };
+
+    // Set initial dark mode if no theme is set
+    if (!document.documentElement.classList.contains('dark') && !localStorage.getItem("theme")) {
+      document.documentElement.classList.add('dark');
+      localStorage.setItem("theme", "dark");
+    }
 
     checkTheme();
 
@@ -126,14 +132,13 @@ export const StarBackground = () => {
           {meteors.map((meteor) => (
             <div
               key={`meteor-${meteor.id}`}
-              className="meteor"
+              className="meteor animate-meteor"
               style={{
                 width: meteor.size * 50 + "px",
                 height: meteor.size * 2 + "px",
                 left: meteor.x + "%",
                 top: meteor.y + "%",
-                animation: `meteor ${meteor.animationDuration}s linear infinite`,
-                // NO animationDelay - all start immediately
+                animationDuration: meteor.animationDuration + "s",
                 transform: 'rotate(215deg)',
               }}
             />

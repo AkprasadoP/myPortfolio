@@ -267,9 +267,14 @@ export const ContactSection = () => {
                 type="submit"
                 disabled={isSubmitting}
                 className={cn(
-                  "cosmic-button w-full flex items-center justify-center gap-3 group text-lg px-8 py-4 mt-8",
+                  "cosmic-button w-full flex items-center justify-center gap-3 group text-lg px-8 py-4 mt-8 mx-auto",
                   isSubmitting && "opacity-70 cursor-not-allowed"
                 )}
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center'
+                }}
               >
                 {isSubmitting ? (
                   <>
