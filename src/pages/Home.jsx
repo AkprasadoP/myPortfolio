@@ -1,4 +1,4 @@
-import { Navbar } from "../components/Navbar";
+import { Sidebar } from "../components/Sidebar";
 import { ThemeToggle } from "../components/ThemeToggle";
 import { StarBackground } from "@/components/StarBackground";
 import { HeroSection } from "../components/HeroSection";
@@ -11,26 +11,41 @@ import { Footer } from "../components/Footer";
 
 export const Home = () => {
   return (
-    <div className="min-h-screen bg-background text-foreground overflow-x-hidden">
-      {/* Theme Toggle */}
-      <ThemeToggle />
+    <div className="flex h-screen w-full bg-[#09090b] text-zinc-100 overflow-hidden font-sans">
       {/* Background Effects */}
-      <StarBackground />
+      <div className="fixed inset-0 z-0 pointer-events-none">
+        <StarBackground />
+      </div>
 
-      {/* Navbar */}
-      <Navbar />
-      {/* Main Content */}
-      <main>
-        <HeroSection />
-        <AboutSection />
-        <SkillsSection />
-        <ExperienceSection />
-        <ProjectsSection />
-        <ContactSection />
+      {/* Left Sidebar Pane */}
+      <div className="relative z-10">
+        <Sidebar />
+      </div>
+
+      {/* Right Content Pane */}
+      <main 
+        id="main-scroll-area" 
+        className="flex-1 h-screen overflow-y-auto overflow-x-hidden relative scroll-smooth custom-scrollbar z-10"
+      >
+        <div className="max-w-5xl mx-auto px-4 sm:px-8 py-12 flex flex-col gap-24 relative z-10 pb-32">
+          {/* Note: I removed ThemeToggle because we are forcing Dark Mode in this Antigravity design. */}
+          <HeroSection />
+          
+          <div className="flex flex-col gap-32">
+            <AboutSection />
+            <SkillsSection />
+            <ExperienceSection />
+            <ProjectsSection />
+            <ContactSection />
+          </div>
+
+        </div>
+        
+        {/* Footer */}
+        <div className="relative z-10">
+          <Footer />
+        </div>
       </main>
-
-      {/* Footer */}
-      <Footer />
     </div>
   );
 };

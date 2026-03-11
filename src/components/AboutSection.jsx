@@ -1,158 +1,205 @@
-import { Briefcase, Code, User, GraduationCap, Rocket, Heart, Award, Target } from "lucide-react";
+import { Briefcase, Code, GraduationCap, Rocket, Heart, Award, Target } from "lucide-react";
+import { motion } from "framer-motion";
 
 export const AboutSection = () => {
   return (
-    <section id="about" className="py-32 px-4 relative overflow-hidden">
-      {/* Background Elements */}
-      <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-secondary/10 pointer-events-none"></div>
-      <div className="absolute top-10 right-10 w-72 h-72 bg-blue-500/5 rounded-full blur-3xl"></div>
-      <div className="absolute bottom-10 left-10 w-96 h-96 bg-purple-500/5 rounded-full blur-3xl"></div>
-      
-      <div className="container mx-auto max-w-7xl relative">
-        <div className="text-center mb-20">
-          <div className="relative inline-block">
-            <div className="title-decoration"></div>
-            <h2 className="enhanced-section-title title-glow">
-              About <span className="text-primary">Me</span>
-            </h2>
-            {/* Floating decorative elements */}
-            <div className="floating-icon -top-8 -left-8">
-              <User className="w-6 h-6 text-primary/30" />
-            </div>
-            <div className="floating-icon -top-6 -right-6" style={{ animationDelay: '1s' }}>
-              <Code className="w-5 h-5 text-primary/40" />
-            </div>
-          </div>
-          <p className="section-subtitle">
-            Passionate full-stack developer crafting innovative solutions with modern technologies.
+    <section id="about" className="py-20 px-4 relative">
+      <div className="w-full max-w-5xl mx-auto relative z-10">
+
+        {/* Section Header */}
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="mb-14"
+        >
+          <h2 className="text-3xl sm:text-4xl font-bold text-white mb-3">
+            About{" "}
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-400">
+              Me
+            </span>
+          </h2>
+          <p className="text-zinc-400 text-sm sm:text-base leading-relaxed max-w-2xl">
+            Passionate full-stack developer crafting innovative solutions with modern technologies. 
             From concept to deployment, I bring ideas to life through clean code and thoughtful design.
           </p>
-        </div>
+          <div className="mt-4 h-px bg-gradient-to-r from-blue-500/50 via-cyan-500/30 to-transparent" />
+        </motion.div>
 
-        <div className="max-w-4xl mx-auto mb-20">
-          {/* Main Content Cards */}
-          <div className="space-y-8">
-            <div className="modern-card p-10">
-              <div className="flex items-center gap-4 mb-8">
-                <div className="p-4 rounded-xl bg-gradient-to-r from-blue-500 to-cyan-500 text-white">
-                  <GraduationCap className="w-7 h-7" />
+        {/* Content Cards */}
+        <div className="max-w-4xl mx-auto mb-16">
+          <div className="space-y-6">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className="p-8 rounded-2xl bg-white/[0.02] border border-white/[0.06] hover:border-white/15 hover:bg-white/[0.04] transition-all duration-300"
+            >
+              <div className="flex items-center gap-4 mb-6">
+                <div className="p-3 rounded-xl bg-gradient-to-r from-blue-500 to-cyan-500 text-white shadow-lg shadow-blue-500/20">
+                  <GraduationCap className="w-6 h-6" />
                 </div>
-                <h3 className="text-3xl font-bold text-foreground">My Journey</h3>
+                <h3 className="text-2xl font-bold text-zinc-100">My Journey</h3>
               </div>
-              
-              <p className="text-muted-foreground leading-relaxed text-lg mb-6">
-                Pursuing a Bachelor of Technology in Computer Science at <span className="text-primary font-semibold">IIIT Jabalpur</span>, 
-                I've built a strong foundation in Algorithms, Data Structures, Operating Systems, and DBMS. 
-                Through internships at <span className="text-primary font-semibold">AI Talent Force (Japan)</span> and 
-                <span className="text-primary font-semibold"> BlueStack</span>, I've gained hands-on experience in 
+
+              <p className="text-zinc-400 leading-relaxed text-[15px] sm:text-base mb-4">
+                Pursuing a Bachelor of Technology in Computer Science at{" "}
+                <span className="text-blue-400 font-semibold">IIIT Jabalpur</span>,
+                I've built a strong foundation in Algorithms, Data Structures, Operating Systems, and DBMS.
+                Through internships at{" "}
+                <span className="text-blue-400 font-semibold">AI Talent Force (Japan)</span> and{" "}
+                <span className="text-blue-400 font-semibold">BlueStack</span>, I've gained hands-on experience in
                 AI-powered cybersecurity, full-stack development, and production-grade system deployment.
               </p>
-              
-              <p className="text-muted-foreground leading-relaxed text-lg">
-                I've successfully built and deployed multiple <span className="text-primary font-semibold">AI-powered applications</span> including 
-                cybersecurity platforms, weather assistants, and document intelligence systems. My work spans from 
-                <span className="text-primary font-semibold"> Chrome extensions</span> and <span className="text-primary font-semibold">RAG implementations</span> to 
-                scalable backend APIs, with several projects actively serving real users in production environments.
-              </p>
-            </div>
 
-            <div className="modern-card p-10">
-              <div className="flex items-center gap-4 mb-8">
-                <div className="p-4 rounded-xl bg-gradient-to-r from-green-500 to-emerald-600 text-white">
-                  <Code className="w-7 h-7" />
+              <p className="text-zinc-400 leading-relaxed text-[15px] sm:text-base">
+                I've successfully built and deployed multiple{" "}
+                <span className="text-blue-400 font-semibold">AI-powered applications</span> including
+                cybersecurity platforms, weather assistants, and document intelligence systems. My work spans from{" "}
+                <span className="text-blue-400 font-semibold">Chrome extensions</span> and{" "}
+                <span className="text-blue-400 font-semibold">RAG implementations</span> to
+                scalable backend APIs, with several projects actively serving real users in production.
+              </p>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.1 }}
+              className="p-8 rounded-2xl bg-white/[0.02] border border-white/[0.06] hover:border-white/15 hover:bg-white/[0.04] transition-all duration-300"
+            >
+              <div className="flex items-center gap-4 mb-6">
+                <div className="p-3 rounded-xl bg-gradient-to-r from-green-500 to-emerald-600 text-white shadow-lg shadow-emerald-500/20">
+                  <Code className="w-6 h-6" />
                 </div>
-                <h3 className="text-3xl font-bold text-foreground">Technical Expertise</h3>
+                <h3 className="text-2xl font-bold text-zinc-100">Technical Expertise</h3>
               </div>
-              
-              <p className="text-muted-foreground leading-relaxed text-lg">
-                Specializing in <span className="text-primary font-semibold">AI-powered full-stack development</span>, 
-                I work with cutting-edge technologies including <span className="text-primary font-semibold">Google Gemini AI</span>, 
-                <span className="text-primary font-semibold"> FastAPI</span>, and <span className="text-primary font-semibold">Chrome Extensions</span>. 
-                My expertise spans React, TypeScript, Node.js, Python, and cloud deployment, with a focus on building 
-                intelligent systems that solve real-world problems—from cybersecurity platforms achieving 89% F1 scores 
+
+              <p className="text-zinc-400 leading-relaxed text-[15px] sm:text-base">
+                Specializing in{" "}
+                <span className="text-emerald-400 font-semibold">AI-powered full-stack development</span>,
+                I work with cutting-edge technologies including{" "}
+                <span className="text-emerald-400 font-semibold">Google Gemini AI</span>,{" "}
+                <span className="text-emerald-400 font-semibold">FastAPI</span>, and{" "}
+                <span className="text-emerald-400 font-semibold">Chrome Extensions</span>.
+                My expertise spans React, TypeScript, Node.js, Python, and cloud deployment, with a focus on building
+                intelligent systems that solve real-world problems — from cybersecurity platforms achieving 89% F1 scores
                 to bilingual AI assistants and document intelligence systems.
               </p>
-            </div>
+            </motion.div>
           </div>
 
-          {/* Call to Action */}
-          <div className="flex flex-col sm:flex-row gap-6 justify-center mt-12">
-            <a 
-              href="#contact" 
-              className="cosmic-button inline-flex items-center justify-center gap-3 group text-lg px-10 py-4"
+          {/* CTA Buttons */}
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="flex flex-col sm:flex-row gap-4 justify-center mt-10"
+          >
+            <a
+              href="#contact"
+              onClick={(e) => {
+                e.preventDefault();
+                document.getElementById("main-scroll-area").scrollTo({
+                  top: document.getElementById("contact").offsetTop - 40,
+                  behavior: "smooth",
+                });
+              }}
+              className="inline-flex items-center justify-center gap-2.5 px-8 py-3.5 rounded-full bg-white text-black font-semibold hover:bg-zinc-200 transition-all hover:shadow-lg hover:shadow-white/10 group"
             >
-              <Heart className="w-5 h-5 group-hover:scale-110 transition-transform duration-300" />
-              <span>Let's Connect</span>
+              <Heart className="w-4 h-4 group-hover:scale-110 transition-transform duration-300" />
+              Let's Connect
             </a>
 
             <a
               href="/projects/AshishPrasad.pdf"
               download
-              className="px-10 py-4 rounded-full border-2 border-primary text-primary hover:bg-primary hover:text-white transition-all duration-300 font-semibold inline-flex items-center justify-center gap-3 group text-lg"
+              className="inline-flex items-center justify-center gap-2.5 px-8 py-3.5 rounded-full border border-white/15 text-white font-medium hover:bg-white/5 transition-all group"
             >
-              <Award className="w-5 h-5 group-hover:scale-110 transition-transform duration-300" />
-              <span>Download Resume</span>
+              <Award className="w-4 h-4 group-hover:scale-110 transition-transform duration-300" />
+              Download Resume
             </a>
-          </div>
+          </motion.div>
         </div>
 
-        {/* Feature Highlights - Horizontal Layout */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-20">
-          <div className="modern-card p-8 text-center group">
-            <div className="p-4 rounded-2xl bg-gradient-to-r from-blue-500 to-cyan-500 text-white shadow-lg mx-auto mb-6 w-fit group-hover:scale-110 transition-transform duration-300">
-              <Code className="h-8 w-8" />
-            </div>
-            <h4 className="font-bold text-xl text-foreground mb-4 group-hover:text-primary transition-colors duration-300">
-              Full-Stack Development
-            </h4>
-            <p className="text-muted-foreground leading-relaxed">
-              Engineering scalable web applications using modern frameworks and clean architectural practices.
-            </p>
-          </div>
-
-          <div className="modern-card p-8 text-center group">
-            <div className="p-4 rounded-2xl bg-gradient-to-r from-purple-500 to-pink-500 text-white shadow-lg mx-auto mb-6 w-fit group-hover:scale-110 transition-transform duration-300">
-              <Rocket className="h-8 w-8" />
-            </div>
-            <h4 className="font-bold text-xl text-foreground mb-4 group-hover:text-primary transition-colors duration-300">
-              AI & Innovation
-            </h4>
-            <p className="text-muted-foreground leading-relaxed">
-              Building intelligent systems and integrating machine learning solutions into real-world applications.
-            </p>
-          </div>
-
-          <div className="modern-card p-8 text-center group">
-            <div className="p-4 rounded-2xl bg-gradient-to-r from-green-500 to-emerald-600 text-white shadow-lg mx-auto mb-6 w-fit group-hover:scale-110 transition-transform duration-300">
-              <Target className="h-8 w-8" />
-            </div>
-            <h4 className="font-bold text-xl text-foreground mb-4 group-hover:text-primary transition-colors duration-300">
-              Problem Solving
-            </h4>
-            <p className="text-muted-foreground leading-relaxed">
-              Tackling complex challenges through algorithmic thinking and delivering innovative solutions.
-            </p>
-          </div>
+        {/* Feature Highlights */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-16">
+          {[
+            {
+              icon: Code,
+              title: "Full-Stack Development",
+              desc: "Engineering scalable web applications using modern frameworks and clean architectural practices.",
+              gradient: "from-blue-500 to-cyan-500",
+              shadow: "shadow-blue-500/20",
+              hover: "group-hover:text-cyan-400",
+            },
+            {
+              icon: Rocket,
+              title: "AI & Innovation",
+              desc: "Building intelligent systems and integrating machine learning solutions into real-world applications.",
+              gradient: "from-purple-500 to-pink-500",
+              shadow: "shadow-purple-500/20",
+              hover: "group-hover:text-purple-400",
+            },
+            {
+              icon: Target,
+              title: "Problem Solving",
+              desc: "Tackling complex challenges through algorithmic thinking and delivering innovative solutions.",
+              gradient: "from-green-500 to-emerald-600",
+              shadow: "shadow-emerald-500/20",
+              hover: "group-hover:text-emerald-400",
+            },
+          ].map((item, i) => (
+            <motion.div
+              key={i}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: i * 0.1 }}
+              className="p-6 rounded-2xl bg-[#09090b] border border-white/[0.06] hover:border-white/15 transition-all text-center group"
+            >
+              <div
+                className={`p-3 rounded-2xl bg-gradient-to-r ${item.gradient} text-white ${item.shadow} shadow-lg mx-auto mb-5 w-fit group-hover:scale-110 transition-transform duration-300`}
+              >
+                <item.icon className="h-6 w-6" />
+              </div>
+              <h4
+                className={`font-bold text-lg text-zinc-100 mb-3 ${item.hover} transition-colors duration-300`}
+              >
+                {item.title}
+              </h4>
+              <p className="text-zinc-400 text-sm leading-relaxed">{item.desc}</p>
+            </motion.div>
+          ))}
         </div>
 
-        {/* Stats Section */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-          <div className="text-center modern-card p-8">
-            <div className="text-4xl font-bold text-primary mb-2">3+</div>
-            <div className="text-muted-foreground font-medium">Years Coding</div>
-          </div>
-          <div className="text-center modern-card p-8">
-            <div className="text-4xl font-bold text-primary mb-2">15+</div>
-            <div className="text-muted-foreground font-medium">Projects Built</div>
-          </div>
-          <div className="text-center modern-card p-8">
-            <div className="text-4xl font-bold text-primary mb-2">10+</div>
-            <div className="text-muted-foreground font-medium">Technologies</div>
-          </div>
-          <div className="text-center modern-card p-8">
-            <div className="text-4xl font-bold text-primary mb-2">2</div>
-            <div className="text-muted-foreground font-medium">Internships</div>
-          </div>
+        {/* Stats */}
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+          {[
+            { value: "3+", label: "Years Coding", gradient: "from-blue-400 to-cyan-400" },
+            { value: "15+", label: "Projects Built", gradient: "from-purple-400 to-pink-400" },
+            { value: "10+", label: "Technologies", gradient: "from-green-400 to-emerald-400" },
+            { value: "2", label: "Internships", gradient: "from-orange-400 to-red-400" },
+          ].map((stat, i) => (
+            <motion.div
+              key={i}
+              initial={{ opacity: 0, scale: 0.9 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true }}
+              transition={{ delay: i * 0.05 }}
+              className="text-center p-6 rounded-2xl bg-white/[0.02] border border-white/5 hover:border-white/15 hover:bg-white/[0.04] transition-all"
+            >
+              <div
+                className={`text-3xl font-bold bg-gradient-to-r ${stat.gradient} bg-clip-text text-transparent mb-1`}
+              >
+                {stat.value}
+              </div>
+              <div className="text-zinc-500 text-xs font-medium uppercase tracking-wider">
+                {stat.label}
+              </div>
+            </motion.div>
+          ))}
         </div>
       </div>
     </section>

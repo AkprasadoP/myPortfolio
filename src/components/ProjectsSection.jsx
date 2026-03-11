@@ -1,270 +1,185 @@
-import { ArrowRight, ExternalLink, Github } from "lucide-react";
+import { ExternalLink, Github, ArrowUpRight } from "lucide-react";
+import { motion } from "framer-motion";
 
 const projects = [
   {
     id: 1,
-    title: "ATF 天気アシスタント 🌤️",
+    title: "ATF 天気アシスタント",
     description:
-      "Your personal AI weather companion — blending forecasts, fashion, and travel advice seamlessly. Features bilingual support (Japanese/English), voice recognition, and AI-powered suggestions.",
-    image: "/projects/img.png", // TODO: Replace with actual ATF Weather Assistant screenshot
-    tags: [
-      "React",
-      "TypeScript",
-      "Node.js",
-      "Express",
-      "Google Gemini AI",
-      "OpenWeather API",
-      "TailwindCSS",
-      "Framer Motion"
-    ],
+      "AI weather companion blending forecasts, fashion, and travel advice. Bilingual (JP/EN) with voice recognition and AI-powered generation.",
+    tags: ["React", "TypeScript", "Node.js", "Gemini AI"],
     demoUrl: "https://my-aitf.vercel.app/",
     githubUrl: "https://github.com/AkprasadoP/atf-weather-assistant",
+    featured: true,
+    accent: "from-blue-500 to-cyan-500",
   },
-
   {
     id: 3,
-    title: "CyberX — AI-Powered Cybersecurity Platform",
+    title: "CyberX — AI Cybersecurity",
     description:
-      "An AI-assisted cybersecurity platform protecting users from phishing emails and deepfake voice attacks. Features hybrid detection pipeline, Chrome extension with Gmail integration, and explainable AI decisions achieving ~89% F1 score.",
-    image: "/projects/img2.png", // TODO: Replace with ATF CyberX screenshot
-    tags: [
-      "Python",
-      "FastAPI",
-      "React",
-      "TypeScript",
-      "Chrome Extension",
-      "Gemini LLM",
-      "Cybersecurity",
-      "AI/ML"
-    ],
+      "AI-assisted platform protecting against phishing emails and deepfake voice attacks with hybrid detection pipeline and Chrome extension.",
+    tags: ["Python", "FastAPI", "React", "Gemini LLM"],
     demoUrl: "https://cyberx-atf.duckdns.org/",
     githubUrl: "https://github.com/AkprasadoP/atf-cyberx",
+    featured: true,
+    accent: "from-red-500 to-orange-500",
   },
   {
     id: 4,
-    title: "University Website – IIITDM Jabalpur",
+    title: "University Website – IIITDMJ",
     description:
-      "A full-stack system for managing academic and administrative workflows using React, Node.js, and PostgreSQL.",
-    image: "/projects/iiitdmjwebsite.png",
-    tags: [
-      "React",
-      "TailwindCSS",
-      "Node.js",
-      "Express",
-      "PostgreSQL",
-      "Redis",
-      "AWS",
-      "JWT",
-    ],
+      "Full-stack academic system managing workflows built over a scalable architecture with efficient caching layers.",
+    tags: ["React", "Node.js", "PostgreSQL", "Redis"],
     demoUrl: "http://13.201.19.145:5000/",
     githubUrl: "https://github.com/AkprasadoP/IIITDMJ-Website-V2.1",
-  },
-    {
-    id: 2,
-    title: "GenRAG - AI Document Intelligence System",
-    description:
-      "An AI-powered document intelligence system implementing Retrieval-Augmented Generation (RAG) from scratch. Features semantic search through 1,400+ text chunks, PDF processing, and AI-powered responses with sub-millisecond search speeds.",
-    image: "/projects/image.png", // TODO: Replace with GenRAG screenshot
-    tags: [
-      "Python",
-      "Sentence-BERT",
-      "Google Gemini API",
-      "PDF Processing",
-      "RAG",
-      "Semantic Search",
-      "GUI",
-      "AI/ML"
-    ],
-    githubUrl: "https://github.com/AkprasadoP/GenRAG",
+    accent: "from-green-500 to-emerald-500",
   },
   {
-    id: 5,
-    title: "AI-Based Non-Invasive Blood Sugar Detection",
+    id: 2,
+    title: "GenRAG - Document Intelligence",
     description:
-      "A Next.js-powered system that estimates blood sugar levels using acetone (MQ-138) and NIR sensor readings, eliminating the need for invasive methods.",
-    image: "/projects/glucosense.png",
-    tags: ["Next.js", "TailwindCSS", "MQ-138", "NIR Sensor"],
-    demoUrl: "https://glucosense-eight.vercel.app/",
-    githubUrl: "https://github.com/AkprasadoP/Glucosense",
+      "RAG implementation from scratch — semantic search through 1,400+ text chunks, PDF parsing, with sub-millisecond search speeds.",
+    tags: ["Python", "Sentence-BERT", "Gemini API", "RAG"],
+    githubUrl: "https://github.com/AkprasadoP/GenRAG",
+    accent: "from-purple-500 to-violet-500",
   },
   {
     id: 6,
-    title: "ALPHAIO – Real-Time Social Media Platform",
+    title: "ALPHAIO – Real-Time Social",
     description:
-      "A full-featured social media platform built with the MERN stack, supporting real-time chat, post interactions, authentication, and a responsive UI using Chakra UI.",
-    image: "/projects/alphaio.png",
-    tags: [
-      "MongoDB",
-      "Express",
-      "React",
-      "Node.js",
-      "Socket.io",
-      "JWT",
-      "Chakra UI",
-    ],
+      "Full-featured social platform with real-time chat, post interactions, authentication, and responsive UI.",
+    tags: ["MongoDB", "Express", "React", "Socket.io"],
     demoUrl: "https://alphaio.onrender.com/",
     githubUrl: "https://github.com/AkprasadoP/alphaio",
-  },
-  {
-    id: 7,
-    title: "Full Stack Realtime Chat Application",
-    description:
-      "A MERN-based real-time chat app with JWT authentication, user presence tracking, media upload via Cloudinary, and efficient state management using Zustand.",
-    image: "/projects/alphasync.png",
-    tags: [
-      "MongoDB",
-      "Express",
-      "React",
-      "Node.js",
-      "Socket.io",
-      "JWT",
-      "Zustand",
-      "Cloudinary",
-    ],
-    demoUrl: "https://alphasync.onrender.com/",
-    githubUrl: "https://github.com/your-username/realtime-chat-app",
-  },
-  {
-    id: 8,
-    title: "ExplorExperts – Travel Agency",
-    description:
-      "My first ever project built to strengthen my front-end fundamentals. Developed using pure HTML and CSS, with a touch of JavaScript for interactive features, despite having limited JS knowledge at the time.",
-    image: "/projects/firstProject.png",
-    tags: ["HTML", "CSS", "JavaScript"],
-    githubUrl: "https://github.com/AkprasadoP/ExplorExperts",
-  },
-  
-  {
-    id: 9,
-    title: "Personal Portfolio Website",
-    description:
-      "And of course, my portfolio itself stands as one of my latest and most polished projects — a modern, responsive website built using React, TailwindCSS, and Vite.",
-    image: "/projects/image.png",
-    tags: ["React", "Vite", "TailwindCSS", "Lucide Icons", "Radix UI"],
-    demoUrl: "https://your-portfolio.vercel.app",
-    githubUrl: "https://github.com/yourusername/react-tailwind-portfolio",
+    accent: "from-amber-500 to-yellow-500",
   },
 ];
 
 export const ProjectsSection = () => {
   return (
-    <section id="projects" className="py-32 px-4 relative overflow-hidden">
-      {/* Background Elements */}
-      <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-secondary/10 pointer-events-none"></div>
-      
-      <div className="container mx-auto max-w-7xl relative">
-        <div className="text-center mb-20">
-          <div className="relative inline-block">
-            <div className="title-decoration"></div>
-            <h2 className="enhanced-section-title title-glow">
-              Featured <span className="text-primary">Projects</span>
-            </h2>
-            {/* Floating decorative elements */}
-            <div className="floating-icon -top-8 -left-10">
-              <Github className="w-6 h-6 text-primary/30" />
-            </div>
-            <div className="floating-icon -top-6 -right-8" style={{ animationDelay: '1.5s' }}>
-              <ExternalLink className="w-5 h-5 text-primary/40" />
-            </div>
-            <div className="floating-icon -bottom-4 left-4" style={{ animationDelay: '0.8s' }}>
-              <ArrowRight className="w-4 h-4 text-primary/25" />
-            </div>
-          </div>
-          <p className="section-subtitle">
-            Here are some of my recent projects. Each project was carefully
-            crafted with attention to detail, performance, and user experience.
-            From AI-powered applications to full-stack platforms, these showcase
-            my journey in modern web development.
+    <section id="projects" className="relative w-full">
+      <div className="w-full max-w-4xl px-4 sm:px-6">
+        {/* Section Header */}
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="mb-12"
+        >
+          <h2 className="text-3xl sm:text-4xl font-bold text-white mb-3">
+            Featured{" "}
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-400">
+              Projects
+            </span>
+          </h2>
+          <p className="text-zinc-400 text-sm leading-relaxed max-w-2xl">
+            Selected work showcasing applied solutions in AI, full-stack
+            architecture, and security.
           </p>
-        </div>
+          <div className="mt-4 h-px bg-gradient-to-r from-purple-500/50 via-pink-500/30 to-transparent" />
+        </motion.div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8 lg:gap-10">
-          {projects.map((project, index) => (
-            <div
+        {/* Projects Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {projects.map((project, idx) => (
+            <motion.div
               key={project.id}
-              className="group modern-card overflow-hidden stagger-animation"
-              style={{ animationDelay: `${index * 0.1}s` }}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: idx * 0.1 }}
+              className={`group relative flex flex-col rounded-2xl bg-[#0a0a0c] border border-white/[0.06] hover:border-white/15 transition-all duration-300 h-full overflow-hidden hover:shadow-lg hover:shadow-black/20 ${
+                project.featured ? "md:col-span-1" : ""
+              }`}
             >
-              <div className="relative h-56 overflow-hidden">
-                <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-                <img
-                  src={project.image}
-                  alt={project.title}
-                  className="project-image"
-                />
-              </div>
+              {/* Accent Strip */}
+              <div
+                className={`h-1 w-full bg-gradient-to-r ${project.accent} opacity-60 group-hover:opacity-100 transition-opacity`}
+              />
 
-              <div className="p-8">
-                <div className="flex flex-wrap gap-2 mb-6">
-                  {project.tags.map((tag, tagIndex) => (
-                    <span 
-                      key={tagIndex} 
-                      className="modern-tag"
-                      style={{ animationDelay: `${(index * 0.1) + (tagIndex * 0.05)}s` }}
+              <div className="p-6 flex flex-col flex-1">
+                {/* Header */}
+                <div className="flex items-start justify-between mb-4">
+                  <div className="flex items-center gap-2">
+                    {project.featured && (
+                      <span className="px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider bg-white/5 border border-white/10 rounded-md text-zinc-400">
+                        Featured
+                      </span>
+                    )}
+                  </div>
+                  <div className="flex gap-1.5">
+                    {project.githubUrl && (
+                      <a
+                        href={project.githubUrl}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="p-2 text-zinc-500 hover:text-white hover:bg-white/5 rounded-lg transition-all"
+                        title="Source Code"
+                      >
+                        <Github size={15} />
+                      </a>
+                    )}
+                    {project.demoUrl && (
+                      <a
+                        href={project.demoUrl}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="p-2 text-zinc-500 hover:text-white hover:bg-white/5 rounded-lg transition-all"
+                        title="Live Demo"
+                      >
+                        <ExternalLink size={15} />
+                      </a>
+                    )}
+                  </div>
+                </div>
+
+                {/* Content */}
+                <div className="flex-1">
+                  <h3 className="text-lg font-bold text-zinc-100 mb-2 group-hover:text-white transition-colors">
+                    {project.title}
+                  </h3>
+                  <p className="text-sm text-zinc-400 leading-relaxed mb-6">
+                    {project.description}
+                  </p>
+                </div>
+
+                {/* Footer Tags */}
+                <div className="flex flex-wrap gap-2 pt-4 border-t border-white/5">
+                  {project.tags.map((tag, tIdx) => (
+                    <span
+                      key={tIdx}
+                      className="px-2.5 py-1 text-xs font-medium text-zinc-400 bg-white/[0.04] rounded-md border border-white/5"
                     >
                       {tag}
                     </span>
                   ))}
                 </div>
-
-                <h3 className="text-xl font-bold mb-3 text-foreground group-hover:text-primary transition-colors duration-300">
-                  {project.title}
-                </h3>
-                
-                {/* Expandable description */}
-                <div className="mb-6">
-                  <p className="text-muted-foreground text-sm leading-relaxed transition-all duration-500 group-hover:text-foreground line-clamp-3 group-hover:line-clamp-none">
-                    {project.description}
-                  </p>
-                </div>
-                
-                <div className="flex items-center justify-between pt-4 border-t border-border/50">
-                  <div className="flex space-x-4">
-                    {project.demoUrl && (
-                      <a
-                        href={project.demoUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="flex items-center gap-2 text-sm font-medium text-muted-foreground hover:text-primary transition-all duration-300 hover:scale-105"
-                        title="View Live Demo"
-                      >
-                        <ExternalLink size={16} />
-                        <span>Live Demo</span>
-                      </a>
-                    )}
-                    <a
-                      href={project.githubUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="flex items-center gap-2 text-sm font-medium text-muted-foreground hover:text-primary transition-all duration-300 hover:scale-105"
-                      title="View Source Code"
-                    >
-                      <Github size={16} />
-                      <span>Code</span>
-                    </a>
-                  </div>
-                  
-                  <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center group-hover:bg-primary/20 transition-colors duration-300">
-                    <ArrowRight size={14} className="text-primary group-hover:translate-x-0.5 transition-transform duration-300" />
-                  </div>
-                </div>
               </div>
-            </div>
+            </motion.div>
           ))}
         </div>
 
-        <div className="text-center mt-20">
+        {/* View All */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
+          className="mt-12 text-center"
+        >
           <a
-            className="cosmic-button inline-flex items-center gap-3 group"
-            target="_blank"
-            rel="noopener noreferrer"
             href="https://github.com/AkprasadoP"
+            target="_blank"
+            rel="noreferrer"
+            className="inline-flex items-center gap-2 px-6 py-3 rounded-full border border-white/10 text-zinc-300 font-medium hover:bg-white/5 hover:text-white transition-all group"
           >
-            <Github size={18} />
-            <span>Explore More on GitHub</span>
-            <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform duration-300" />
+            <Github size={16} />
+            View All on GitHub
+            <ArrowUpRight
+              size={14}
+              className="group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform"
+            />
           </a>
-        </div>
+        </motion.div>
       </div>
     </section>
   );

@@ -1,4 +1,6 @@
 import { useState } from "react";
+import { motion } from "framer-motion";
+
 import {
   FaHtml5,
   FaCss3Alt,
@@ -102,35 +104,26 @@ export const SkillsSection = () => {
   );
 
   return (
-    <section id="skills" className="py-32 px-4 relative overflow-hidden">
-      {/* Background Elements */}
-      <div className="absolute inset-0 bg-gradient-to-br from-secondary/10 via-transparent to-primary/5 pointer-events-none"></div>
-      <div className="absolute top-20 left-10 w-64 h-64 bg-blue-500/5 rounded-full blur-3xl"></div>
-      <div className="absolute bottom-20 right-10 w-80 h-80 bg-purple-500/5 rounded-full blur-3xl"></div>
-      
-      <div className="container mx-auto max-w-7xl relative">
-        <div className="text-center mb-20">
-          <div className="relative inline-block">
-            <div className="title-decoration"></div>
-            <h2 className="enhanced-section-title title-glow">
-              My <span className="text-primary">Skills</span>
-            </h2>
-            {/* Floating decorative elements */}
-            <div className="floating-icon -top-8 -left-10">
-              <FaCode className="w-6 h-6 text-primary/30" />
-            </div>
-            <div className="floating-icon -top-6 -right-8" style={{ animationDelay: '1.5s' }}>
-              <FaTools className="w-5 h-5 text-primary/40" />
-            </div>
-            <div className="floating-icon -bottom-4 left-4" style={{ animationDelay: '0.5s' }}>
-              <FaPalette className="w-4 h-4 text-primary/25" />
-            </div>
-          </div>
-          <p className="section-subtitle">
-            A comprehensive overview of my technical expertise across frontend, backend, 
-            and development tools. Each skill represents hands-on experience in real-world projects.
+    <section id="skills" className="py-20 px-4 relative">
+      <div className="w-full max-w-6xl mx-auto relative z-10">
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="mb-14"
+        >
+          <h2 className="text-3xl sm:text-4xl font-bold text-white mb-3">
+            Technical{" "}
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-400">
+              Skills
+            </span>
+          </h2>
+          <p className="text-zinc-400 text-sm sm:text-base leading-relaxed max-w-2xl">
+            A comprehensive overview of my expertise across frontend, backend,
+            and development tools.
           </p>
-        </div>
+          <div className="mt-4 h-px bg-gradient-to-r from-purple-500/50 via-pink-500/30 to-transparent" />
+        </motion.div>
 
         {/* Category Filter */}
         <div className="flex flex-wrap justify-center gap-4 mb-16">
@@ -140,10 +133,10 @@ export const SkillsSection = () => {
               <button
                 key={category.name}
                 onClick={() => setActiveCategory(category.name)}
-                className={`group relative px-8 py-4 rounded-2xl transition-all duration-500 transform hover:scale-105 ${
+                className={`group relative px-6 py-3 rounded-2xl transition-all duration-300 transform hover:scale-105 border ${
                   activeCategory === category.name
-                    ? "bg-gradient-to-r " + category.color + " text-white shadow-2xl scale-105"
-                    : "modern-card text-foreground hover:shadow-xl"
+                    ? "bg-gradient-to-r " + category.color + " text-white border-transparent shadow-lg"
+                    : "bg-white/[0.02] border-white/10 text-zinc-400 hover:text-zinc-200 hover:bg-white/[0.04]"
                 }`}
                 style={{ animationDelay: `${index * 0.1}s` }}
               >
@@ -163,26 +156,24 @@ export const SkillsSection = () => {
         </div>
 
         {/* Skills Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-4">
           {filteredSkills.map((skill, index) => {
             const Icon = iconMap[skill.name];
             return (
               <div
                 key={skill.name}
-                className="group modern-card p-6 hover:shadow-2xl transition-all duration-500 stagger-animation"
+                className="group p-5 rounded-2xl bg-white/[0.02] border border-white/10 hover:border-white/20 transition-all hover:-translate-y-1 hover:bg-white/[0.04]"
                 style={{ animationDelay: `${index * 0.05}s` }}
               >
-                <div className="flex items-center gap-4">
-                  <div className={`p-3 rounded-xl bg-gradient-to-r ${skill.color} text-white shadow-lg group-hover:scale-110 transition-transform duration-300`}>
-                    {Icon && <Icon className="w-6 h-6" />}
+                <div className="flex flex-col items-center gap-3 text-center">
+                  <div className={`p-4 rounded-2xl bg-[#09090b] shadow-inner text-white group-hover:scale-110 transition-transform duration-300 relative overflow-hidden flex items-center justify-center`}>
+                    <div className={`absolute inset-0 bg-gradient-to-br ${skill.color} opacity-20`}></div>
+                    {Icon && <Icon className="w-8 h-8 relative z-10 drop-shadow-md" />}
                   </div>
-                  <div className="flex-1">
-                    <h3 className="font-bold text-foreground group-hover:text-primary transition-colors duration-300">
+                  <div className="w-full">
+                    <h3 className="font-bold text-zinc-200 group-hover:text-white transition-colors duration-300 text-sm">
                       {skill.name}
                     </h3>
-                    <p className="text-xs text-muted-foreground capitalize">
-                      {skill.category}
-                    </p>
                   </div>
                 </div>
               </div>
@@ -191,34 +182,34 @@ export const SkillsSection = () => {
         </div>
 
         {/* Skills Summary */}
-        <div className="mt-20 grid grid-cols-1 md:grid-cols-3 gap-8">
-          <div className="text-center modern-card p-8">
-            <div className="w-16 h-16 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-2xl flex items-center justify-center mx-auto mb-4">
+        <div className="mt-20 grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="text-center p-8 rounded-2xl bg-[#09090b] border border-white/10 hover:border-white/20 transition-all group">
+            <div className="w-16 h-16 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform shadow-lg shadow-blue-500/20">
               <FaPalette className="w-8 h-8 text-white" />
             </div>
-            <h3 className="text-xl font-bold text-foreground mb-2">Frontend</h3>
-            <p className="text-muted-foreground text-sm">
-              Modern UI/UX development with React, TypeScript, and cutting-edge styling frameworks
+            <h3 className="text-xl font-bold text-zinc-100 mb-3 group-hover:text-cyan-400 transition-colors">Frontend</h3>
+            <p className="text-zinc-400 text-sm leading-relaxed">
+              Modern UI/UX development with React, TypeScript, and cutting-edge styling frameworks.
             </p>
           </div>
           
-          <div className="text-center modern-card p-8">
-            <div className="w-16 h-16 bg-gradient-to-r from-green-500 to-emerald-600 rounded-2xl flex items-center justify-center mx-auto mb-4">
+          <div className="text-center p-8 rounded-2xl bg-[#09090b] border border-white/10 hover:border-white/20 transition-all group">
+            <div className="w-16 h-16 bg-gradient-to-r from-green-500 to-emerald-600 rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform shadow-lg shadow-green-500/20">
               <FaDatabase className="w-8 h-8 text-white" />
             </div>
-            <h3 className="text-xl font-bold text-foreground mb-2">Backend</h3>
-            <p className="text-muted-foreground text-sm">
-              Scalable server-side solutions with Node.js, Python, and robust database management
+            <h3 className="text-xl font-bold text-zinc-100 mb-3 group-hover:text-emerald-400 transition-colors">Backend</h3>
+            <p className="text-zinc-400 text-sm leading-relaxed">
+              Scalable server-side solutions with Node.js, Python, and robust database management.
             </p>
           </div>
           
-          <div className="text-center modern-card p-8">
-            <div className="w-16 h-16 bg-gradient-to-r from-purple-500 to-pink-500 rounded-2xl flex items-center justify-center mx-auto mb-4">
+          <div className="text-center p-8 rounded-2xl bg-[#09090b] border border-white/10 hover:border-white/20 transition-all group">
+            <div className="w-16 h-16 bg-gradient-to-r from-purple-500 to-pink-500 rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform shadow-lg shadow-purple-500/20">
               <FaTools className="w-8 h-8 text-white" />
             </div>
-            <h3 className="text-xl font-bold text-foreground mb-2">DevOps & Tools</h3>
-            <p className="text-muted-foreground text-sm">
-              Cloud deployment, containerization, and modern development workflow optimization
+            <h3 className="text-xl font-bold text-zinc-100 mb-3 group-hover:text-pink-400 transition-colors">DevOps & Tools</h3>
+            <p className="text-zinc-400 text-sm leading-relaxed">
+              Cloud deployment, containerization, and modern development workflow optimization.
             </p>
           </div>
         </div>
