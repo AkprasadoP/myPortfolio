@@ -9,10 +9,8 @@ export const StarBackground = () => {
 
     const ctx = canvas.getContext("2d", { alpha: true });
     let animationFrameId;
-
     let width = window.innerWidth;
     let height = window.innerHeight;
-
     const dpr = window.devicePixelRatio || 1;
 
     const setCanvasSize = () => {
@@ -22,225 +20,324 @@ export const StarBackground = () => {
       canvas.height = height * dpr;
       ctx.scale(dpr, dpr);
     };
-
     setCanvasSize();
     window.addEventListener("resize", setCanvasSize);
 
-    // Particle system
-    const particles = [];
-    const particleCount = width < 768 ? 700 : 1500;
+    // ─── Configuration ───
+    const NODE_COUNT = width < 768 ? 60 : 120;
+    const CONNECTION_DIST = 220; // max distance for connections
+    const CURSOR_CONNECT_DIST = 300; // cursor proximity for new connections
+    const PULSE_SPEED = 0.8; // speed of traveling pulses
+    const FOV = 600;
+    const DEPTH = 800; // z-range for 3D distribution
 
-    const initParticles = () => {
-      particles.length = 0;
-      const baseRadius = Math.min(width, height) * 0.65;
-
-      for (let i = 0; i < particleCount; i++) {
-        const u = Math.random();
-        const v = Math.random();
-        const theta = 2 * Math.PI * u;
-        const phi = Math.acos(2 * v - 1);
-        const radius = baseRadius * (0.85 + Math.random() * 0.3);
-
-        particles.push({
-          radius,
-          theta,
-          phi,
-          speed:
-            (0.0015 + Math.random() * 0.002) *
-            (Math.random() > 0.5 ? 1 : -1),
-          dashLength: 8 + Math.random() * 12,
-          isPulse: Math.random() > 0.8,
-          // Cursor repulsion displacement (in screen space)
-          displaceX: 0,
-          displaceY: 0,
+    // ─── Nodes ───
+    const nodes = [];
+    const initNodes = () => {
+      nodes.length = 0;
+      for (let i = 0; i < NODE_COUNT; i++) {
+        nodes.push({
+          // 3D positions (spread across a large volume)
+          x: (Math.random() - 0.5) * width * 1.4,
+          y: (Math.random() - 0.5) * height * 1.4,
+          z: (Math.random() - 0.5) * DEPTH,
+          // Slow drift velocity
+          vx: (Math.random() - 0.5) * 0.3,
+          vy: (Math.random() - 0.5) * 0.3,
+          vz: (Math.random() - 0.5) * 0.15,
+          // Base size
+          baseSize: 1.5 + Math.random() * 2,
+          // Pulse glow phase
+          phase: Math.random() * Math.PI * 2,
+          // Whether this is a "hub" node (larger, brighter)
+          isHub: Math.random() > 0.85,
         });
       }
     };
+    initNodes();
 
-    initParticles();
+    // ─── Pulses (traveling sparks along connections) ───
+    const pulses = [];
+    const MAX_PULSES = 30;
 
-    // Mouse state
-    let mouseScreenX = width / 2;
-    let mouseScreenY = height / 2;
+    const spawnPulse = (fromIdx, toIdx) => {
+      if (pulses.length >= MAX_PULSES) return;
+      pulses.push({
+        from: fromIdx,
+        to: toIdx,
+        progress: 0, // 0 to 1
+        speed: PULSE_SPEED + Math.random() * 0.5,
+        hue: 220 + Math.random() * 80, // blue to purple range
+      });
+    };
+
+    // Periodically spawn pulses on random connections
+    let pulseTimer = 0;
+
+    // ─── Mouse ───
+    let mouseScreenX = -9999;
+    let mouseScreenY = -9999;
     let mouseActive = false;
-
-    let targetTiltX = 0.2;
-    let targetTiltY = 0;
-    let currentTiltX = 0.2;
-    let currentTiltY = 0;
-
-    // Repulsion config
-    const REPULSION_RADIUS = 350; // px — how close the cursor needs to be
-    const REPULSION_STRENGTH = 200; // px — max push distance
-    const REPULSION_DECAY = 0.88; // how fast displacement eases back (per frame)
 
     const handleMouseMove = (e) => {
       mouseScreenX = e.clientX;
       mouseScreenY = e.clientY;
       mouseActive = true;
-
-      const mx = (e.clientX / width) * 2 - 1;
-      const my = (e.clientY / height) * 2 - 1;
-      targetTiltX = 0.2 + my * 0.3;
-      targetTiltY = mx * 0.3;
     };
-
     const handleMouseLeave = () => {
       mouseActive = false;
+      mouseScreenX = -9999;
+      mouseScreenY = -9999;
     };
-
     window.addEventListener("mousemove", handleMouseMove);
     window.addEventListener("mouseleave", handleMouseLeave);
 
     let time = 0;
-    const FOV = 800;
+
+    // Project a 3D point to 2D screen
+    const project = (x, y, z) => {
+      const scale = FOV / (FOV + z + DEPTH * 0.6);
+      return {
+        sx: width / 2 + x * scale,
+        sy: height / 2 + y * scale,
+        scale,
+        z,
+      };
+    };
+
+    // Color helpers
+    const getNodeColor = (alpha, hue = 220) => {
+      return `hsla(${hue}, 70%, 70%, ${alpha})`;
+    };
+    const getConnectionColor = (alpha, hue = 230) => {
+      return `hsla(${hue}, 50%, 55%, ${alpha})`;
+    };
 
     const render = () => {
-      time += 0.01;
+      time += 0.008;
+      pulseTimer += 0.008;
       ctx.clearRect(0, 0, width, height);
 
       const cx = width / 2;
       const cy = height / 2;
 
-      currentTiltX += (targetTiltX - currentTiltX) * 0.05;
-      currentTiltY += (targetTiltY - currentTiltY) * 0.05;
+      // ─── Update nodes (gentle drift + subtle orbit) ───
+      nodes.forEach((n) => {
+        n.x += n.vx + Math.sin(time + n.phase) * 0.15;
+        n.y += n.vy + Math.cos(time * 0.7 + n.phase) * 0.15;
+        n.z += n.vz;
 
-      particles.forEach((p) => {
-        // Update rotation
-        p.theta += p.speed;
+        // Wrap around (soft boundaries)
+        const bx = width * 0.8;
+        const by = height * 0.8;
+        const bz = DEPTH * 0.5;
+        if (n.x > bx) n.vx -= 0.02;
+        if (n.x < -bx) n.vx += 0.02;
+        if (n.y > by) n.vy -= 0.02;
+        if (n.y < -by) n.vy += 0.02;
+        if (n.z > bz) n.vz -= 0.01;
+        if (n.z < -bz) n.vz += 0.01;
 
-        // 3D coordinates
-        let x = p.radius * Math.sin(p.phi) * Math.cos(p.theta);
-        let y = p.radius * Math.sin(p.phi) * Math.sin(p.theta);
-        let z = p.radius * Math.cos(p.phi);
+        // Damping
+        n.vx *= 0.999;
+        n.vy *= 0.999;
+        n.vz *= 0.999;
+      });
 
-        // Tilt Y (horizontal mouse)
-        let tmpX = x * Math.cos(currentTiltY) + z * Math.sin(currentTiltY);
-        let tmpZ = -x * Math.sin(currentTiltY) + z * Math.cos(currentTiltY);
-        x = tmpX;
-        z = tmpZ;
+      // ─── Project all nodes ───
+      const projected = nodes.map((n) => project(n.x, n.y, n.z));
 
-        // Tilt X (vertical mouse)
-        let tmpY = y * Math.cos(currentTiltX) - z * Math.sin(currentTiltX);
-        tmpZ = y * Math.sin(currentTiltX) + z * Math.cos(currentTiltX);
-        y = tmpY;
-        z = tmpZ;
+      // ─── Find connections ───
+      const connections = [];
+      for (let i = 0; i < nodes.length; i++) {
+        for (let j = i + 1; j < nodes.length; j++) {
+          const dx = nodes[i].x - nodes[j].x;
+          const dy = nodes[i].y - nodes[j].y;
+          const dz = nodes[i].z - nodes[j].z;
+          const dist = Math.sqrt(dx * dx + dy * dy + dz * dz);
+          if (dist < CONNECTION_DIST) {
+            connections.push({ i, j, dist });
+          }
+        }
+      }
 
-        // Floating wave
-        y += Math.sin(time + p.theta) * 20;
+      // ─── Cursor-triggered connections ───
+      if (mouseActive) {
+        for (let i = 0; i < projected.length; i++) {
+          const p = projected[i];
+          const dmx = p.sx - mouseScreenX;
+          const dmy = p.sy - mouseScreenY;
+          const screenDist = Math.sqrt(dmx * dmx + dmy * dmy);
+          if (screenDist < CURSOR_CONNECT_DIST) {
+            // Find nearby nodes to this one and boost their connections
+            for (let j = 0; j < projected.length; j++) {
+              if (i === j) continue;
+              const p2 = projected[j];
+              const d2mx = p2.sx - mouseScreenX;
+              const d2my = p2.sy - mouseScreenY;
+              const screenDist2 = Math.sqrt(d2mx * d2mx + d2my * d2my);
+              if (screenDist2 < CURSOR_CONNECT_DIST) {
+                const dx = nodes[i].x - nodes[j].x;
+                const dy = nodes[i].y - nodes[j].y;
+                const dz = nodes[i].z - nodes[j].z;
+                const dist3d = Math.sqrt(dx * dx + dy * dy + dz * dz);
+                if (dist3d < CONNECTION_DIST * 2) {
+                  connections.push({ i, j, dist: dist3d, cursor: true });
+                }
+              }
+            }
+          }
+        }
+      }
 
-        // Project to screen
-        const scale = FOV / (FOV + z + p.radius * 2);
-        let screenX = cx + x * scale;
-        let screenY = cy + y * scale;
+      // ─── Draw connections ───
+      connections.forEach((c) => {
+        const p1 = projected[c.i];
+        const p2 = projected[c.j];
 
-        // ── Cursor repulsion ──
+        // Fade by distance
+        const maxDist = c.cursor ? CONNECTION_DIST * 2 : CONNECTION_DIST;
+        const alpha = (1 - c.dist / maxDist) * (c.cursor ? 0.25 : 0.12);
+
+        // Depth-based fade
+        const avgZ = (nodes[c.i].z + nodes[c.j].z) / 2;
+        const depthFade = Math.max(0.3, (avgZ + DEPTH) / (DEPTH * 2));
+
+        const hue = c.cursor ? 270 : 220 + (c.dist / CONNECTION_DIST) * 40;
+
+        ctx.beginPath();
+        ctx.moveTo(p1.sx, p1.sy);
+        ctx.lineTo(p2.sx, p2.sy);
+        ctx.strokeStyle = getConnectionColor(
+          alpha * depthFade,
+          hue
+        );
+        ctx.lineWidth = c.cursor ? 1 : 0.6;
+        ctx.stroke();
+      });
+
+      // ─── Spawn pulses periodically ───
+      if (pulseTimer > 0.15 && connections.length > 0) {
+        pulseTimer = 0;
+        const randomConn =
+          connections[Math.floor(Math.random() * connections.length)];
+        spawnPulse(randomConn.i, randomConn.j);
+      }
+
+      // Spawn extra pulses near cursor
+      if (mouseActive && Math.random() > 0.7) {
+        const cursorConns = connections.filter((c) => c.cursor);
+        if (cursorConns.length > 0) {
+          const rc = cursorConns[Math.floor(Math.random() * cursorConns.length)];
+          spawnPulse(rc.i, rc.j);
+        }
+      }
+
+      // ─── Draw and update pulses ───
+      for (let pi = pulses.length - 1; pi >= 0; pi--) {
+        const pulse = pulses[pi];
+        pulse.progress += pulse.speed * 0.02;
+
+        if (pulse.progress >= 1) {
+          pulses.splice(pi, 1);
+          continue;
+        }
+
+        const pFrom = projected[pulse.from];
+        const pTo = projected[pulse.to];
+        if (!pFrom || !pTo) {
+          pulses.splice(pi, 1);
+          continue;
+        }
+
+        // Interpolate position
+        const px = pFrom.sx + (pTo.sx - pFrom.sx) * pulse.progress;
+        const py = pFrom.sy + (pTo.sy - pFrom.sy) * pulse.progress;
+        const pScale =
+          pFrom.scale + (pTo.scale - pFrom.scale) * pulse.progress;
+
+        // Draw pulse glow
+        const pulseSize = 3 * pScale;
+        const pulseAlpha = Math.sin(pulse.progress * Math.PI) * 0.9;
+
+        // Outer glow
+        const gradient = ctx.createRadialGradient(
+          px, py, 0,
+          px, py, pulseSize * 4
+        );
+        gradient.addColorStop(
+          0,
+          `hsla(${pulse.hue}, 80%, 70%, ${pulseAlpha * 0.6})`
+        );
+        gradient.addColorStop(1, `hsla(${pulse.hue}, 80%, 70%, 0)`);
+        ctx.beginPath();
+        ctx.arc(px, py, pulseSize * 4, 0, Math.PI * 2);
+        ctx.fillStyle = gradient;
+        ctx.fill();
+
+        // Inner bright core
+        ctx.beginPath();
+        ctx.arc(px, py, pulseSize, 0, Math.PI * 2);
+        ctx.fillStyle = `hsla(${pulse.hue}, 90%, 85%, ${pulseAlpha})`;
+        ctx.fill();
+      }
+
+      // ─── Draw nodes ───
+      // Sort by z for proper layering (far nodes first)
+      const sortedIndices = [...Array(nodes.length).keys()].sort(
+        (a, b) => nodes[a].z - nodes[b].z
+      );
+
+      sortedIndices.forEach((i) => {
+        const n = nodes[i];
+        const p = projected[i];
+
+        // Pulsing glow
+        const glow = 0.5 + Math.sin(time * 2 + n.phase) * 0.3;
+        const depthFade = Math.max(0.3, (n.z + DEPTH) / (DEPTH * 2));
+
+        // Cursor proximity boost
+        let cursorBoost = 0;
         if (mouseActive) {
-          const dxMouse = screenX - mouseScreenX;
-          const dyMouse = screenY - mouseScreenY;
-          const distToMouse = Math.sqrt(dxMouse * dxMouse + dyMouse * dyMouse);
-
-          if (distToMouse < REPULSION_RADIUS && distToMouse > 0.1) {
-            // Strength falls off with distance (inverse, clamped)
-            const force =
-              ((REPULSION_RADIUS - distToMouse) / REPULSION_RADIUS) *
-              REPULSION_STRENGTH;
-            // Push along the vector from mouse to particle
-            p.displaceX += (dxMouse / distToMouse) * force * 0.15;
-            p.displaceY += (dyMouse / distToMouse) * force * 0.15;
+          const dmx = p.sx - mouseScreenX;
+          const dmy = p.sy - mouseScreenY;
+          const screenDist = Math.sqrt(dmx * dmx + dmy * dmy);
+          if (screenDist < CURSOR_CONNECT_DIST) {
+            cursorBoost =
+              ((CURSOR_CONNECT_DIST - screenDist) / CURSOR_CONNECT_DIST) * 0.6;
           }
         }
 
-        // Ease displacement back to zero (springy return)
-        p.displaceX *= REPULSION_DECAY;
-        p.displaceY *= REPULSION_DECAY;
+        const size = n.baseSize * p.scale * (n.isHub ? 1.8 : 1);
+        const alpha = (glow * depthFade + cursorBoost) * (n.isHub ? 1 : 0.7);
+        const hue = n.isHub ? 260 : 220;
 
-        // Clamp max displacement to avoid particles flying too far
-        const maxDisplace = 300;
-        p.displaceX = Math.max(-maxDisplace, Math.min(maxDisplace, p.displaceX));
-        p.displaceY = Math.max(-maxDisplace, Math.min(maxDisplace, p.displaceY));
-
-        // Apply displacement
-        screenX += p.displaceX;
-        screenY += p.displaceY;
-
-        // Next point for dash direction
-        const nextTheta = p.theta + (p.speed > 0 ? 0.05 : -0.05);
-        let nextX = p.radius * Math.sin(p.phi) * Math.cos(nextTheta);
-        let nextY = p.radius * Math.sin(p.phi) * Math.sin(nextTheta);
-        let nextZ = p.radius * Math.cos(p.phi);
-
-        let nTmpX =
-          nextX * Math.cos(currentTiltY) + nextZ * Math.sin(currentTiltY);
-        let nTmpZ =
-          -nextX * Math.sin(currentTiltY) + nextZ * Math.cos(currentTiltY);
-        nextX = nTmpX;
-        nextZ = nTmpZ;
-
-        let nTmpY =
-          nextY * Math.cos(currentTiltX) - nextZ * Math.sin(currentTiltX);
-        nTmpZ =
-          nextY * Math.sin(currentTiltX) + nextZ * Math.cos(currentTiltX);
-        nextY = nTmpY + Math.sin(time + nextTheta) * 20;
-        nextZ = nTmpZ;
-
-        const nextScale = FOV / (FOV + nextZ + p.radius * 2);
-        const nextScreenX = cx + nextX * nextScale + p.displaceX;
-        const nextScreenY = cy + nextY * nextScale + p.displaceY;
-
-        // Color gradient (Red → Purple → Blue)
-        const normalizedX = Math.max(
-          0,
-          Math.min(1, (screenX - p.displaceX) / width)
-        );
-
-        let r, g, b;
-        if (normalizedX < 0.5) {
-          const ratio = normalizedX * 2;
-          r = 239 - (239 - 168) * ratio;
-          g = 68 - (68 - 85) * ratio;
-          b = 68 - (68 - 247) * ratio;
-        } else {
-          const ratio = (normalizedX - 0.5) * 2;
-          r = 168 - (168 - 59) * ratio;
-          g = 85 - (85 - 130) * ratio;
-          b = 247 - (247 - 246) * ratio;
+        // Outer glow for hub nodes and cursor-boosted nodes
+        if (n.isHub || cursorBoost > 0.1) {
+          const glowRadius = size * (3 + cursorBoost * 4);
+          const glowGrad = ctx.createRadialGradient(
+            p.sx, p.sy, 0,
+            p.sx, p.sy, glowRadius
+          );
+          glowGrad.addColorStop(
+            0,
+            `hsla(${hue}, 70%, 65%, ${alpha * 0.3})`
+          );
+          glowGrad.addColorStop(1, `hsla(${hue}, 70%, 65%, 0)`);
+          ctx.beginPath();
+          ctx.arc(p.sx, p.sy, glowRadius, 0, Math.PI * 2);
+          ctx.fillStyle = glowGrad;
+          ctx.fill();
         }
 
-        // Depth fade
-        const depthAlpha = Math.max(
-          0.2,
-          (z + p.radius * 2) / (p.radius * 4)
-        );
-        const baseAlpha = p.isPulse
-          ? 0.8 + Math.sin(time * 5 + p.theta) * 0.2
-          : 0.6;
-
-        // Boost opacity slightly when displaced (makes the spread more visible)
-        const displaceMag = Math.sqrt(
-          p.displaceX * p.displaceX + p.displaceY * p.displaceY
-        );
-        const displaceBoost = Math.min(0.3, displaceMag / 200);
-        const finalAlpha = Math.min(1, depthAlpha * baseAlpha + displaceBoost);
-
-        // Draw dash
+        // Node core
         ctx.beginPath();
-        ctx.moveTo(screenX, screenY);
-
-        const dx = nextScreenX - screenX;
-        const dy = nextScreenY - screenY;
-        const mag = Math.sqrt(dx * dx + dy * dy) || 1;
-
-        const drawLength = p.dashLength * scale;
-        const endX = screenX + (dx / mag) * drawLength;
-        const endY = screenY + (dy / mag) * drawLength;
-
-        ctx.lineTo(endX, endY);
-
-        ctx.strokeStyle = `rgba(${Math.floor(r)}, ${Math.floor(g)}, ${Math.floor(b)}, ${finalAlpha})`;
-        ctx.lineWidth = 3 * scale;
-        ctx.lineCap = "round";
-        ctx.stroke();
+        ctx.arc(p.sx, p.sy, size, 0, Math.PI * 2);
+        ctx.fillStyle = getNodeColor(
+          Math.min(1, alpha),
+          hue + cursorBoost * 30
+        );
+        ctx.fill();
       });
 
       animationFrameId = window.requestAnimationFrame(render);
