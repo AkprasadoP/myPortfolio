@@ -91,6 +91,27 @@ export const experiences = [
     location: "Noida, India",
     duration: "CURRENT",
     current: true,
+    summary:
+      "Working on production application security — auditing and hardening authentication, session handling, API access control, and media delivery paths on live systems.",
+    annotations: [
+      { label: "Focus", value: "appsec" },
+      { label: "Video", value: "HLS investigation" },
+      { label: "Auth", value: "sessions / CSRF" },
+      { label: "Scope", value: "production" },
+    ],
+    achievements: [
+      "Investigated Classplus web video / HLS delivery security and authored remediation guidance covering session controls, CDN token scoping, and abuse detection",
+      "Audited and hardened authentication, session/cookie security, and CSRF protections on production applications",
+      "Tightened API authorization and ownership enforcement to close IDOR-class access-control gaps",
+      "Drove production-readiness work: security headers, deployment/infrastructure hardening, and secure startup validation",
+      "Improved reliability and operability with readiness/health checks and safer failure handling for production services",
+    ],
+    technologies: [
+      "Application Security",
+      "AuthN / AuthZ",
+      "HLS",
+      "Backend",
+    ],
   },
   {
     id: "02",

@@ -15,10 +15,6 @@ dist-ssr
 .env.*
 !.env.example
 
-# Local mixtape audio (do not commit copyrighted tracks)
-public/audio/*
-!public/audio/README.md
-
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
