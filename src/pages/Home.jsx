@@ -18,7 +18,7 @@ export const Home = () => {
 
       <main
         id="main-scroll-area"
-        className="relative z-10 flex-1 overflow-y-auto overflow-x-hidden scroll-smooth pb-12"
+        className="relative z-10 flex-1 overflow-y-auto overflow-x-hidden scroll-smooth pb-8"
       >
         <WebStrand />
 

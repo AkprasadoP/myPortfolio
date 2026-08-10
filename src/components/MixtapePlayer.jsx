@@ -1,22 +1,24 @@
 import { useEffect, useRef, useState } from "react";
-import {
-  ChevronDown,
-  ChevronUp,
-  Pause,
-  Play,
-  SkipBack,
-  SkipForward,
-} from "lucide-react";
 import "./MixtapePlayer.css";
 
 /**
- * Add royalty-free / CC0 files under /public/audio and list them here.
+ * Personal mixtape — add files under /public/audio and list them here.
  * See /public/audio/README.md
  */
 const TRACKS = [
-  // Example (uncomment after adding a licensed file):
-  // { id: "night-shift", title: "Night Shift Debug", src: "/audio/night-shift.mp3" },
+  {
+    id: "gone-gone-gone",
+    title: "Gone, Gone, Gone — Phillip Phillips",
+    src: "/audio/gone-gone-gone.mp3",
+  },
+  {
+    id: "loser",
+    title: "Loser — Tame Impala",
+    src: "/audio/loser.mp3",
+  },
 ];
+
+const VOL_STEPS = 6;
 
 const formatTime = (secs) => {
   if (!Number.isFinite(secs) || secs < 0) return "0:00";
@@ -25,12 +27,19 @@ const formatTime = (secs) => {
   return `${m}:${String(s).padStart(2, "0")}`;
 };
 
+const shortTitle = (title) => {
+  if (!title) return "—";
+  const base = title.split(" — ")[0].trim();
+  return base.toUpperCase();
+};
+
 export const MixtapePlayer = () => {
   const audioRef = useRef(null);
   const [index, setIndex] = useState(0);
   const [playing, setPlaying] = useState(false);
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
+  const [volume, setVolume] = useState(4);
   const [expanded, setExpanded] = useState(false);
 
   const hasTracks = TRACKS.length > 0;
@@ -84,6 +93,12 @@ export const MixtapePlayer = () => {
     }
   }, [playing, track]);
 
+  useEffect(() => {
+    const audio = audioRef.current;
+    if (!audio) return;
+    audio.volume = volume / VOL_STEPS;
+  }, [volume]);
+
   const toggle = () => {
     if (!hasTracks) return;
     setPlaying((p) => !p);
@@ -109,112 +124,168 @@ export const MixtapePlayer = () => {
     setCurrentTime(value);
   };
 
+  const toggleExpanded = () => setExpanded((v) => !v);
+
   return (
     <div
-      className={[
-        "mixtape-dock",
-        expanded ? "mixtape-dock--open" : "",
-        hasTracks ? "" : "mixtape-dock--empty",
-      ]
+      className={["deck", expanded ? "deck--expanded" : "deck--collapsed"]
         .filter(Boolean)
         .join(" ")}
+      role="region"
+      aria-label="Music player"
     >
-      <audio ref={audioRef} preload="metadata" />
-
-      <div className="mixtape-dock__bar">
-        <button
-          type="button"
-          className="mixtape-icon-btn mixtape-icon-btn--primary"
-          onClick={toggle}
-          disabled={!hasTracks}
-          aria-label={playing ? "Pause" : "Play"}
-        >
-          {playing ? <Pause size={14} /> : <Play size={14} />}
-        </button>
-
-        <p className="mixtape-dock__title">
-          currently swinging to:{" "}
-          <strong>{track ? track.title : "— no cassette loaded —"}</strong>
-        </p>
+      <div
+        className={[
+          "deck__device",
+          hasTracks ? "" : "deck__device--empty",
+        ]
+          .filter(Boolean)
+          .join(" ")}
+      >
+        <audio ref={audioRef} preload="metadata" />
 
         <button
           type="button"
-          className="mixtape-icon-btn"
-          onClick={() => setExpanded((v) => !v)}
+          className="deck__bezel"
+          onClick={toggleExpanded}
           aria-expanded={expanded}
-          aria-label={expanded ? "Collapse player" : "Expand player"}
+          aria-controls="walkman-panel"
+          aria-label={expanded ? "Collapse Walkman" : "Expand Walkman"}
         >
-          {expanded ? <ChevronDown size={16} /> : <ChevronUp size={16} />}
-        </button>
-      </div>
-
-      <div className="mixtape-dock__expanded" aria-hidden={!expanded}>
-        <div className="mixtape-dock__expanded-inner space-y-3">
-          <div className="flex items-center gap-2">
-            <button
-              type="button"
-              onClick={prev}
-              disabled={!hasTracks}
-              className="mixtape-icon-btn"
-              aria-label="Previous track"
-            >
-              <SkipBack size={14} />
-            </button>
-            <button
-              type="button"
-              onClick={toggle}
-              disabled={!hasTracks}
-              className="mixtape-icon-btn mixtape-icon-btn--primary"
-              aria-label={playing ? "Pause" : "Play"}
-            >
-              {playing ? <Pause size={14} /> : <Play size={14} />}
-            </button>
-            <button
-              type="button"
-              onClick={next}
-              disabled={!hasTracks}
-              className="mixtape-icon-btn"
-              aria-label="Next track"
-            >
-              <SkipForward size={14} />
-            </button>
-            <span className="ml-auto font-mono text-[10px] text-dim">
-              {formatTime(currentTime)} / {formatTime(duration)}
-            </span>
-          </div>
-
-          <label className="block">
-            <span className="sr-only">Scrubber</span>
-            <input
-              type="range"
-              min={0}
-              max={duration || 0}
-              step={0.1}
-              value={Math.min(currentTime, duration || 0)}
-              onChange={onScrub}
-              disabled={!hasTracks}
-              className="mixtape-scrubber w-full accent-[#E62429] disabled:opacity-40"
+          <span className="inline-flex min-w-0 items-center gap-1.5">
+            <span
+              className={[
+                "deck__bezel-dot",
+                playing ? "deck__bezel-dot--live" : "",
+              ]
+                .filter(Boolean)
+                .join(" ")}
             />
-          </label>
+            <span className="deck__bezel-brand">walkman</span>
+            {!expanded && (
+              <span className="deck__bezel-now">
+                <span className="deck__bezel-glyph" aria-hidden="true">
+                  {playing ? "Ⅱ" : "▶"}
+                </span>
+                <span className="deck__bezel-track">
+                  {hasTracks ? shortTitle(track?.title) : "EMPTY"}
+                </span>
+              </span>
+            )}
+          </span>
+          <span className="deck__bezel-count">
+            {hasTracks ? `${index + 1}/${TRACKS.length}` : "empty"}
+          </span>
+        </button>
 
-          {!hasTracks && (
-            <p className="font-mono text-[10px] text-dim">
-              drop CC0 / licensed tracks in /public/audio — see README there
-            </p>
-          )}
-        </div>
-      </div>
+        {expanded && (
+          <div className="deck__screen" id="walkman-panel">
+            <div className="deck__status-row">
+              <button
+                type="button"
+                className="deck__transport"
+                onClick={toggle}
+                disabled={!hasTracks}
+                aria-label={playing ? "Pause" : "Play"}
+              >
+                {playing ? "[Ⅱ]" : "[▶]"}
+              </button>
 
-      <div className="mixtape-dock__progress" aria-hidden="true">
-        <div
-          className={[
-            "mixtape-dock__progress-fill",
-            playing ? "mixtape-dock__progress-fill--playing" : "",
-          ]
-            .filter(Boolean)
-            .join(" ")}
-          style={{ width: `${progress}%` }}
-        />
+              <div className="deck__copy">
+                {playing ? (
+                  <>
+                    <p className="deck__label">currently playing:</p>
+                    <p className="deck__track">
+                      {track ? track.title : "— no cassette —"}
+                    </p>
+                  </>
+                ) : (
+                  <>
+                    <p className="deck__label">status</p>
+                    <p className="deck__paused">PLAYER PAUSED</p>
+                    {track && (
+                      <p className="deck__track" style={{ marginTop: "0.2rem" }}>
+                        {track.title}
+                      </p>
+                    )}
+                  </>
+                )}
+              </div>
+            </div>
+
+            <div className="deck__scrub">
+              <div className="deck__scrub-rail">
+                <div
+                  className="deck__scrub-fill"
+                  style={{ width: `${progress}%` }}
+                />
+              </div>
+              <input
+                type="range"
+                className="deck__scrub-input"
+                min={0}
+                max={duration || 0}
+                step={0.1}
+                value={Math.min(currentTime, duration || 0)}
+                onChange={onScrub}
+                disabled={!hasTracks}
+                aria-label="Seek"
+              />
+            </div>
+
+            <div className="deck__times">
+              <span>{formatTime(currentTime)}</span>
+              <span>{formatTime(duration)}</span>
+            </div>
+
+            <div className="deck__footer-row">
+              <div className="deck__vol" aria-label="Volume">
+                <span>VOL</span>
+                <div className="deck__vol-bars">
+                  {Array.from({ length: VOL_STEPS }, (_, i) => {
+                    const level = i + 1;
+                    return (
+                      <button
+                        key={level}
+                        type="button"
+                        className={[
+                          "deck__vol-bar",
+                          level <= volume ? "deck__vol-bar--on" : "",
+                        ]
+                          .filter(Boolean)
+                          .join(" ")}
+                        style={{ height: `${40 + level * 10}%` }}
+                        onClick={() => setVolume(level)}
+                        aria-label={`Volume ${level} of ${VOL_STEPS}`}
+                      />
+                    );
+                  })}
+                </div>
+              </div>
+
+              <div className="deck__skip">
+                <button
+                  type="button"
+                  className="deck__skip-btn"
+                  onClick={prev}
+                  disabled={!hasTracks}
+                  aria-label="Previous track"
+                >
+                  ◀
+                </button>
+                <button
+                  type="button"
+                  className="deck__skip-btn"
+                  onClick={next}
+                  disabled={!hasTracks}
+                  aria-label="Next track"
+                >
+                  ▶
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );

@@ -3,7 +3,7 @@ import { site } from "@/data/site";
 
 export const NotFound = () => {
   return (
-    <div className="system-grain flex min-h-screen items-center justify-center bg-bg px-4 pb-12 text-fg">
+    <div className="system-grain flex min-h-screen items-center justify-center bg-bg px-4 pb-8 text-fg">
       <div className="panel accent-red w-full max-w-md">
         <div className="panel-header">
           <span>ERROR 404</span>
