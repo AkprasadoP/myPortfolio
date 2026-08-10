@@ -52,7 +52,7 @@ The contact form uses [Web3Forms](https://web3forms.com). The access key is load
 |-----------|------|--------|
 | `WebShooterGame` | `src/components/WebShooterGame.jsx` | GADGETS panel |
 | `ScannerFeed` | `src/components/ScannerFeed.jsx` | FIELD TESTS panel |
-| `MixtapePlayer` | `src/components/MixtapePlayer.jsx` | Footer (`/public/audio` for CC0 tracks) |
+| `MixtapePlayer` | `src/components/MixtapePlayer.jsx` | Persistent sticky dock (App root; `/public/audio` for CC0 tracks) |
 | `WebStrand` + `useWebStrand` | `src/components/WebStrand.jsx`, `src/hooks/useWebStrand.js` | Global scroll accent |
 
 ## File tree (interactive pieces)

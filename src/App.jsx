@@ -2,12 +2,13 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { Home } from "./pages/Home";
 import { NotFound } from "./pages/NotFound";
 import { Toaster } from "@/components/ui/toaster";
-import { CustomCursor } from "@/components/ui/CustomCursor";
+import { WebTrail } from "@/components/ui/WebTrail";
+import { MixtapePlayer } from "@/components/MixtapePlayer";
 
 function App() {
   return (
     <>
-      <CustomCursor />
+      <WebTrail />
       <Toaster />
       <BrowserRouter>
         <Routes>
@@ -15,6 +16,7 @@ function App() {
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
+      <MixtapePlayer />
     </>
   );
 }

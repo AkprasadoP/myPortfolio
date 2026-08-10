@@ -1,0 +1,113 @@
+.mixtape-dock {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 45;
+  background: var(--bg-panel, #121214);
+  border-top: 1px solid var(--spidey-red, #e62429);
+  font-family: var(--font-mono, "Courier New", monospace);
+  color: var(--fg, #f2f2f0);
+}
+
+.mixtape-dock--empty {
+  border-top-color: var(--border, #2a2a2e);
+  opacity: 0.85;
+}
+
+.mixtape-dock__bar {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  height: 48px;
+  padding: 0 0.75rem;
+}
+
+.mixtape-dock__title {
+  min-width: 0;
+  flex: 1;
+  font-size: 11px;
+  letter-spacing: 0.04em;
+  color: var(--fg-muted, #8a8a8e);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.mixtape-dock__title strong {
+  color: var(--cream, #f2f2f0);
+  font-weight: 400;
+}
+
+.mixtape-dock__progress {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 2px;
+  background: rgba(42, 42, 46, 0.9);
+  overflow: hidden;
+}
+
+.mixtape-dock__progress-fill {
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    var(--spidey-red, #e62429),
+    var(--spidey-blue, #1f75fe)
+  );
+  transition: width 80ms linear;
+}
+
+.mixtape-dock__progress-fill--playing {
+  box-shadow: 0 0 6px rgba(230, 36, 41, 0.45);
+}
+
+.mixtape-dock__expanded {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 200ms ease;
+  border-top: 1px solid transparent;
+}
+
+.mixtape-dock--open .mixtape-dock__expanded {
+  max-height: 220px;
+  border-top-color: var(--border, #2a2a2e);
+}
+
+.mixtape-dock__expanded-inner {
+  padding: 0.75rem 0.85rem 0.9rem;
+}
+
+.mixtape-icon-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border: 1px solid var(--border-strong, #3a3a40);
+  background: #16161a;
+  color: var(--fg, #f2f2f0);
+  flex-shrink: 0;
+}
+
+.mixtape-icon-btn:hover:not(:disabled) {
+  border-color: var(--spidey-red, #e62429);
+  color: #ff6b6f;
+}
+
+.mixtape-icon-btn:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+.mixtape-icon-btn--primary {
+  border-color: var(--spidey-red, #e62429);
+  color: #ff6b6f;
+}
+
+@media (max-width: 639px) {
+  .mixtape-dock__title {
+    display: none;
+  }
+}
