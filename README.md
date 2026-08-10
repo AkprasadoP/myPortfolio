@@ -1,104 +1,74 @@
-# 🚀 Ashish Prasad – Developer Portfolio
+# Ashish Prasad — Personal System
 
-<div align="center">
-  <br />
-  <a href="https://akprasad-portfolio.vercel.app/" target="_blank">
-    <img src="./public/projects/profile.jpeg" alt="Ashish Prasad Portfolio Banner" width="160" style="border-radius: 50%; border: 4px solid #6366f1;" />
-  </a>
-  <br />
-  <div>
-    <img src="https://img.shields.io/badge/-React-61DAFB?style=for-the-badge&logo=react&logoColor=black" alt="React" />
-    <img src="https://img.shields.io/badge/-TailwindCSS-06B6D4?style=for-the-badge&logo=tailwindcss" alt="Tailwind CSS" />
-    <img src="https://img.shields.io/badge/-Vite-646CFF?style=for-the-badge&logo=vite&logoColor=white" alt="Vite" />
-    <img src="https://img.shields.io/badge/-Lucide Icons-FD4D4D?style=for-the-badge&logo=lucide" alt="Lucide Icons" />
-<!--     <img src="https://img.shields.io/badge/-Deployed-Vercel-black?style=for-the-badge&logo=vercel" alt="Vercel" /> -->
-  </div>
-  <h3 align="center">Explore my portfolio website — Projects, Skills, and a way to connect with me</h3>
-<div align="center">
-  👉 Explore my live portfolio: 
-  <a href="https://akprasad-portfolio.vercel.app/" target="_blank"><b>Click Here</b></a>
-</div>
+Personal workbench / portfolio for [Ashish Prasad](https://akprasad-portfolio.vercel.app/).
 
-  <br />
-</div>
+Retro personal-computer interface: notes, stack inventory, experiments, project directory, field log, and contact channel.
 
----
+## Stack
 
-## 📌 About
+- React 18 + Vite
+- Tailwind CSS v4
+- Framer Motion (light use)
+- Radix Toast + Web3Forms
+- Deployed on Vercel
 
-I’m Ashish Prasad, a full-stack developer pursuing B.Tech in Computer Science from IIITDM Jabalpur. I specialize in building modern, scalable, and responsive web apps. This portfolio showcases my featured projects, development skills, and includes a working contact form for freelance or job opportunities.
-
----
-
-## ⚙️ Tech Stack
-
-- **React + Vite** – Lightning-fast frontend development
-- **TailwindCSS** – For beautiful, utility-first styling
-- **Lucide Icons** – Lightweight, customizable icon set
-- **Radix UI** – Accessible UI component primitives
-- **Web3Forms + Toast** – For form handling and UX notifications
-- **Vercel** – Deployed and hosted on Vercel
-- **GitHub Actions (optional)** – For CI/CD
-
----
-
-## ⚡️ Features
-
-- 🌑 **Light/Dark Mode Toggle**
-  Save theme preference in local storage with beautiful transitions
-
-- 💫 **Animated Backgrounds**
-  Stars, meteors, scroll effects, and glowing UI elements
-
-- 📱 **Responsive Navigation**
-  Desktop and mobile menus with glassmorphism
-
-- 👨‍💻 **Hero & About Sections**
-  Showcase who you are with smooth intro animations and buttons
-
-- 📊 **Skills Grid**
-  Filterable progress bars and categories with animated width
-
-- 🖼️ **Projects Showcase**
-  Display screenshots, tech stacks, and GitHub/demo links
-
-- 📩 **Contact Section**
-  Social icons + responsive contact form with toast notifications
-
-- 🚀 **One-Click Deployment**
-  Easily host your site with Vercel and GitHub
-
----
-
-## 👌 Quick Start
-
-### Prerequisites
-
-- [Node.js](https://nodejs.org/)
-- [Git](https://git-scm.com/)
-
-### Clone and Run
+## Quick start
 
 ```bash
 git clone https://github.com/AkprasadoP/myPortfolio.git
 cd myPortfolio
+cp .env.example .env
+# add your Web3Forms access key to .env
 npm install
 npm run dev
 ```
 
-Your app will be available at: [http://localhost:5173](http://localhost:5173)
+Dev server: http://localhost:5173
 
----
+## Scripts
 
-## 🔗 Useful Links
+- `npm run dev` — local development
+- `npm run build` — production build
+- `npm run preview` — preview production build
+- `npm run lint` — ESLint
 
-- [React Documentation](https://reactjs.org/)
-- [Tailwind CSS Docs](https://tailwindcss.com/)
-- [Lucide Icons](https://lucide.dev/)
-- [Radix UI](https://www.radix-ui.com/)
-- [Vite](https://vitejs.dev/)
-- [Vercel](https://vercel.com/)
+## Contact form
 
----
+The contact form uses [Web3Forms](https://web3forms.com). The access key is loaded from `VITE_WEB3FORMS_ACCESS_KEY` (see `.env.example`). Restrict the key to your domain in the Web3Forms dashboard. Set the same variable in Vercel for production.
 
-Let me know if you'd like me to generate a version with your actual GitHub repo, YouTube URL, or a banner image suggestion!
+## Sections
+
+1. HOME — identity + polaroid card  
+2. NOTES — about / notebook entry  
+3. GADGETS — tools inventory + web-shooter mini-game  
+4. FIELD TESTS — current interests + scanner feed  
+5. PROJECTS — directory + file readout  
+6. EXPERIENCE — field log  
+7. CONTACT — channel + terminal compose  
+
+## Interactive extras
+
+| Component | Path | Where |
+|-----------|------|--------|
+| `WebShooterGame` | `src/components/WebShooterGame.jsx` | GADGETS panel |
+| `ScannerFeed` | `src/components/ScannerFeed.jsx` | FIELD TESTS panel |
+| `MixtapePlayer` | `src/components/MixtapePlayer.jsx` | Footer (`/public/audio` for CC0 tracks) |
+| `WebStrand` + `useWebStrand` | `src/components/WebStrand.jsx`, `src/hooks/useWebStrand.js` | Global scroll accent |
+
+## File tree (interactive pieces)
+
+```
+src/
+  components/
+    WebShooterGame.jsx
+    ScannerFeed.jsx
+    ScannerFeed.css
+    MixtapePlayer.jsx
+    WebStrand.jsx
+    WebStrand.css
+  hooks/
+    useWebStrand.js
+public/
+  audio/
+    README.md
+```

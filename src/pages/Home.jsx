@@ -1,50 +1,44 @@
-import { Sidebar } from "../components/Sidebar";
-import { ThemeToggle } from "../components/ThemeToggle";
-import { StarBackground } from "@/components/StarBackground";
+import { SystemChrome } from "../components/SystemChrome";
 import { HeroSection } from "../components/HeroSection";
 import { AboutSection } from "../components/AboutSection";
 import { SkillsSection } from "../components/SkillsSection";
+import { ExperimentsSection } from "../components/ExperimentsSection";
 import { ExperienceSection } from "../components/ExperienceSection";
 import { ProjectsSection } from "../components/ProjectsSection";
 import { ContactSection } from "../components/ContactSection";
 import { Footer } from "../components/Footer";
+import { WebStrand } from "../components/WebStrand";
+
+const SectionRule = () => <hr className="section-rule" />;
 
 export const Home = () => {
   return (
-    <div className="flex h-screen w-full bg-[#09090b] text-zinc-100 overflow-hidden font-sans">
-      {/* Background Effects */}
-      <div className="fixed inset-0 z-0 pointer-events-none">
-        <StarBackground />
-      </div>
+    <div className="system-grain flex h-screen w-full flex-col overflow-hidden bg-bg text-fg">
+      <SystemChrome />
 
-      {/* Left Sidebar Pane */}
-      <div className="relative z-10">
-        <Sidebar />
-      </div>
-
-      {/* Right Content Pane */}
-      <main 
-        id="main-scroll-area" 
-        className="flex-1 h-screen overflow-y-auto overflow-x-hidden relative scroll-smooth custom-scrollbar z-10"
+      <main
+        id="main-scroll-area"
+        className="relative z-10 flex-1 overflow-y-auto overflow-x-hidden scroll-smooth"
       >
-        <div className="max-w-5xl mx-auto px-4 sm:px-8 py-12 flex flex-col gap-24 relative z-10 pb-32">
-          {/* Note: I removed ThemeToggle because we are forcing Dark Mode in this Antigravity design. */}
-          <HeroSection />
-          
-          <div className="flex flex-col gap-32">
-            <AboutSection />
-            <SkillsSection />
-            <ExperienceSection />
-            <ProjectsSection />
-            <ContactSection />
-          </div>
+        <WebStrand />
 
+        <div className="relative z-10 mx-auto flex w-full max-w-5xl flex-col gap-8 px-3 py-6 sm:gap-10 sm:px-5 sm:py-8 md:px-8">
+          <HeroSection />
+          <SectionRule />
+          <AboutSection />
+          <SectionRule />
+          <SkillsSection />
+          <SectionRule />
+          <ExperimentsSection />
+          <SectionRule />
+          <ProjectsSection />
+          <SectionRule />
+          <ExperienceSection />
+          <SectionRule />
+          <ContactSection />
         </div>
-        
-        {/* Footer */}
-        <div className="relative z-10">
-          <Footer />
-        </div>
+
+        <Footer />
       </main>
     </div>
   );
