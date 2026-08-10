@@ -1,12 +1,33 @@
+import { site } from "@/data/site";
+import { MixtapePlayer } from "@/components/MixtapePlayer";
+
 export const Footer = () => {
   const currentYear = new Date().getFullYear();
 
   return (
-    <footer className="w-full py-8 border-t border-white/5 flex justify-center mt-auto">
-      <div className="flex items-center gap-3 text-xs text-zinc-600">
-        <span>&copy; {currentYear} Ashish Prasad</span>
-        <span className="text-zinc-800">&middot;</span>
-        <span>Built with React & Vite</span>
+    <footer className="mt-4 border-t border-line bg-panel/80">
+      <div className="mx-auto flex max-w-5xl flex-col gap-4 px-3 py-5 sm:px-5 md:px-8">
+        <MixtapePlayer />
+
+        <div className="flex flex-col gap-2 font-mono text-[11px] text-dim">
+          <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+            <p>
+              © {currentYear} {site.name}
+              <span className="mx-2 text-line-strong">·</span>
+              personal system / workbench
+            </p>
+            <p>
+              visitors: 001337
+              <span className="mx-2 text-line-strong">·</span>
+              build {site.build}
+            </p>
+          </div>
+          <p>
+            alter ego
+            <span className="mx-2 text-line-strong">—</span>
+            <span className="text-spidey-blue">full-stack</span>
+          </p>
+        </div>
       </div>
     </footer>
   );
