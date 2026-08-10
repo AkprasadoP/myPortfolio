@@ -1,0 +1,18 @@
+@keyframes scanner-pulse {
+  from {
+    transform: scaleY(0.3);
+    opacity: 0.4;
+  }
+  to {
+    transform: scaleY(1);
+    opacity: 1;
+  }
+}
+
+.scanner-bar {
+  display: inline-block;
+  min-height: 20%;
+  height: 100%;
+  transform-origin: bottom;
+  animation: scanner-pulse 0.75s ease-in-out infinite alternate;
+}
