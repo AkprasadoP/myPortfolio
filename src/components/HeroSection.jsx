@@ -1,160 +1,122 @@
-import { ArrowRight, MapPin, Sparkles } from "lucide-react";
-import { TypeAnimation } from "react-type-animation";
 import { motion } from "framer-motion";
+import { site } from "@/data/site";
+
+const scrollTo = (id) => {
+  const element = document.getElementById(id);
+  const main = document.getElementById("main-scroll-area");
+  if (element && main) {
+    main.scrollTo({ top: element.offsetTop - 8, behavior: "smooth" });
+  }
+};
 
 export const HeroSection = () => {
   return (
     <section
-      id="hero"
-      className="relative min-h-[85vh] flex flex-col justify-center items-start pt-20"
+      id="home"
+      className="hero-web-bg relative scroll-mt-4 pt-4 sm:pt-8 lg:pb-28"
     >
-      <div className="w-full max-w-4xl px-4 sm:px-6 z-10">
-
-        {/* Split Layout: Text Left, Photo Right */}
-        <div className="flex flex-col-reverse lg:flex-row items-center lg:items-start gap-12 lg:gap-16">
-
-          {/* Left: Text Content */}
-          <div className="flex-1 text-center lg:text-left">
-
-            {/* Availability Badge */}
-            <motion.div
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5 }}
-              className="mb-6 inline-flex items-center gap-2 px-4 py-2 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-sm font-medium"
-            >
-              <span className="relative flex h-2 w-2">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-                <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
-              </span>
-              Available for opportunities
-            </motion.div>
-
-            {/* Name */}
-            <motion.h1
-              initial={{ opacity: 0, filter: "blur(10px)" }}
-              animate={{ opacity: 1, filter: "blur(0px)" }}
-              transition={{ duration: 0.8, delay: 0.2 }}
-              className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight text-white leading-[1.1]"
-            >
-              Ashish{" "}
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400">
-                Prasad
-              </span>
-            </motion.h1>
-
-            {/* Animated Roles */}
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.8, delay: 0.5 }}
-              className="mt-4 text-xl sm:text-2xl lg:text-3xl text-zinc-400 font-medium"
-            >
-              <TypeAnimation
-                sequence={[
-                  "Full-Stack Developer",
-                  2500,
-                  "AI Engineer",
-                  2500,
-                  "Problem Solver",
-                  2500,
-                ]}
-                wrapper="span"
-                speed={50}
-                className="text-zinc-200"
-                repeat={Infinity}
-              />
-            </motion.div>
-
-            {/* Location */}
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.6, delay: 0.7 }}
-              className="mt-3 flex items-center gap-2 text-zinc-500 text-sm justify-center lg:justify-start"
-            >
-              <MapPin size={14} />
-              <span>India &middot; IIIT Jabalpur</span>
-            </motion.div>
-
-            {/* Description */}
-            <motion.p
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.8 }}
-              className="mt-6 text-lg text-zinc-400 leading-relaxed max-w-xl mx-auto lg:mx-0"
-            >
-              I build intelligent, production-grade applications — from AI-powered platforms to scalable web systems. Passionate about turning complex problems into elegant solutions.
-            </motion.p>
-
-            {/* CTA Buttons */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 1 }}
-              className="mt-8 flex flex-wrap gap-4 justify-center lg:justify-start"
-            >
-              <a
-                href="#projects"
-                onClick={(e) => {
-                  e.preventDefault();
-                  document.getElementById("main-scroll-area").scrollTo({
-                    top: document.getElementById("projects").offsetTop - 40,
-                    behavior: "smooth",
-                  });
-                }}
-                className="group inline-flex items-center gap-2 px-7 py-3.5 rounded-full bg-white text-black font-semibold hover:bg-zinc-200 transition-all hover:shadow-lg hover:shadow-white/10"
-              >
-                View My Work
-                <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-              </a>
-              <a
-                href="#contact"
-                onClick={(e) => {
-                  e.preventDefault();
-                  document.getElementById("main-scroll-area").scrollTo({
-                    top: document.getElementById("contact").offsetTop - 40,
-                    behavior: "smooth",
-                  });
-                }}
-                className="inline-flex items-center gap-2 px-7 py-3.5 rounded-full border border-white/15 text-white font-medium hover:bg-white/5 transition-all"
-              >
-                Get In Touch
-              </a>
-            </motion.div>
+      {/* Asymmetric desk layout — objects, not a balanced card pair */}
+      <div className="relative flex flex-col gap-6 lg:block lg:min-h-[28rem]">
+        <motion.div
+          initial={{ opacity: 0, y: 8 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.45 }}
+          className="panel accent-red lg:absolute lg:left-0 lg:top-0 lg:z-10 lg:w-[58%]"
+        >
+          <div className="panel-header">
+            <span>dossier.txt</span>
+            <span>read-only</span>
           </div>
 
-          {/* Right: Profile Photo */}
-          <motion.div
-            initial={{ opacity: 0, scale: 0.8 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 1, delay: 0.3, ease: "easeOut" }}
-            className="relative flex-shrink-0"
-          >
-            {/* Glow Ring */}
-            <div className="absolute -inset-4 rounded-full bg-gradient-to-r from-blue-500/20 via-purple-500/20 to-pink-500/20 blur-xl opacity-60 animate-pulse-subtle" />
-
-            {/* Photo Container */}
-            <div className="relative w-48 h-48 sm:w-56 sm:h-56 lg:w-64 lg:h-64 rounded-full overflow-hidden border-2 border-white/10 shadow-2xl shadow-purple-500/10">
-              <div className="absolute inset-0 bg-gradient-to-br from-blue-500/10 via-transparent to-purple-500/10 z-10" />
-              <img
-                src="/projects/profile.jpeg"
-                alt="Ashish Prasad"
-                className="w-full h-full object-cover"
-              />
+          <div className="space-y-5 p-5 sm:p-7">
+            <div className="flex flex-wrap items-center gap-3 text-[10px] font-mono tracking-[0.12em] text-dim">
+              <span>
+                SYSTEM STATUS: <span className="text-crt">{site.status}</span>
+              </span>
+              <span className="text-line-strong">/</span>
+              <span>LAST UPDATED: {site.lastUpdated}</span>
+              <span className="text-line-strong">/</span>
+              <span>BUILD: {site.build}</span>
             </div>
 
-            {/* Decorative Badge */}
-            <motion.div
-              initial={{ opacity: 0, scale: 0 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.5, delay: 1.2 }}
-              className="absolute -bottom-2 -right-2 p-2.5 rounded-full bg-[#09090b] border border-white/10 shadow-lg"
-            >
-              <Sparkles className="w-5 h-5 text-purple-400" />
-            </motion.div>
-          </motion.div>
-        </div>
+            <div>
+              <p className="eyebrow">PERSONAL SYSTEM</p>
+              <h2 className="mt-2 font-display text-4xl tracking-wide text-cream sm:text-5xl">
+                {site.name.toUpperCase()}
+              </h2>
+              <p className="mt-3 font-mono text-sm text-spidey-red">
+                {site.role}
+              </p>
+              <p className="mt-1 font-mono text-xs tracking-[0.08em] text-muted">
+                {site.focus}
+              </p>
+              <p className="mt-2 font-mono text-xs text-spidey-blue">
+                {site.currentRole}
+              </p>
+            </div>
+
+            <p className="max-w-xl border-l-2 border-spidey-red/50 pl-3 font-body text-[15px] leading-relaxed text-fg italic">
+              &ldquo;{site.tagline}&rdquo;
+            </p>
+
+            <p className="font-mono text-xs text-dim">{site.location}</p>
+
+            <div className="flex flex-wrap gap-2 pt-1">
+              <button
+                type="button"
+                onClick={() => scrollTo("projects")}
+                className="btn-system btn-system-primary"
+              >
+                [ projects ]
+              </button>
+              <button
+                type="button"
+                onClick={() => scrollTo("notes")}
+                className="btn-system"
+              >
+                [ notes ]
+              </button>
+            </div>
+          </div>
+        </motion.div>
+
+        <motion.aside
+          initial={{ opacity: 0, y: 8 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.45, delay: 0.08 }}
+          className="panel accent-blue relative mx-auto w-full max-w-sm lg:absolute lg:right-0 lg:top-14 lg:z-[5] lg:mx-0 lg:w-[38%]"
+        >
+          <div className="panel-header">
+            <span>id_card.jpg</span>
+            <span>local</span>
+          </div>
+
+          <div className="relative p-4 sm:px-4 sm:pb-4 sm:pt-5">
+            <div className="mx-auto max-w-[180px] rotate-[-2deg] border border-line-strong bg-[#d9d0bc] p-2 shadow-[3px_4px_0_rgba(0,0,0,0.35)] sm:max-w-[190px]">
+              <div className="aspect-[4/5] overflow-hidden border border-[#b8ae98] bg-[#cfc5b0]">
+                <img
+                  src={site.profileImage}
+                  alt={site.name}
+                  className="h-full w-full object-cover grayscale-[15%] contrast-[1.05]"
+                />
+              </div>
+              <p className="mt-2 text-center font-mono text-[11px] text-[#3f382c]">
+                ashish / 2026
+              </p>
+            </div>
+
+            <div className="hand-note absolute -right-1 top-10 hidden max-w-[120px] space-y-1 lg:block">
+              <p>← that&apos;s me, unfortunately</p>
+              <p className="text-[10px]">[status: friendly neighborhood dev]</p>
+            </div>
+
+            <div className="mt-4 space-y-1 border-t border-dotted border-line-strong pt-3 font-mono text-[11px] text-muted">
+              <p className="text-cream">{site.currentRole}</p>
+              <p>{site.location}</p>
+              <p className="text-dim">IIIT Jabalpur · class of 2026</p>
+            </div>
+          </div>
+        </motion.aside>
       </div>
     </section>
   );
