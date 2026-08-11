@@ -293,7 +293,7 @@ export const LeetCodeSection = () => {
 
   return (
     <section id="judge" ref={sectionRef} className="scroll-mt-4">
-      <ComicReveal burst="AC!" className="judge-panel">
+      <ComicReveal className="judge-panel">
         <div className="judge-header">
           <span className="judge-header__led" />
           <span>judge_terminal.exe</span>

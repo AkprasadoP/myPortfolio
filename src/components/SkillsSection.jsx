@@ -1,6 +1,6 @@
-import { motion } from "framer-motion";
 import { stack } from "@/data/site";
 import { WebShooterGame } from "@/components/WebShooterGame";
+import { ComicReveal } from "@/components/ui/ComicReveal";
 
 const groups = [
   { key: "languages", label: "LANGUAGES", items: stack.languages },
@@ -13,22 +13,16 @@ const groups = [
 export const SkillsSection = () => {
   return (
     <section id="stack" className="scroll-mt-4">
-      <motion.div
-        initial={{ opacity: 0, y: 8 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, margin: "-40px" }}
-        transition={{ duration: 0.4 }}
-        className="panel accent-red"
-      >
+      <ComicReveal className="panel comic-frame accent-red">
         <div className="panel-header">
           <span>GADGETS / STACK</span>
-          <span>system inventory</span>
+          <span>web-lab inventory</span>
         </div>
 
         <div className="p-5 sm:p-7">
           <p className="mb-6 max-w-2xl font-mono text-xs leading-relaxed text-dim">
             Configuration readout — what I reach for when building. No skill
-            meters. No progress bars.
+            meters. No progress bars. Just the gadgets on the belt.
           </p>
 
           <div className="space-y-0 border border-line bg-inset">
@@ -53,7 +47,7 @@ export const SkillsSection = () => {
 
           <WebShooterGame />
         </div>
-      </motion.div>
+      </ComicReveal>
     </section>
   );
 };

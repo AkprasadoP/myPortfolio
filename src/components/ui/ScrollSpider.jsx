@@ -1,11 +1,10 @@
 import { useEffect, useRef, useState } from "react";
 import { navItems } from "@/data/site";
+import { SpideyMaskMini } from "@/components/ui/SpideyEmblem";
 
 /**
- * A spider that crawls down the left edge of the page, its position tied to
- * scroll progress inside #main-scroll-area. Each section leaves a lit
- * "lantern" ledge behind it as the spider passes — a progress rail of beacons.
- * Hidden on touch / reduced-motion.
+ * Spidey mask that crawls down the left edge with scroll progress.
+ * Section lanterns light as he passes. Hidden on touch / reduced-motion.
  */
 export const ScrollSpider = () => {
   const [enabled, setEnabled] = useState(true);
@@ -16,9 +15,7 @@ export const ScrollSpider = () => {
   useEffect(() => {
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)");
     const setFromQuery = () => {
-      const fine = window.matchMedia(
-        "(hover: hover) and (pointer: fine)"
-      );
+      const fine = window.matchMedia("(hover: hover) and (pointer: fine)");
       setEnabled(!reduced.matches && fine.matches);
     };
     setFromQuery();
@@ -77,9 +74,8 @@ export const ScrollSpider = () => {
   return (
     <div
       aria-hidden="true"
-      className="pointer-events-none fixed bottom-0 left-1.5 top-0 z-[30] hidden md:block"
+      className="pointer-events-none fixed bottom-0 left-1 top-0 z-[30] hidden md:block"
     >
-      {/* section lantern ledges */}
       {markers.map((m) => {
         const lit = progress >= m.yPct / 100;
         return (
@@ -93,32 +89,12 @@ export const ScrollSpider = () => {
       })}
 
       <div className="scroll-spider-wrap" style={{ top }}>
-        <div className={progress > 0.98 ? "scale-x-[-1]" : ""}>
-          <svg
-            width="22"
-            height="20"
-            viewBox="0 0 40 36"
-            fill="none"
-          >
-            <ellipse
-              cx="20"
-              cy="18"
-              rx="6"
-              ry="9"
-              fill="#0e0e10"
-              stroke="#e62429"
-              strokeWidth="1.6"
-            />
-            <circle cx="20" cy="10" r="3" fill="#e62429" />
-            <g stroke="#0a0a0c" strokeWidth="2" strokeLinecap="round">
-              <path className="spider-leg spider-leg--a" d="M15 12L6 6" />
-              <path className="spider-leg spider-leg--b" d="M15 14L5 12" />
-              <path className="spider-leg spider-leg--c" d="M15 17L6 19" />
-              <path className="spider-leg spider-leg--d" d="M25 12L34 6" />
-              <path className="spider-leg spider-leg--e" d="M25 14L35 12" />
-              <path className="spider-leg spider-leg--f" d="M25 17L34 19" />
-            </g>
-          </svg>
+        <div
+          className={`drop-shadow-[0_2px_8px_rgba(230,36,41,0.5)] ${
+            progress > 0.98 ? "scale-x-[-1]" : ""
+          }`}
+        >
+          <SpideyMaskMini size={26} />
         </div>
       </div>
     </div>

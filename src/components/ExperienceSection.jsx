@@ -13,7 +13,7 @@ export const ExperienceSection = () => {
 
   return (
     <section id="experience" className="scroll-mt-4">
-      <ComicReveal burst="BONK!" className="panel comic-frame accent-blue">
+      <ComicReveal className="panel comic-frame accent-blue">
         <div className="panel-header">
           <span>PATROL LOG</span>
           <span>{experiences.length} entries · verified</span>

@@ -2,10 +2,35 @@ import { useEffect, useState } from "react";
 import { Menu, X } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { navItems, site } from "@/data/site";
+import { SpideyEmblem } from "@/components/ui/SpideyEmblem";
+import { WebFluidMeter } from "@/components/ui/WebFluidMeter";
+import { webSwingTo } from "@/lib/swing";
+
+const PATROL_KEY = "patrol-mode";
 
 export const SystemChrome = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [activeSection, setActiveSection] = useState("home");
+  const [patrol, setPatrol] = useState(false);
+
+  useEffect(() => {
+    const stored = window.localStorage.getItem(PATROL_KEY) === "on";
+    setPatrol(stored);
+    document.documentElement.setAttribute(
+      "data-mode",
+      stored ? "patrol" : "standard"
+    );
+  }, []);
+
+  const togglePatrol = () => {
+    const next = !patrol;
+    setPatrol(next);
+    document.documentElement.setAttribute(
+      "data-mode",
+      next ? "patrol" : "standard"
+    );
+    window.localStorage.setItem(PATROL_KEY, next ? "on" : "off");
+  };
 
   useEffect(() => {
     const root = document.getElementById("main-scroll-area");
@@ -35,6 +60,7 @@ export const SystemChrome = () => {
   const scrollToSection = (e, href) => {
     e.preventDefault();
     const id = href.slice(1);
+    webSwingTo(id);
     const element = document.getElementById(id);
     const mainScrollArea = document.getElementById("main-scroll-area");
     if (element && mainScrollArea) {
@@ -52,13 +78,40 @@ export const SystemChrome = () => {
       {/* Title bar */}
       <div className="flex items-center justify-between gap-3 border-b border-line px-3 py-2 sm:px-4">
         <div className="flex min-w-0 items-center gap-2">
-          <span className="hidden h-2 w-2 shrink-0 rounded-sm bg-spidey-red sm:inline-block" />
+          <span
+            className="hidden h-5 w-5 shrink-0 items-center justify-center border border-spidey-red/70 bg-[#1a1012] sm:inline-flex"
+            aria-hidden="true"
+          >
+            <SpideyEmblem size={14} fill="#e62429" />
+          </span>
           <h1 className="truncate font-mono text-[11px] tracking-[0.12em] text-cream sm:text-xs">
             {site.systemTitle}
           </h1>
         </div>
 
         <div className="flex shrink-0 items-center gap-3 font-mono text-[10px] tracking-[0.1em] text-dim sm:text-[11px]">
+          <span className="hidden lg:inline-flex">
+            <WebFluidMeter />
+          </span>
+          <button
+            type="button"
+            onClick={togglePatrol}
+            title="Toggle patrol mode"
+            className={cn(
+              "hidden border px-2 py-1 transition-colors sm:inline-flex sm:items-center sm:gap-1.5",
+              patrol
+                ? "border-spidey-blue text-spidey-blue"
+                : "border-line-strong text-muted hover:border-spidey-red hover:text-spidey-red"
+            )}
+          >
+            <span
+              className={cn(
+                "h-1.5 w-1.5 rounded-full",
+                patrol ? "bg-spidey-blue" : "bg-spidey-red"
+              )}
+            />
+            PATROL: {patrol ? "INVERTED" : "NIGHT"}
+          </button>
           <span className="inline-flex items-center gap-1.5 text-crt">
             <span className="h-1.5 w-1.5 animate-blink bg-crt" />
             {site.status}

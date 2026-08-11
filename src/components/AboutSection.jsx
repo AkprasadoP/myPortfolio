@@ -1,20 +1,14 @@
-import { motion } from "framer-motion";
 import { about, site } from "@/data/site";
 import Clipping from "@/components/Clipping";
+import { ComicReveal } from "@/components/ui/ComicReveal";
 
 export const AboutSection = () => {
   return (
     <section id="notes" className="scroll-mt-4">
-      <motion.div
-        initial={{ opacity: 0, y: 8 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, margin: "-40px" }}
-        transition={{ duration: 0.4 }}
-        className="panel accent-blue"
-      >
+      <ComicReveal className="panel accent-blue">
         <div className="panel-header">
-          <span>FIELD NOTES / ABOUT</span>
-          <span>entry #001</span>
+          <span>CIVILIAN FILE / ABOUT</span>
+          <span>entry #001 · daily bugle</span>
         </div>
 
         <div className="grid gap-8 p-5 sm:p-7 lg:grid-cols-[1.4fr_0.8fr]">
@@ -105,7 +99,7 @@ export const AboutSection = () => {
             </p>
           </aside>
         </div>
-      </motion.div>
+      </ComicReveal>
     </section>
   );
 };

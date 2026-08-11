@@ -1,4 +1,5 @@
 import { useEffect, useRef } from "react";
+import { spideyColors, rgba } from "@/lib/spidey-colors";
 
 /**
  * Desktop-only thin red cursor trail. Disabled on touch / coarse pointers.
@@ -67,7 +68,7 @@ export const WebTrail = () => {
         const age = now - seg.t;
         const alpha = Math.max(0, 1 - age / LIFE_MS) * 0.55;
         ctx.beginPath();
-        ctx.strokeStyle = `rgba(230, 36, 41, ${alpha})`;
+        ctx.strokeStyle = rgba(spideyColors().redRGB, alpha);
         ctx.lineWidth = 1.1;
         ctx.lineCap = "round";
         ctx.moveTo(seg.x1, seg.y1);

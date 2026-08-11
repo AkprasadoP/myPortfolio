@@ -1,20 +1,14 @@
-import { motion } from "framer-motion";
 import { experiments } from "@/data/site";
 import { ScannerFeed } from "@/components/ScannerFeed";
+import { ComicReveal } from "@/components/ui/ComicReveal";
 
 export const ExperimentsSection = () => {
   return (
     <section id="experiments" className="scroll-mt-4">
-      <motion.div
-        initial={{ opacity: 0, y: 8 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, margin: "-40px" }}
-        transition={{ duration: 0.4 }}
-        className="panel accent-blue"
-      >
+      <ComicReveal className="panel accent-blue">
         <div className="panel-header">
-          <span>FIELD TESTS</span>
-          <span>lab notebook</span>
+          <span>LAB NOTES</span>
+          <span>lab notebook · web-lab</span>
         </div>
 
         <div className="p-5 sm:p-7">
@@ -49,7 +43,7 @@ export const ExperimentsSection = () => {
 
           <ScannerFeed />
         </div>
-      </motion.div>
+      </ComicReveal>
     </section>
   );
 };

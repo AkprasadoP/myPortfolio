@@ -1,7 +1,11 @@
 import { useCallback, useEffect, useRef, useState } from "react";
+import { spideyColors, rgba } from "@/lib/spidey-colors";
 
 const ROUND_MS = 60_000;
 const SPAWN_MS = 900;
+const LEADER_KEY = "web-shooter-leaderboard";
+const RANK_COLORS = ["#ffd400", "#c8c8d0", "#cd7f32", "#8a8a8e", "#8a8a8e"];
+const RANK_LABELS = ["1ST", "2ND", "3RD", "4TH", "5TH"];
 const BUG_TYPES = [
   { label: "ERR", color: "#E62429" },
   { label: "BUG", color: "#1F75FE" },
@@ -22,6 +26,42 @@ const randomBug = (width) => {
   };
 };
 
+const loadLeaderboard = () => {
+  try {
+    const raw = window.localStorage.getItem(LEADER_KEY);
+    const list = raw ? JSON.parse(raw) : [];
+    if (!Array.isArray(list)) return [];
+    return list
+      .filter(
+        (item) =>
+          item &&
+          typeof item.score === "number" &&
+          typeof item.at === "number"
+      )
+      .sort((a, b) => b.score - a.score)
+      .slice(0, 5);
+  } catch {
+    return [];
+  }
+};
+
+const saveLeaderboard = (list) => {
+  try {
+    window.localStorage.setItem(LEADER_KEY, JSON.stringify(list));
+  } catch {
+    /* storage unavailable — ignore */
+  }
+};
+
+const formatStamp = (at) => {
+  const d = new Date(at);
+  const mm = String(d.getMonth() + 1).padStart(2, "0");
+  const dd = String(d.getDate()).padStart(2, "0");
+  const hh = String(d.getHours()).padStart(2, "0");
+  const mi = String(d.getMinutes()).padStart(2, "0");
+  return `${mm}.${dd} ${hh}:${mi}`;
+};
+
 export const WebShooterGame = () => {
   const canvasRef = useRef(null);
   const wrapRef = useRef(null);
@@ -29,6 +69,7 @@ export const WebShooterGame = () => {
     running: false,
     bugs: [],
     webs: [],
+    strands: [],
     score: 0,
     cursor: { x: 0, y: 0 },
     startedAt: 0,
@@ -41,6 +82,15 @@ export const WebShooterGame = () => {
   const [running, setRunning] = useState(false);
   const [finished, setFinished] = useState(false);
   const [finalScore, setFinalScore] = useState(0);
+  const [leaderboard, setLeaderboard] = useState(loadLeaderboard);
+  const [isRecord, setIsRecord] = useState(false);
+  const leaderboardRef = useRef(leaderboard);
+
+  const highScore = leaderboard[0]?.score ?? 0;
+
+  useEffect(() => {
+    leaderboardRef.current = leaderboard;
+  }, [leaderboard]);
 
   const endRound = useCallback(() => {
     const s = stateRef.current;
@@ -49,6 +99,20 @@ export const WebShooterGame = () => {
     setFinished(true);
     setFinalScore(s.score);
     setTimeLeft(0);
+
+    const final = s.score;
+    if (final > 0) {
+      const prev = leaderboardRef.current;
+      const isNew =
+        final > (prev[0]?.score ?? 0) || prev.length === 0;
+      setIsRecord(isNew);
+      const next = [...prev, { score: final, at: Date.now() }]
+        .sort((a, b) => b.score - a.score)
+        .slice(0, 5);
+      leaderboardRef.current = next;
+      setLeaderboard(next);
+      saveLeaderboard(next);
+    }
   }, []);
 
   const startRound = useCallback(() => {
@@ -59,6 +123,7 @@ export const WebShooterGame = () => {
     s.running = true;
     s.bugs = [];
     s.webs = [];
+    s.strands = [];
     s.score = 0;
     s.startedAt = performance.now();
     s.lastSpawn = 0;
@@ -69,6 +134,7 @@ export const WebShooterGame = () => {
     setTimeLeft(ROUND_MS / 1000);
     setFinished(false);
     setFinalScore(0);
+    setIsRecord(false);
     setRunning(true);
   }, []);
 
@@ -123,6 +189,35 @@ export const WebShooterGame = () => {
         ctx.moveTo(0, y);
         ctx.lineTo(w, y);
         ctx.stroke();
+      }
+
+      // accumulated web-strand backdrop — lingers from every fired shot
+      if (s.strands.length > 0) {
+        for (const strand of s.strands) {
+          // main thread
+          ctx.beginPath();
+          ctx.moveTo(strand.ox, strand.oy);
+          ctx.lineTo(strand.tx, strand.ty);
+          ctx.strokeStyle = "rgba(242, 242, 240, 0.09)";
+          ctx.lineWidth = 1;
+          ctx.stroke();
+        }
+        // radial web hub at the launcher
+        ctx.strokeStyle = "rgba(242, 242, 240, 0.08)";
+        ctx.lineWidth = 0.8;
+        for (const radius of [18, 34]) {
+          ctx.beginPath();
+          ctx.arc(w / 2, h - 8, radius, 0, Math.PI * 2);
+          ctx.stroke();
+          ctx.beginPath();
+          for (let a = 0; a < Math.PI * 2; a += Math.PI / 5) {
+            const rx = w / 2 + Math.cos(a) * radius;
+            const ry = h - 8 + Math.sin(a) * radius;
+            ctx.moveTo(w / 2, h - 8);
+            ctx.lineTo(rx, ry);
+          }
+          ctx.stroke();
+        }
       }
 
       if (s.running) {
@@ -192,11 +287,12 @@ export const WebShooterGame = () => {
       // web lines
       const originX = w / 2;
       const originY = h - 8;
+      const { redRGB, blueRGB } = spideyColors();
       s.webs.forEach((web) => {
         const x = originX + (web.tx - originX) * Math.min(1, web.t);
         const y = originY + (web.ty - originY) * Math.min(1, web.t);
         ctx.beginPath();
-        ctx.strokeStyle = `rgba(230, 36, 41, ${1 - web.t * 0.65})`;
+        ctx.strokeStyle = rgba(redRGB, (1 - web.t * 0.65).toFixed(3));
         ctx.lineWidth = 1.5;
         ctx.moveTo(originX, originY);
         ctx.lineTo(x, y);
@@ -205,7 +301,7 @@ export const WebShooterGame = () => {
 
       // crosshair
       const { x: cx, y: cy } = s.cursor;
-      ctx.strokeStyle = "rgba(230, 36, 41, 0.85)";
+      ctx.strokeStyle = rgba(redRGB, 0.85);
       ctx.lineWidth = 1;
       ctx.beginPath();
       ctx.moveTo(cx - 10, cy);
@@ -218,7 +314,7 @@ export const WebShooterGame = () => {
       ctx.stroke();
 
       // launcher
-      ctx.fillStyle = "#1F75FE";
+      ctx.fillStyle = rgba(blueRGB, 1);
       ctx.fillRect(originX - 10, originY - 4, 20, 4);
 
       raf = requestAnimationFrame(draw);
@@ -259,16 +355,28 @@ export const WebShooterGame = () => {
       t: 0,
       hit: false,
     });
+    const canvas = canvasRef.current;
+    const w = Number(canvas?.dataset.cssW) || canvas?.clientWidth || 300;
+    const h = Number(canvas?.dataset.cssH) || canvas?.clientHeight || 200;
+    const originX = w / 2;
+    const originY = h - 8;
+    stateRef.current.strands.push({ ox: originX, oy: originY, tx: pos.x, ty: pos.y });
+    if (stateRef.current.strands.length > 130) {
+      stateRef.current.strands.shift();
+    }
   };
 
   return (
     <div className="mt-6 border border-line bg-inset">
       <div className="panel-header" style={{ "--panel-accent": "#E62429" }}>
         <span>web_shooter.exe</span>
-        <span>gadget / demo</span>
+        <span>gadget / field demo</span>
       </div>
 
       <div className="space-y-3 p-3 sm:p-4">
+        <p className="font-mono text-[10px] tracking-[0.1em] text-dim">
+          [ city-wide bug infestation — your only weapon is the web-shooter ]
+        </p>
         <div className="flex flex-wrap items-center justify-between gap-2 font-mono text-[11px] tracking-[0.08em] text-muted">
           <span>
             SCORE <span className="text-spidey-red">{score}</span>
@@ -277,7 +385,10 @@ export const WebShooterGame = () => {
             BUGS SQUASHED <span className="text-spidey-blue">{score}</span>
           </span>
           <span>
-            TIME <span className="text-cream">{timeLeft}s</span>
+            THREAT WINDOW <span className="text-cream">{timeLeft}s</span>
+          </span>
+          <span>
+            HIGH SCORE <span className="text-bugle">{highScore}</span>
           </span>
         </div>
 
@@ -294,14 +405,14 @@ export const WebShooterGame = () => {
           {!running && !finished && (
             <div className="absolute inset-0 flex flex-col items-center justify-center gap-3 bg-bg/80 p-4 text-center">
               <p className="font-mono text-xs text-muted">
-                Squash falling bugs with web-lines. 60s round.
+                The city needs you, hero. Squash the bugs. 60s patrol round.
               </p>
               <button
                 type="button"
                 onClick={startRound}
                 className="btn-system btn-system-primary"
               >
-                [ start ]
+                [ start patrol ]
               </button>
             </div>
           )}
@@ -309,14 +420,26 @@ export const WebShooterGame = () => {
           {finished && (
             <div className="absolute inset-0 flex flex-col items-center justify-center gap-3 bg-bg/85 p-4 text-center">
               <p className="font-mono text-xs leading-relaxed text-cream">
-                RUN COMPLETE — {finalScore} BUGS SQUASHED
+                PATROL COMPLETE — {finalScore} BUGS SQUASHED
+              </p>
+              {isRecord && (
+                <p className="animate-blink font-display text-sm tracking-[0.14em] text-bugle">
+                  ★ NEW HIGH SCORE ★
+                </p>
+              )}
+              <p className="font-mono text-[10px] text-dim">
+                {finalScore === 0
+                  ? "even the city has off days."
+                  : finalScore > 15
+                  ? "the neighborhood is proud of you."
+                  : "decent work, hero."}
               </p>
               <button
                 type="button"
                 onClick={startRound}
                 className="btn-system btn-system-primary"
               >
-                [ run again ]
+                [ patrol again ]
               </button>
             </div>
           )}
@@ -325,6 +448,34 @@ export const WebShooterGame = () => {
         <p className="font-mono text-[10px] text-dim">
           tip: aim with cursor / finger · click / tap to fire
         </p>
+
+        {leaderboard.length > 0 && (
+          <div className="border border-line bg-bg">
+            <div className="flex items-center justify-between border-b border-line px-3 py-2 font-mono text-[10px] tracking-[0.14em] text-spidey-red">
+              <span>HALL OF HEROES / TOP PATROLS</span>
+              <span className="text-dim">persisted locally</span>
+            </div>
+            <ul className="divide-y divide-line">
+              {leaderboard.map((entry, idx) => (
+                <li
+                  key={`${entry.at}-${idx}`}
+                  className="flex items-center gap-3 px-3 py-1.5 font-mono text-[11px]"
+                >
+                  <span
+                    className="w-10 shrink-0 tracking-[0.1em]"
+                    style={{ color: RANK_COLORS[idx] }}
+                  >
+                    {RANK_LABELS[idx]}
+                  </span>
+                  <span className="text-cream">{entry.score} bugs</span>
+                  <span className="ml-auto text-dim">
+                    {formatStamp(entry.at)}
+                  </span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
       </div>
     </div>
   );
