@@ -12,6 +12,7 @@ import { CrawlingSpider } from "@/components/ui/CrawlingSpider";
 import { SwingBolt } from "@/components/ui/SwingBolt";
 import { KonamiWatcher } from "@/components/ui/KonamiWatcher";
 import { MixtapePlayer } from "@/components/MixtapePlayer";
+import { CommandPalette } from "@/components/CommandPalette";
 
 function App() {
   const [suitSeq, setSuitSeq] = useState(0);
@@ -34,6 +35,7 @@ function App() {
         </Routes>
       </BrowserRouter>
       <MixtapePlayer />
+      <CommandPalette />
     </>
   );
 }

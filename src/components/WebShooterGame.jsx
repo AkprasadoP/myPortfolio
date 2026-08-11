@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { spideyColors, rgba } from "@/lib/spidey-colors";
+import { onSystem, EV } from "@/lib/system-bus";
 
 const ROUND_MS = 60_000;
 const SPAWN_MS = 900;
@@ -137,6 +138,8 @@ export const WebShooterGame = () => {
     setIsRecord(false);
     setRunning(true);
   }, []);
+
+  useEffect(() => onSystem(EV.WEBSHOOTER_START, () => startRound()), [startRound]);
 
   useEffect(() => {
     const canvas = canvasRef.current;

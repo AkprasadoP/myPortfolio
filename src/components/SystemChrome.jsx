@@ -5,6 +5,7 @@ import { navItems, site } from "@/data/site";
 import { SpideyEmblem } from "@/components/ui/SpideyEmblem";
 import { WebFluidMeter } from "@/components/ui/WebFluidMeter";
 import { webSwingTo } from "@/lib/swing";
+import { onSystem, emitSystem, EV } from "@/lib/system-bus";
 
 const PATROL_KEY = "patrol-mode";
 
@@ -23,14 +24,18 @@ export const SystemChrome = () => {
   }, []);
 
   const togglePatrol = () => {
-    const next = !patrol;
-    setPatrol(next);
-    document.documentElement.setAttribute(
-      "data-mode",
-      next ? "patrol" : "standard"
-    );
-    window.localStorage.setItem(PATROL_KEY, next ? "on" : "off");
+    setPatrol((prev) => {
+      const next = !prev;
+      document.documentElement.setAttribute(
+        "data-mode",
+        next ? "patrol" : "standard"
+      );
+      window.localStorage.setItem(PATROL_KEY, next ? "on" : "off");
+      return next;
+    });
   };
+
+  useEffect(() => onSystem(EV.PATROL_TOGGLE, () => togglePatrol()), []);
 
   useEffect(() => {
     const root = document.getElementById("main-scroll-area");
@@ -128,6 +133,14 @@ export const SystemChrome = () => {
           <span className="hidden text-dim sm:inline">{site.lastUpdated}</span>
           <button
             type="button"
+            title="Open command palette"
+            onClick={() => emitSystem(EV.PALETTE_OPEN)}
+            className="border border-line-strong bg-inset px-1.5 py-1 font-mono text-[9px] tracking-[0.1em] text-muted hover:text-cream md:hidden"
+          >
+            ⌘K
+          </button>
+          <button
+            type="button"
             aria-label={isMenuOpen ? "Close menu" : "Open menu"}
             onClick={() => setIsMenuOpen((prev) => !prev)}
             className="border border-line-strong bg-inset p-1.5 text-muted hover:text-fg md:hidden"
@@ -138,30 +151,42 @@ export const SystemChrome = () => {
       </div>
 
       {/* Menu bar — desktop */}
-      <nav className="hidden items-stretch gap-0 overflow-x-auto md:flex">
-        {navItems.map((item) => {
-          const active = activeSection === item.id;
-          return (
-            <a
-              key={item.id}
-              href={item.href}
-              onClick={(e) => scrollToSection(e, item.href)}
-              className={cn(
-                "relative px-3 py-2 font-ui text-[11px] tracking-[0.14em] transition-colors",
-                active
-                  ? "bg-inset text-cream"
-                  : "text-muted hover:bg-inset/70 hover:text-fg"
-              )}
-            >
-              <span className="mr-1.5 text-dim">{item.code}</span>
-              {item.label}
-              {active && (
-                <span className="absolute inset-x-0 bottom-0 h-px bg-spidey-red" />
-              )}
-            </a>
-          );
-        })}
-      </nav>
+      <div className="hidden items-stretch md:flex">
+        <nav className="flex min-w-0 flex-1 items-stretch gap-0 overflow-x-auto">
+          {navItems.map((item) => {
+            const active = activeSection === item.id;
+            return (
+              <a
+                key={item.id}
+                href={item.href}
+                onClick={(e) => scrollToSection(e, item.href)}
+                className={cn(
+                  "relative px-3 py-2 font-ui text-[11px] tracking-[0.14em] transition-colors",
+                  active
+                    ? "bg-inset text-cream"
+                    : "text-muted hover:bg-inset/70 hover:text-fg"
+                )}
+              >
+                <span className="mr-1.5 text-dim">{item.code}</span>
+                {item.label}
+                {active && (
+                  <span className="absolute inset-x-0 bottom-0 h-px bg-spidey-red" />
+                )}
+              </a>
+            );
+          })}
+        </nav>
+        <button
+          type="button"
+          title="Open command palette"
+          onClick={() => emitSystem(EV.PALETTE_OPEN)}
+          className="shrink-0 border-l border-line px-2.5 font-mono text-[10px] tracking-[0.12em] text-dim hover:bg-inset hover:text-cream"
+        >
+          <span className="border border-line-strong bg-bg px-1.5 py-0.5 text-muted">
+            ⌘K
+          </span>
+        </button>
+      </div>
 
       {/* Menu — mobile drawer */}
       {isMenuOpen && (

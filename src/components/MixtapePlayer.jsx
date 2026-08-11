@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { onSystem, EV } from "@/lib/system-bus";
 import "./MixtapePlayer.css";
 
 /**
@@ -98,6 +99,18 @@ export const MixtapePlayer = () => {
     if (!audio) return;
     audio.volume = volume / VOL_STEPS;
   }, [volume]);
+
+  useEffect(() => {
+    const offPlay = onSystem(EV.WALKMAN_PLAY, () => {
+      if (!TRACKS.length) return;
+      setPlaying(true);
+    });
+    const offPause = onSystem(EV.WALKMAN_PAUSE, () => setPlaying(false));
+    return () => {
+      offPlay();
+      offPause();
+    };
+  }, []);
 
   const toggle = () => {
     if (!hasTracks) return;
