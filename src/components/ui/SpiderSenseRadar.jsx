@@ -101,7 +101,7 @@ export const SpiderSenseRadar = () => {
   return (
     <div
       aria-hidden="true"
-      className="pointer-events-none fixed bottom-3 right-3 z-[55] hidden md:block"
+      className="pointer-events-none fixed bottom-3 left-3 z-[55] scale-[0.85] origin-bottom-left md:bottom-3 md:left-auto md:right-3 md:scale-100 md:origin-bottom-right"
     >
       <canvas ref={canvasRef} />
       <p
@@ -109,7 +109,7 @@ export const SpiderSenseRadar = () => {
           active ? "text-spidey-red" : "text-dim"
         }`}
       >
-        SENSE {active ? "AC TIVE" : "STANDBY"}
+        SENSE {active ? "ACTIVE" : "STANDBY"}
       </p>
     </div>
   );

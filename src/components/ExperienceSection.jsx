@@ -37,17 +37,17 @@ export const ExperienceSection = () => {
                   <span className="shrink-0 font-mono text-[10px] text-spidey-red">
                     [FILE]
                   </span>
-                  <span className="min-w-0 flex-1 font-mono text-xs tracking-[0.06em] sm:text-sm">
+                  <span className="min-w-0 flex-1 truncate font-mono text-[11px] tracking-[0.04em] sm:text-sm sm:tracking-[0.06em]">
                     <span className="text-cream">
                       {exp.company.toUpperCase()}
                     </span>
                     <span className="text-dim"> — </span>
                     <span className="uppercase">{exp.title}</span>
                     {!exp.current && (
-                      <>
-                        <span className="text-dim"> — </span>
-                        <span className="text-dim">{exp.duration}</span>
-                      </>
+                      <span className="hidden text-dim sm:inline">
+                        {" "}
+                        — {exp.duration}
+                      </span>
                     )}
                   </span>
                   {exp.current && (

@@ -120,10 +120,14 @@ export const HeroSection = () => {
       ref={sectionRef}
       id="home"
       onPointerDown={fireFromFigure}
-      className="hero-web-bg relative scroll-mt-4 pt-4 sm:pt-8 lg:pb-28"
+      className="hero-web-bg relative scroll-mt-4 pt-3 sm:pt-8 lg:pb-28"
     >
       {/* Corner web accents */}
       <div className="web-corner web-corner--tl" aria-hidden="true" />
+      <div
+        className="web-corner web-corner--br md:hidden"
+        aria-hidden="true"
+      />
 
       {/* web-sling canvas overlay (figure fires at clicks) */}
       <canvas
@@ -140,7 +144,53 @@ export const HeroSection = () => {
         </div>
       )}
 
-      {/* Hanging Spider-Man mask avatar — click it */}
+      {/* Mobile Spidey strip — mask + figure so phones aren't Spidey-less */}
+      <motion.div
+        initial={{ opacity: 0, y: 8 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.4 }}
+        className="mobile-spidey-strip mb-4 flex items-end justify-between gap-3 md:hidden"
+      >
+        <button
+          type="button"
+          onClick={thwip}
+          aria-label="Fire a web"
+          className="relative flex flex-col items-center"
+        >
+          <span className="mb-1 h-5 w-px bg-gradient-to-b from-transparent to-spidey-red" />
+          <span className="mask-float">
+            <SpiderManAvatar
+              size={72}
+              className="drop-shadow-[0_6px_12px_rgba(230,36,41,0.45)]"
+            />
+          </span>
+          <span className="mt-1 font-mono text-[8px] tracking-[0.18em] text-spidey-red">
+            TAP · THWIP
+          </span>
+        </button>
+
+        <div className="min-w-0 flex-1 self-center border border-line bg-inset/80 px-3 py-2">
+          <p className="font-mono text-[9px] tracking-[0.16em] text-crt">
+            ● SPIDER-SENSE ONLINE
+          </p>
+          <p className="mt-1 truncate font-mono text-[10px] text-muted">
+            {site.currentRole}
+          </p>
+          <p className="mt-0.5 font-mono text-[9px] tracking-[0.08em] text-dim">
+            NYC NIGHT · MOBILE PATROL
+          </p>
+        </div>
+
+        <div className="figure-swing pointer-events-none opacity-90" aria-hidden="true">
+          <SpiderFigure
+            width={78}
+            height={102}
+            className="drop-shadow-[0_8px_14px_rgba(0,0,0,0.45)]"
+          />
+        </div>
+      </motion.div>
+
+      {/* Desktop hanging mask */}
       <motion.button
         type="button"
         initial={{ opacity: 0, scale: 0.7, y: -16 }}
@@ -164,7 +214,7 @@ export const HeroSection = () => {
         </p>
       </motion.button>
 
-      {/* Hang-down Spider-Man figure — left edge */}
+      {/* Desktop hang-down figure */}
       <motion.div
         ref={figureRef}
         initial={{ opacity: 0, y: 40 }}
@@ -187,7 +237,7 @@ export const HeroSection = () => {
         initial={{ opacity: 0, y: -10 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
-        className="mb-8"
+        className="mb-5 sm:mb-8"
       >
         <DailyBugleBanner />
       </motion.div>
@@ -218,7 +268,7 @@ export const HeroSection = () => {
 
             <div>
               <p className="eyebrow">PERSONAL SYSTEM</p>
-              <h2 className="mt-2 font-display text-4xl tracking-wide text-cream sm:text-5xl">
+              <h2 className="mt-2 font-display text-[1.85rem] leading-[1.05] tracking-wide text-cream sm:text-5xl">
                 {site.name.toUpperCase()}
               </h2>
               <p className="mt-3 font-mono text-sm text-spidey-red">
@@ -289,6 +339,10 @@ export const HeroSection = () => {
               <p>← that&apos;s me, unfortunately</p>
               <p className="text-[10px]">[status: friendly neighborhood dev]</p>
             </div>
+
+            <p className="mt-3 text-center font-mono text-[10px] tracking-[0.08em] text-dim lg:hidden">
+              [status: friendly neighborhood dev]
+            </p>
 
             <div className="mt-4 space-y-1 border-t border-dotted border-line-strong pt-3 font-mono text-[11px] text-muted">
               <p className="text-cream">{site.currentRole}</p>

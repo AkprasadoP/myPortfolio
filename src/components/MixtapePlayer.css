@@ -339,18 +339,18 @@
 /* Compact mobile utility — stay in viewport, clear of menu button row */
 @media (max-width: 639px) {
   .deck {
-    top: 2.85rem;
-    right: 0.35rem;
-    width: min(15.25rem, calc(100vw - 0.7rem));
+    top: 3.15rem;
+    right: 0.4rem;
+    width: min(13.75rem, calc(100vw - 4.25rem));
   }
 
   .deck--collapsed {
-    width: min(14.5rem, calc(100vw - 0.7rem));
+    width: min(12.75rem, calc(100vw - 4.25rem));
   }
 
   .deck--expanded {
-    width: min(15.25rem, calc(100vw - 0.7rem));
-    max-height: calc(100vh - 3.35rem);
+    width: min(15rem, calc(100vw - 0.8rem));
+    max-height: calc(100vh - 3.5rem);
   }
 
   .deck__vol span {
