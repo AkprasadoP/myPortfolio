@@ -23,12 +23,13 @@ export const site = {
 
 export const navItems = [
   { id: "home", label: "HOME", href: "#home", code: "01" },
-  { id: "notes", label: "NOTES", href: "#notes", code: "02" },
-  { id: "stack", label: "GADGETS", href: "#stack", code: "03" },
-  { id: "experiments", label: "FIELD TESTS", href: "#experiments", code: "04" },
-  { id: "projects", label: "PROJECTS", href: "#projects", code: "05" },
-  { id: "experience", label: "EXPERIENCE", href: "#experience", code: "06" },
-  { id: "contact", label: "CONTACT", href: "#contact", code: "07" },
+  { id: "notes", label: "CIVILIAN FILE", href: "#notes", code: "02" },
+  { id: "experience", label: "PATROL LOG", href: "#experience", code: "03" },
+  { id: "stack", label: "GADGETS", href: "#stack", code: "04" },
+  { id: "projects", label: "CASE FILES", href: "#projects", code: "05" },
+  { id: "experiments", label: "LAB NOTES", href: "#experiments", code: "06" },
+  { id: "judge", label: "JUDGE FILE", href: "#judge", code: "07" },
+  { id: "contact", label: "OPEN CHANNEL", href: "#contact", code: "08" },
 ];
 
 export const about = {
@@ -154,6 +155,73 @@ export const experiences = [
     technologies: ["Node.js", "GraphQL", "PostgreSQL", "Microservices"],
   },
 ];
+
+export const leetcode = {
+  handle: "akprasad14",
+  profileUrl: "https://leetcode.com/u/akprasad14/",
+  rank: "238,574",
+  location: "India · IIIT Jabalpur · Web Developer",
+  solved: 462,
+  acceptance: 62.73,
+  submissions: 872,
+  pastYearSubmissions: 409,
+  activeDays: 89,
+  maxStreak: 6,
+  mostRecentBadge: "200 Days Badge 2025",
+  languages: [
+    { name: "C++", count: 460 },
+    { name: "Python", count: 1 },
+    { name: "MySQL", count: 1 },
+  ],
+  difficulty: [
+    { level: "EASY", solved: 139, total: 958, color: "#00c2a8" },
+    { level: "MED", solved: 263, total: 2098, color: "#ffc01e" },
+    { level: "HARD", solved: 60, total: 962, color: "#ff375f" },
+  ],
+  skills: [
+    {
+      tier: "ADVANCED",
+      entries: [
+        { name: "Dynamic Programming", count: 75 },
+        { name: "Backtracking", count: 15 },
+        { name: "Union-Find", count: 11 },
+      ],
+    },
+    {
+      tier: "INTERMEDIATE",
+      entries: [
+        { name: "Hash Table", count: 97 },
+        { name: "Math", count: 88 },
+        { name: "Greedy", count: 53 },
+      ],
+    },
+    {
+      tier: "FUNDAMENTAL",
+      entries: [
+        { name: "Array", count: 296 },
+        { name: "String", count: 105 },
+        { name: "Sorting", count: 68 },
+      ],
+    },
+  ],
+  contest: {
+    rating: 1698,
+    globalRank: "121,200 / 877,640",
+    attended: 3,
+    topPct: "14.06%",
+    gauge: { min: 1350, max: 2000 },
+  },
+  beats: [
+    { value: 94.25, label: "rating" },
+    { value: 96, label: "speed" },
+    { value: 93.42, label: "submissions" },
+  ],
+  badges: [
+    "50 Days Badge 2025",
+    "100 Days Badge 2025",
+    "200 Days Badge 2025",
+  ],
+};
 
 export const projects = [
   {

@@ -5,9 +5,11 @@ import { SkillsSection } from "../components/SkillsSection";
 import { ExperimentsSection } from "../components/ExperimentsSection";
 import { ExperienceSection } from "../components/ExperienceSection";
 import { ProjectsSection } from "../components/ProjectsSection";
+import { LeetCodeSection } from "../components/LeetCodeSection";
 import { ContactSection } from "../components/ContactSection";
 import { Footer } from "../components/Footer";
 import { WebStrand } from "../components/WebStrand";
+import { ScrollSpider } from "../components/ui/ScrollSpider";
 
 const SectionRule = () => <hr className="section-rule" />;
 
@@ -15,6 +17,7 @@ export const Home = () => {
   return (
     <div className="system-grain flex h-screen w-full flex-col overflow-hidden bg-bg text-fg">
       <SystemChrome />
+      <ScrollSpider />
 
       <main
         id="main-scroll-area"
@@ -27,13 +30,15 @@ export const Home = () => {
           <SectionRule />
           <AboutSection />
           <SectionRule />
-          <SkillsSection />
+          <ExperienceSection />
           <SectionRule />
-          <ExperimentsSection />
+          <SkillsSection />
           <SectionRule />
           <ProjectsSection />
           <SectionRule />
-          <ExperienceSection />
+          <ExperimentsSection />
+          <SectionRule />
+          <LeetCodeSection />
           <SectionRule />
           <ContactSection />
         </div>
