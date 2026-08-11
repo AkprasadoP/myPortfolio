@@ -10,10 +10,12 @@ export const Footer = () => {
           <p>
             © {currentYear} {site.name}
             <span className="mx-2 text-line-strong">·</span>
-            personal system / workbench
+            friendly neighborhood system
           </p>
           <p>
             visitors: 001337
+            <span className="mx-2 text-line-strong">·</span>
+            web-fluid: {Math.floor(72 + Math.random() * 20)}%
             <span className="mx-2 text-line-strong">·</span>
             build {site.build}
           </p>
@@ -22,6 +24,8 @@ export const Footer = () => {
           alter ego
           <span className="mx-2 text-line-strong">—</span>
           <span className="text-spidey-blue">full-stack</span>
+          <span className="mx-2 text-line-strong">/</span>
+          <span className="text-dim">&ldquo;with great power comes great uptime&rdquo;</span>
         </p>
       </div>
     </footer>

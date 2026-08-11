@@ -1,8 +1,8 @@
 import { useState } from "react";
-import { motion } from "framer-motion";
 import { useToast } from "@/hooks/use-toast";
 import { site } from "@/data/site";
 import { LOADING_COPY } from "@/components/ui/LoadingLabel";
+import { ComicReveal } from "@/components/ui/ComicReveal";
 
 export const ContactSection = () => {
   const { toast } = useToast();
@@ -77,13 +77,7 @@ export const ContactSection = () => {
 
   return (
     <section id="contact" className="scroll-mt-4 pb-4">
-      <motion.div
-        initial={{ opacity: 0, y: 8 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, margin: "-40px" }}
-        transition={{ duration: 0.4 }}
-        className="panel accent-red"
-      >
+      <ComicReveal className="panel accent-red">
         <div className="panel-header">
           <span>OPEN A CHANNEL</span>
           <span>contact.sh</span>
@@ -205,7 +199,7 @@ export const ContactSection = () => {
             </div>
           </form>
         </div>
-      </motion.div>
+      </ComicReveal>
     </section>
   );
 };

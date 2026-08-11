@@ -1,5 +1,11 @@
+import { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import { site } from "@/data/site";
+import { DailyBugleBanner } from "@/components/ui/DailyBugleBanner";
+import { SpiderManAvatar } from "@/components/ui/SpiderManAvatar";
+import { SpiderFigure } from "@/components/ui/SpiderFigure";
+import { spideyColors, rgba } from "@/lib/spidey-colors";
+import { webSwingTo } from "@/lib/swing";
 
 const scrollTo = (id) => {
   const element = document.getElementById(id);
@@ -10,17 +16,188 @@ const scrollTo = (id) => {
 };
 
 export const HeroSection = () => {
+  const [burst, setBurst] = useState(0);
+  const sectionRef = useRef(null);
+  const figureRef = useRef(null);
+  const shotRef = useRef(null);
+  const boltsRef = useRef([]);
+  const rafRef = useRef(0);
+
+  useEffect(() => {
+    return () => {
+      if (rafRef.current) cancelAnimationFrame(rafRef.current);
+    };
+  }, []);
+
+  const drawFrame = () => {
+    const canvas = shotRef.current;
+    const ctx = canvas?.getContext?.("2d");
+    if (!canvas || !ctx) {
+      rafRef.current = 0;
+      return;
+    }
+    const rect = sectionRef.current?.getBoundingClientRect();
+    if (!rect) {
+      rafRef.current = 0;
+      return;
+    }
+    const w = rect.width;
+    const h = rect.height;
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    if (canvas.width !== w * dpr) {
+      canvas.width = w * dpr;
+      canvas.height = h * dpr;
+      canvas.style.width = `${w}px`;
+      canvas.style.height = `${h}px`;
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    }
+    ctx.clearRect(0, 0, w, h);
+
+    const { redRGB } = spideyColors();
+    boltsRef.current.forEach((b) => {
+      b.t += 0.06;
+      const p = Math.min(1, b.t);
+      const alpha = Math.max(0, 1 - p) * 0.95;
+      ctx.beginPath();
+      ctx.moveTo(b.ox, b.oy);
+      ctx.quadraticCurveTo(b.cx, b.cy, b.tx, b.ty);
+      ctx.strokeStyle = rgba(redRGB, alpha);
+      ctx.lineWidth = 1.8;
+      ctx.stroke();
+      if (p < 0.3) {
+        ctx.beginPath();
+        ctx.strokeStyle = rgba(redRGB, alpha);
+        ctx.lineWidth = 1;
+        ctx.arc(b.tx, b.ty, 10 - p * 10, 0, Math.PI * 2);
+        ctx.stroke();
+      }
+    });
+    const remaining = boltsRef.current.filter((b) => b.t < 1);
+    boltsRef.current = remaining;
+    if (remaining.length) {
+      rafRef.current = requestAnimationFrame(drawFrame);
+    } else {
+      rafRef.current = 0;
+      ctx.clearRect(0, 0, w, h);
+    }
+  };
+
+  const fireFromFigure = (e) => {
+    if (window.matchMedia("(pointer: coarse)").matches) return;
+    const rect = sectionRef.current?.getBoundingClientRect();
+    const fig = figureRef.current?.getBoundingClientRect();
+    if (!rect || !fig) return;
+
+    // aim from figure hands (viewBox ~88,120 → scaled figure)
+    const ox = fig.left - rect.left + fig.width * 0.34;
+    const oy = fig.top - rect.top + fig.height * 0.32;
+    const tx = e.clientX - rect.left;
+    const ty = e.clientY - rect.top;
+    const dist = Math.hypot(tx - ox, ty - oy) || 1;
+    const ux = (tx - ox) / dist;
+    const uy = (ty - oy) / dist;
+    const perp = { x: -uy, y: ux };
+    const cx = (ox + tx) / 2 + perp.x * dist * 0.14;
+    const cy = (oy + ty) / 2 + perp.y * dist * 0.14;
+
+    boltsRef.current.push({ ox, oy, cx, cy, tx, ty, t: 0 });
+    if (!rafRef.current) {
+      rafRef.current = requestAnimationFrame(drawFrame);
+    }
+  };
+
+  const scrollToAndSwing = (id) => {
+    webSwingTo(id);
+    scrollTo(id);
+  };
+
+  const thwip = () => {
+    setBurst((b) => b + 1);
+  };
+
   return (
     <section
+      ref={sectionRef}
       id="home"
+      onPointerDown={fireFromFigure}
       className="hero-web-bg relative scroll-mt-4 pt-4 sm:pt-8 lg:pb-28"
     >
+      {/* Corner web accents */}
+      <div className="web-corner web-corner--tl" aria-hidden="true" />
+
+      {/* web-sling canvas overlay (figure fires at clicks) */}
+      <canvas
+        ref={shotRef}
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-0 z-[3]"
+      />
+
+      {/* THWIP easter-egg burst overlay */}
+      {burst > 0 && (
+        <div key={burst} className="thwip-burst">
+          <div className="thwip-burst__ring" />
+          <span className="thwip-burst__label">THWIP!</span>
+        </div>
+      )}
+
+      {/* Hanging Spider-Man mask avatar — click it */}
+      <motion.button
+        type="button"
+        initial={{ opacity: 0, scale: 0.7, y: -16 }}
+        animate={{ opacity: 1, scale: 1, y: 0 }}
+        transition={{ duration: 0.6, delay: 0.3, type: "spring", bounce: 0.45 }}
+        onClick={thwip}
+        aria-label="Fire a web"
+        className="group absolute -right-1 top-1 z-[4] hidden cursor-pointer md:block"
+      >
+        <div className="absolute -top-7 left-1/2 flex h-8 w-px -translate-x-1/2 flex-col items-center">
+          <span className="h-full w-px bg-gradient-to-b from-transparent via-spidey-red to-spidey-red/80" />
+        </div>
+        <div className="mask-float transition-transform duration-200 group-hover:scale-105 group-hover:drop-shadow-[0_0_18px_rgba(230,36,41,0.55)]">
+          <SpiderManAvatar
+            size={132}
+            className="drop-shadow-[0_8px_18px_rgba(0,0,0,0.65)]"
+          />
+        </div>
+        <p className="mt-1 text-center font-mono text-[8px] tracking-[0.2em] text-dim transition-colors group-hover:text-spidey-red">
+          THE MASK · THWIP
+        </p>
+      </motion.button>
+
+      {/* Hang-down Spider-Man figure — left edge */}
+      <motion.div
+        ref={figureRef}
+        initial={{ opacity: 0, y: 40 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.7, delay: 0.45 }}
+        className="pointer-events-none absolute -left-2 top-12 z-[1] hidden lg:block"
+        aria-hidden="true"
+      >
+        <div className="figure-swing opacity-85">
+          <SpiderFigure
+            width={168}
+            height={220}
+            className="drop-shadow-[0_12px_24px_rgba(230,36,41,0.35)]"
+          />
+        </div>
+      </motion.div>
+
+      {/* Daily Bugle headline banner */}
+      <motion.div
+        initial={{ opacity: 0, y: -10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5 }}
+        className="mb-8"
+      >
+        <DailyBugleBanner />
+      </motion.div>
+
       {/* Asymmetric desk layout — objects, not a balanced card pair */}
       <div className="relative flex flex-col gap-6 lg:block lg:min-h-[28rem]">
         <motion.div
           initial={{ opacity: 0, y: 8 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.45 }}
+          transition={{ duration: 0.45, delay: 0.12 }}
           className="panel accent-red lg:absolute lg:left-0 lg:top-0 lg:z-10 lg:w-[58%]"
         >
           <div className="panel-header">
@@ -64,14 +241,14 @@ export const HeroSection = () => {
             <div className="flex flex-wrap gap-2 pt-1">
               <button
                 type="button"
-                onClick={() => scrollTo("projects")}
+                onClick={() => scrollToAndSwing("projects")}
                 className="btn-system btn-system-primary"
               >
                 [ projects ]
               </button>
               <button
                 type="button"
-                onClick={() => scrollTo("notes")}
+                onClick={() => scrollToAndSwing("notes")}
                 className="btn-system"
               >
                 [ notes ]
@@ -83,16 +260,19 @@ export const HeroSection = () => {
         <motion.aside
           initial={{ opacity: 0, y: 8 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.45, delay: 0.08 }}
+          transition={{ duration: 0.45, delay: 0.18 }}
           className="panel accent-blue relative mx-auto w-full max-w-sm lg:absolute lg:right-0 lg:top-14 lg:z-[5] lg:mx-0 lg:w-[38%]"
         >
+          <div className="web-corner web-corner--br" aria-hidden="true" />
           <div className="panel-header">
             <span>id_card.jpg</span>
-            <span>local</span>
+            <span>local · peter-parker mode</span>
           </div>
 
           <div className="relative p-4 sm:px-4 sm:pb-4 sm:pt-5">
-            <div className="mx-auto max-w-[180px] rotate-[-2deg] border border-line-strong bg-[#d9d0bc] p-2 shadow-[3px_4px_0_rgba(0,0,0,0.35)] sm:max-w-[190px]">
+            <div className="relative mx-auto max-w-[180px] rotate-[-2deg] border border-line-strong bg-[#d9d0bc] p-2 pb-3 shadow-[3px_4px_0_rgba(0,0,0,0.35)] sm:max-w-[190px]">
+              {/* web-tape strip */}
+              <div className="absolute -top-3 left-1/2 h-6 w-20 -translate-x-1/2 rotate-[-3deg] bg-spidey-red/80" />
               <div className="aspect-[4/5] overflow-hidden border border-[#b8ae98] bg-[#cfc5b0]">
                 <img
                   src={site.profileImage}
@@ -101,7 +281,7 @@ export const HeroSection = () => {
                 />
               </div>
               <p className="mt-2 text-center font-mono text-[11px] text-[#3f382c]">
-                ashish / 2026
+                ashish / 2026 · &ldquo;with great power&hellip;&rdquo;
               </p>
             </div>
 

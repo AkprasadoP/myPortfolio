@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { projects, site } from "@/data/site";
+import { ComicReveal } from "@/components/ui/ComicReveal";
 
 export const ProjectsSection = () => {
   const [openId, setOpenId] = useState(projects[0]?.id ?? null);
@@ -8,16 +9,15 @@ export const ProjectsSection = () => {
 
   return (
     <section id="projects" className="scroll-mt-4">
-      <motion.div
-        initial={{ opacity: 0, y: 8 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, margin: "-40px" }}
-        transition={{ duration: 0.4 }}
-        className="panel accent-red"
-      >
+      <ComicReveal className="panel comic-frame accent-red">
         <div className="panel-header">
-          <span>PROJECT DIRECTORY</span>
-          <span>/home/ashish/projects</span>
+          <span>CASE FILES / PROJECTS</span>
+          <span>/home/ashish/projects · front page</span>
+        </div>
+
+        <div className="border-b border-line bg-[#18131a] px-4 py-3 text-left font-mono text-[10px] tracking-[0.16em] text-dim">
+          DAILY BUGLE EXCLUSIVE: LOCAL ENGINEER SHIPS {projects.filter((p) => p.featured).length}{" "}
+          FEATURED SYSTEMS
         </div>
 
         <div className="grid lg:grid-cols-[1fr_1.05fr]">
@@ -142,7 +142,7 @@ export const ProjectsSection = () => {
             cd ../.. &amp;&amp; open github.com/AkprasadoP →
           </a>
         </div>
-      </motion.div>
+      </ComicReveal>
     </section>
   );
 };

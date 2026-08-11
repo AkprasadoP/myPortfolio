@@ -1,5 +1,4 @@
 import { Link } from "react-router-dom";
-import { site } from "@/data/site";
 
 export const NotFound = () => {
   return (
@@ -17,10 +16,11 @@ export const NotFound = () => {
               : "/unknown"}
           </p>
           <p className="font-body text-sm leading-relaxed text-muted">
-            Page swung off somewhere. Try the web— I mean, the nav bar above.
+            This page swung off somewhere. Spider-sense says it&apos;s not
+            coming back. Try the web — I mean, the nav bar above.
           </p>
           <p className="font-mono text-[11px] text-dim">
-            {site.systemTitle}
+            with great routing comes great responsibility
           </p>
           <Link to="/" className="btn-system btn-system-primary inline-flex">
             [ return home ]
