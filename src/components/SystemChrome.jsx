@@ -74,10 +74,16 @@ export const SystemChrome = () => {
   };
 
   return (
-    <header className="sticky top-0 z-40 border-b border-line bg-panel/95 backdrop-blur-[2px]">
+    <header
+      id="system-chrome"
+      className="sticky top-0 z-40 border-b border-line bg-panel/95 backdrop-blur-[2px]"
+    >
       {/* Title bar */}
       <div className="flex items-center justify-between gap-3 border-b border-line px-3 py-2 sm:px-4">
-        <div className="flex min-w-0 items-center gap-2">
+        <div
+          id="chrome-title-cluster"
+          className="flex min-w-0 items-center gap-2"
+        >
           <span
             className="inline-flex h-5 w-5 shrink-0 items-center justify-center border border-spidey-red/70 bg-[#1a1012]"
             aria-hidden="true"
@@ -89,7 +95,10 @@ export const SystemChrome = () => {
           </h1>
         </div>
 
-        <div className="flex shrink-0 items-center gap-3 font-mono text-[10px] tracking-[0.1em] text-dim sm:text-[11px]">
+        <div
+          id="chrome-status-cluster"
+          className="flex shrink-0 items-center gap-3 font-mono text-[10px] tracking-[0.1em] text-dim sm:text-[11px]"
+        >
           <span className="hidden lg:inline-flex">
             <WebFluidMeter />
           </span>
