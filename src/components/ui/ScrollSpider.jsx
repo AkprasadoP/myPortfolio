@@ -1,10 +1,10 @@
 import { useEffect, useRef, useState } from "react";
 import { navItems } from "@/data/site";
-import { SpideyMaskMini } from "@/components/ui/SpideyEmblem";
 
 /**
- * Spidey mask that crawls down the left edge with scroll progress.
- * Section lanterns light as he passes. Hidden on touch / reduced-motion.
+ * Section lanterns along the left scroll rail. Lit by the same scroll
+ * progress that drives CrawlingSpider on the strand. Mask icon lives in
+ * CrawlingSpider so it stays clamped below the chrome.
  */
 export const ScrollSpider = () => {
   const [enabled, setEnabled] = useState(true);
@@ -69,8 +69,6 @@ export const ScrollSpider = () => {
 
   if (!enabled) return null;
 
-  const top = `calc(${progress * 100}% + ${8 - progress * 8}px)`;
-
   return (
     <div
       aria-hidden="true"
@@ -87,16 +85,6 @@ export const ScrollSpider = () => {
           />
         );
       })}
-
-      <div className="scroll-spider-wrap" style={{ top }}>
-        <div
-          className={`drop-shadow-[0_2px_8px_rgba(230,36,41,0.5)] ${
-            progress > 0.98 ? "scale-x-[-1]" : ""
-          }`}
-        >
-          <SpideyMaskMini size={26} />
-        </div>
-      </div>
     </div>
   );
 };
