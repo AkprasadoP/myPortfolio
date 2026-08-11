@@ -28,13 +28,18 @@ export const CrawlingSpider = () => {
   return (
     <div
       key={key}
-      className="pointer-events-none fixed top-1.5 z-[45] hidden md:block"
+      className="pointer-events-none fixed top-1.5 z-[45]"
       style={{
         animation: "crawl-across 24s linear forwards",
       }}
     >
       <div className="crawling-spider drop-shadow-[0_2px_6px_rgba(230,36,41,0.45)]">
-        <SpideyMaskMini size={32} />
+        <span className="md:hidden">
+          <SpideyMaskMini size={22} />
+        </span>
+        <span className="hidden md:inline">
+          <SpideyMaskMini size={32} />
+        </span>
       </div>
     </div>
   );

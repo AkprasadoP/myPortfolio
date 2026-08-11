@@ -1050,3 +1050,66 @@ html[data-mode="patrol"] {
   text-align: left;
   min-height: 100vh;
 }
+
+/* —— Mobile Spidey density —— */
+@media (max-width: 767px) {
+  .hero-web-bg::before {
+    opacity: 0.16;
+  }
+
+  .web-corner {
+    width: min(42vw, 150px);
+    height: min(42vw, 150px);
+    opacity: 0.34;
+  }
+
+  .mobile-spidey-strip {
+    position: relative;
+    z-index: 2;
+  }
+
+  .daily-bugle-banner {
+    padding: 0.85rem 0.9rem;
+  }
+
+  .bugle-masthead {
+    font-size: 0.95rem;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.35rem;
+  }
+
+  .bugle-masthead-sub {
+    width: 100%;
+    text-align: center;
+  }
+
+  .bugle-headline {
+    font-size: clamp(1.15rem, 6.2vw, 1.65rem);
+  }
+
+  .thwip-burst__label {
+    font-size: clamp(2rem, 12vw, 3rem);
+  }
+
+  .panel-header {
+    font-size: 10px;
+    gap: 0.5rem;
+  }
+
+  /* Keep Walkman clear of the hamburger / status cluster */
+  .deck {
+    top: 3.15rem;
+    right: 0.4rem;
+    width: min(13.75rem, calc(100vw - 4.25rem));
+  }
+
+  .deck--collapsed {
+    width: min(12.75rem, calc(100vw - 4.25rem));
+  }
+
+  .deck--expanded {
+    width: min(15rem, calc(100vw - 0.8rem));
+    right: 0.4rem;
+  }
+}

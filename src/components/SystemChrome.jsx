@@ -79,7 +79,7 @@ export const SystemChrome = () => {
       <div className="flex items-center justify-between gap-3 border-b border-line px-3 py-2 sm:px-4">
         <div className="flex min-w-0 items-center gap-2">
           <span
-            className="hidden h-5 w-5 shrink-0 items-center justify-center border border-spidey-red/70 bg-[#1a1012] sm:inline-flex"
+            className="inline-flex h-5 w-5 shrink-0 items-center justify-center border border-spidey-red/70 bg-[#1a1012]"
             aria-hidden="true"
           >
             <SpideyEmblem size={14} fill="#e62429" />
@@ -162,6 +162,24 @@ export const SystemChrome = () => {
             onClick={() => setIsMenuOpen(false)}
           />
           <nav className="absolute left-0 right-0 top-full z-40 border-b border-line bg-panel md:hidden">
+            <div className="flex items-center justify-between gap-3 border-b border-line bg-inset/60 px-4 py-2.5">
+              <span className="inline-flex items-center gap-2 font-mono text-[10px] tracking-[0.14em] text-muted">
+                <SpideyEmblem size={14} fill="#e62429" />
+                MOBILE PATROL MENU
+              </span>
+              <button
+                type="button"
+                onClick={togglePatrol}
+                className={cn(
+                  "border px-2 py-1 font-mono text-[10px] tracking-[0.12em]",
+                  patrol
+                    ? "border-spidey-blue text-spidey-blue"
+                    : "border-line-strong text-muted"
+                )}
+              >
+                PATROL: {patrol ? "ON" : "OFF"}
+              </button>
+            </div>
             {navItems.map((item) => {
               const active = activeSection === item.id;
               return (
