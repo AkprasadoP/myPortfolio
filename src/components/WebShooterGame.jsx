@@ -15,7 +15,7 @@ const BUG_TYPES = [
   { label: "BUG", color: "#1F75FE" },
   { label: "NaN", color: "#E62429" },
   { label: "404", color: "#1F75FE" },
-  { label: "null", color: "#8A8A8E" },
+  { label: "NIL", color: "#8A8A8E" },
 ];
 
 const randomBug = (width) => {
@@ -90,6 +90,7 @@ export const WebShooterGame = () => {
     squashed: 0,
     boss: null,
     bossSpawned: false,
+    bossDefeated: false,
     cursor: { x: 0, y: 0 },
     startedAt: 0,
     lastSpawn: 0,
@@ -98,6 +99,7 @@ export const WebShooterGame = () => {
   });
 
   const [score, setScore] = useState(0);
+  const [squashed, setSquashed] = useState(0);
   const [timeLeft, setTimeLeft] = useState(ROUND_MS / 1000);
   const [running, setRunning] = useState(false);
   const [finished, setFinished] = useState(false);
@@ -105,6 +107,7 @@ export const WebShooterGame = () => {
   const [leaderboard, setLeaderboard] = useState(loadLeaderboard);
   const [isRecord, setIsRecord] = useState(false);
   const [incidentMsg, setIncidentMsg] = useState("");
+  const [bossDefeated, setBossDefeated] = useState(false);
   const leaderboardRef = useRef(leaderboard);
 
   const highScore = leaderboard[0]?.score ?? 0;
@@ -119,6 +122,7 @@ export const WebShooterGame = () => {
     setRunning(false);
     setFinished(true);
     setFinalScore(s.score);
+    setBossDefeated(!!s.bossDefeated);
     setTimeLeft(0);
 
     const final = s.score;
@@ -136,7 +140,7 @@ export const WebShooterGame = () => {
     }
   }, []);
 
-  const startRound = useCallback(() => {
+  const startRound = useCallback((opts = {}) => {
     const canvas = canvasRef.current;
     if (!canvas) return;
 
@@ -149,22 +153,39 @@ export const WebShooterGame = () => {
     s.squashed = 0;
     s.boss = null;
     s.bossSpawned = false;
+    s.bossDefeated = false;
     s.incidentUntil = 0;
     s.startedAt = performance.now();
     s.lastSpawn = 0;
     s.lastFrame = performance.now();
     s.cursor = { x: canvas.width / 2, y: canvas.height / 2 };
 
-    setScore(0);
+    // DEV-only shortcut: window.__webShooterBossTest() → spawn boss next kill
+    if (opts && opts.bossTest === true) {
+      s.squashed = BOSS_AFTER - 1;
+      s.score = BOSS_AFTER - 1;
+    }
+
+    setScore(s.score);
+    setSquashed(s.squashed);
     setTimeLeft(ROUND_MS / 1000);
     setFinished(false);
     setFinalScore(0);
     setIsRecord(false);
     setIncidentMsg("");
+    setBossDefeated(false);
     setRunning(true);
   }, []);
 
   useEffect(() => onSystem(EV.WEBSHOOTER_START, () => startRound()), [startRound]);
+
+  useEffect(() => {
+    if (!import.meta.env.DEV) return undefined;
+    window.__webShooterBossTest = () => startRound({ bossTest: true });
+    return () => {
+      delete window.__webShooterBossTest;
+    };
+  }, [startRound]);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -315,8 +336,10 @@ export const WebShooterGame = () => {
                 s.boss.flash = 0.18;
                 if (s.boss.hp <= 0) {
                   s.boss = null;
+                  s.bossDefeated = true;
                   s.score += BOSS_BONUS;
                   setScore(s.score);
+                  setBossDefeated(true);
                   s.incidentUntil = now + 2200;
                   setIncidentMsg("INCIDENT RESOLVED");
                 }
@@ -332,6 +355,7 @@ export const WebShooterGame = () => {
                 s.score += 1;
                 s.squashed += 1;
                 setScore(s.score);
+                setSquashed(s.squashed);
               }
               return !hit;
             });
@@ -348,11 +372,12 @@ export const WebShooterGame = () => {
         ctx.arc(b.x, b.y, b.r, 0, Math.PI * 2);
         ctx.fill();
         ctx.stroke();
+        const tag = typeof b.label === "string" && b.label ? b.label : "BUG";
         ctx.fillStyle = "#0A0A0C";
         ctx.font = "bold 9px Courier New, monospace";
         ctx.textAlign = "center";
         ctx.textBaseline = "middle";
-        ctx.fillText(b.label, b.x, b.y);
+        ctx.fillText(tag, b.x, b.y);
       });
 
       // boss — PRODUCTION INCIDENT
@@ -492,7 +517,7 @@ export const WebShooterGame = () => {
             SCORE <span className="text-spidey-red">{score}</span>
           </span>
           <span>
-            BUGS SQUASHED <span className="text-spidey-blue">{score}</span>
+            BUGS SQUASHED <span className="text-spidey-blue">{squashed}</span>
           </span>
           <span>
             THREAT WINDOW <span className="text-cream">{timeLeft}s</span>
@@ -532,7 +557,7 @@ export const WebShooterGame = () => {
               </p>
               <button
                 type="button"
-                onClick={startRound}
+                onClick={() => startRound()}
                 className="btn-system btn-system-primary"
               >
                 [ start patrol ]
@@ -542,27 +567,40 @@ export const WebShooterGame = () => {
 
           {finished && (
             <div className="absolute inset-0 flex flex-col items-center justify-center gap-3 bg-bg/85 p-4 text-center">
-              <p className="font-mono text-xs leading-relaxed text-cream">
-                PATROL COMPLETE — {finalScore} BUGS SQUASHED
-              </p>
+              {bossDefeated ? (
+                <>
+                  <p className="font-mono text-xs tracking-[0.14em] text-crt">
+                    INCIDENT RESOLVED
+                  </p>
+                  <p className="font-mono text-xs leading-relaxed text-cream">
+                    PRODUCTION INCIDENT closed — score {finalScore}
+                  </p>
+                </>
+              ) : (
+                <p className="font-mono text-xs leading-relaxed text-cream">
+                  PATROL COMPLETE — {finalScore} BUGS SQUASHED
+                </p>
+              )}
               {isRecord && (
                 <p className="animate-blink font-display text-sm tracking-[0.14em] text-bugle">
                   ★ NEW HIGH SCORE ★
                 </p>
               )}
               <p className="font-mono text-[10px] text-dim">
-                {finalScore === 0
-                  ? "even the city has off days."
-                  : finalScore > 15
-                  ? "the neighborhood is proud of you."
-                  : "decent work, hero."}
+                {bossDefeated
+                  ? "threat neutralized. the city sleeps easier."
+                  : finalScore === 0
+                    ? "even the city has off days."
+                    : finalScore > 15
+                      ? "the neighborhood is proud of you."
+                      : "decent work, hero."}
               </p>
               <button
                 type="button"
-                onClick={startRound}
+                onClick={() => startRound()}
                 className="btn-system btn-system-primary"
               >
-                [ patrol again ]
+                {bossDefeated ? "[ file closed — patrol again ]" : "[ patrol again ]"}
               </button>
             </div>
           )}
