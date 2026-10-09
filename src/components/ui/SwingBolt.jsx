@@ -51,29 +51,44 @@ export const SwingBolt = () => {
       bolts.forEach((b) => {
         b.t += 0.055;
         const p = Math.min(1, b.t);
-        const alpha = Math.max(0, 1 - p) * 0.95;
+        const alpha = Math.max(0, 1 - p) * 0.98;
 
+        // glow pass
+        ctx.beginPath();
+        ctx.moveTo(b.ox, b.oy);
+        ctx.quadraticCurveTo(b.cx, b.cy, b.tx, b.ty);
+        ctx.strokeStyle = rgba(redRGB, alpha * 0.4);
+        ctx.lineWidth = 8;
+        ctx.shadowColor = rgba(redRGB, 0.8);
+        ctx.shadowBlur = 12;
+        ctx.stroke();
+        ctx.shadowBlur = 0;
+
+        // main thread
         ctx.beginPath();
         ctx.moveTo(b.ox, b.oy);
         ctx.quadraticCurveTo(b.cx, b.cy, b.tx, b.ty);
         ctx.strokeStyle = rgba(redRGB, alpha);
-        ctx.lineWidth = 2;
+        ctx.lineWidth = 3;
         ctx.stroke();
 
         // secondary fainter thread
         ctx.beginPath();
         ctx.moveTo(b.ox, b.oy);
         ctx.quadraticCurveTo(b.cx, b.cy, b.tx, b.ty);
-        ctx.strokeStyle = `rgba(255, 255, 255, ${alpha * 0.4})`;
-        ctx.lineWidth = 0.7;
+        ctx.strokeStyle = `rgba(255, 255, 255, ${alpha * 0.5})`;
+        ctx.lineWidth = 1;
         ctx.stroke();
 
         if (p < 0.35) {
           ctx.beginPath();
           ctx.strokeStyle = rgba(redRGB, alpha);
-          ctx.lineWidth = 1.4;
+          ctx.lineWidth = 2;
+          ctx.shadowColor = rgba(redRGB, 0.9);
+          ctx.shadowBlur = 8;
           ctx.arc(b.tx, b.ty, 14 - p * 14, 0, Math.PI * 2);
           ctx.stroke();
+          ctx.shadowBlur = 0;
         }
       });
       bolts = bolts.filter((b) => b.t < 1);

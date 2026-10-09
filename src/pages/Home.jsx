@@ -1,5 +1,6 @@
 import { SystemChrome } from "../components/SystemChrome";
 import { HeroSection } from "../components/HeroSection";
+import { StackMarquee } from "../components/StackMarquee";
 import { AboutSection } from "../components/AboutSection";
 import { SkillsSection } from "../components/SkillsSection";
 import { ExperimentsSection } from "../components/ExperimentsSection";
@@ -27,7 +28,7 @@ export const Home = () => {
 
         <div className="relative z-10 mx-auto flex w-full max-w-5xl flex-col gap-8 px-3 py-6 sm:gap-10 sm:px-5 sm:py-8 md:px-8">
           <HeroSection />
-          <SectionRule />
+          <StackMarquee />
           <AboutSection />
           <SectionRule />
           <ExperienceSection />

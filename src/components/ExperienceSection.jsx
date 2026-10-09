@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { ChevronDown } from "lucide-react";
 import { experiences } from "@/data/site";
 import { ComicReveal } from "@/components/ui/ComicReveal";
+import { SectionHeading } from "@/components/ui/SectionHeading";
 
 export const ExperienceSection = () => {
   const [openId, setOpenId] = useState(experiences[0]?.id ?? null);
@@ -13,6 +14,7 @@ export const ExperienceSection = () => {
 
   return (
     <section id="experience" className="scroll-mt-4">
+      <SectionHeading ordinal="03" title="Patrol log" sub={`${experiences.length} entries · verified`} />
       <ComicReveal className="panel comic-frame accent-blue">
         <div className="panel-header">
           <span>PATROL LOG</span>

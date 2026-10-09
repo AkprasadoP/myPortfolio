@@ -2,22 +2,22 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { projects, site } from "@/data/site";
 import { ComicReveal } from "@/components/ui/ComicReveal";
+import { SectionHeading } from "@/components/ui/SectionHeading";
+import { useComicBurst, ComicBursts } from "@/components/ui/ComicBurst";
 
 export const ProjectsSection = () => {
   const [openId, setOpenId] = useState(projects[0]?.id ?? null);
   const openProject = projects.find((p) => p.id === openId) ?? null;
+  const [bursts, fireBurst] = useComicBurst();
 
   return (
     <section id="projects" className="scroll-mt-4">
+      <ComicBursts bursts={bursts} />
+      <SectionHeading ordinal="05" title="Case files" sub={`${projects.filter((p) => p.featured).length} featured systems`} />
       <ComicReveal className="panel comic-frame accent-red">
         <div className="panel-header">
           <span>CASE FILES / PROJECTS</span>
           <span>/home/ashish/projects · front page</span>
-        </div>
-
-        <div className="border-b border-line bg-[#18131a] px-4 py-3 text-left font-mono text-[10px] tracking-[0.16em] text-dim">
-          DAILY BUGLE EXCLUSIVE: LOCAL ENGINEER SHIPS {projects.filter((p) => p.featured).length}{" "}
-          FEATURED SYSTEMS
         </div>
 
         <div className="grid lg:grid-cols-[1fr_1.05fr]">
@@ -74,7 +74,41 @@ export const ProjectsSection = () => {
                   <p className="font-mono text-[10px] tracking-[0.14em] text-dim">
                     FILE READOUT
                   </p>
-                  <h3 className="mt-2 font-ui text-xl tracking-wide text-cream">
+
+                  <div className="mt-3 overflow-hidden border border-line bg-bg">
+                    <div className="flex items-center gap-1.5 border-b border-line bg-inset px-3 py-2">
+                      <span className="h-2 w-2 rounded-full bg-line-strong" aria-hidden="true" />
+                      <span className="h-2 w-2 rounded-full bg-line-strong" aria-hidden="true" />
+                      <span className="h-2 w-2 rounded-full bg-spidey-red/70" aria-hidden="true" />
+                      <span className="ml-2 truncate font-mono text-[10px] tracking-[0.08em] text-dim">
+                        {openProject.demoUrl
+                          ? openProject.demoUrl.replace(/^https?:\/\//, "").replace(/\/$/, "")
+                          : `./${openProject.dirname}`}
+                      </span>
+                    </div>
+                    {openProject.screenshot ? (
+                      <img
+                        src={openProject.screenshot}
+                        alt={`${openProject.title} preview`}
+                        loading="lazy"
+                        className="aspect-[16/9] w-full object-cover object-top"
+                      />
+                    ) : (
+                      <div className="flex aspect-[16/9] flex-col justify-between p-4 sm:p-5">
+                        <p className="font-mono text-[11px] tracking-[0.1em] text-spidey-red">
+                          ./{openProject.dirname}
+                        </p>
+                        <p className="font-ui text-xl font-bold leading-tight tracking-tight text-fg sm:text-2xl">
+                          {openProject.title}
+                        </p>
+                        <p className="truncate font-mono text-[11px] text-dim">
+                          {openProject.tags.join(" · ")}
+                        </p>
+                      </div>
+                    )}
+                  </div>
+
+                  <h3 className="mt-4 font-ui text-xl tracking-tight text-cream">
                     {openProject.title}
                   </h3>
                   <p className="mt-1 font-mono text-xs text-spidey-blue">
@@ -110,9 +144,10 @@ export const ProjectsSection = () => {
                         href={openProject.demoUrl}
                         target="_blank"
                         rel="noreferrer"
+                        onClick={() => fireBurst()}
                         className="btn-system btn-system-primary"
                       >
-                        [ open demo ]
+                        demo
                       </a>
                     )}
                     {openProject.githubUrl && (
@@ -120,9 +155,10 @@ export const ProjectsSection = () => {
                         href={openProject.githubUrl}
                         target="_blank"
                         rel="noreferrer"
+                        onClick={() => fireBurst()}
                         className="btn-system"
                       >
-                        [ source ]
+                        source
                       </a>
                     )}
                   </div>
@@ -137,9 +173,9 @@ export const ProjectsSection = () => {
             href={site.social.github}
             target="_blank"
             rel="noreferrer"
-            className="font-mono text-xs text-muted hover:text-spidey-red"
+            className="font-mono text-xs text-muted hover:text-fg"
           >
-            cd ../.. &amp;&amp; open github.com/AkprasadoP →
+            github.com/AkprasadoP →
           </a>
         </div>
       </ComicReveal>

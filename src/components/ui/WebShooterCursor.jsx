@@ -88,40 +88,49 @@ export const WebShooterCursor = () => {
         ctx.save();
         ctx.translate(mouseX, mouseY);
 
-        // soft red glow
+        // glow
         ctx.beginPath();
-        ctx.fillStyle = rgba(redRGB, 0.12);
-        ctx.arc(0, 0, 16, 0, Math.PI * 2);
+        ctx.fillStyle = rgba(redRGB, 0.22);
+        ctx.shadowColor = rgba(redRGB, 0.8);
+        ctx.shadowBlur = 14;
+        ctx.arc(0, 0, 18, 0, Math.PI * 2);
         ctx.fill();
+        ctx.shadowBlur = 0;
 
         // web spokes
-        ctx.strokeStyle = rgba(redRGB, 0.95);
-        ctx.lineWidth = 1.35;
+        ctx.strokeStyle = rgba(redRGB, 1);
+        ctx.lineWidth = 1.8;
+        ctx.shadowColor = rgba(redRGB, 0.6);
+        ctx.shadowBlur = 5;
         for (let i = 0; i < 8; i += 1) {
           const a = (i / 8) * Math.PI * 2 - Math.PI / 2;
           ctx.beginPath();
           ctx.moveTo(Math.cos(a) * 3, Math.sin(a) * 3);
-          ctx.lineTo(Math.cos(a) * 13, Math.sin(a) * 13);
+          ctx.lineTo(Math.cos(a) * 15, Math.sin(a) * 15);
           ctx.stroke();
         }
 
         // concentric web rings
-        ctx.strokeStyle = rgba(redRGB, 0.75);
-        ctx.lineWidth = 1.1;
+        ctx.strokeStyle = rgba(redRGB, 0.9);
+        ctx.lineWidth = 1.4;
         [5, 9, 13].forEach((r) => {
           ctx.beginPath();
           ctx.arc(0, 0, r, 0, Math.PI * 2);
           ctx.stroke();
         });
+        ctx.shadowBlur = 0;
 
         // blue hub (web-shooter core)
         ctx.beginPath();
-        ctx.fillStyle = rgba(blueRGB, 0.95);
-        ctx.arc(0, 0, 2.4, 0, Math.PI * 2);
+        ctx.fillStyle = rgba(blueRGB, 1);
+        ctx.shadowColor = rgba(blueRGB, 0.9);
+        ctx.shadowBlur = 8;
+        ctx.arc(0, 0, 3, 0, Math.PI * 2);
         ctx.fill();
         ctx.strokeStyle = "#f2f2f0";
-        ctx.lineWidth = 0.8;
+        ctx.lineWidth = 1;
         ctx.stroke();
+        ctx.shadowBlur = 0;
 
         ctx.restore();
       }

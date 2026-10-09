@@ -1,10 +1,12 @@
 import { about, site } from "@/data/site";
 import Clipping from "@/components/Clipping";
 import { ComicReveal } from "@/components/ui/ComicReveal";
+import { SectionHeading } from "@/components/ui/SectionHeading";
 
 export const AboutSection = () => {
   return (
     <section id="notes" className="scroll-mt-4">
+      <SectionHeading ordinal="02" title="Civilian file" sub="about · entry #001" />
       <ComicReveal className="panel accent-blue">
         <div className="panel-header">
           <span>CIVILIAN FILE / ABOUT</span>
@@ -13,29 +15,23 @@ export const AboutSection = () => {
 
         <div className="grid gap-8 p-5 sm:p-7 lg:grid-cols-[1.4fr_0.8fr]">
           <div className="space-y-5 text-left">
-            <p className="font-mono text-xs tracking-[0.14em] text-dim">
-              Dear Internet,
-            </p>
-
-            <div className="space-y-4 font-body text-[15px] leading-relaxed text-fg">
-              <p>
-                I&apos;m Ashish.
+            <div className="space-y-4 text-[15px] leading-relaxed text-fg">
+              <p className="font-semibold tracking-tight text-fg">
+                I&apos;m Ashish — I build backend systems and AI tooling.
               </p>
-              <p>
-                I like taking complicated systems apart just to understand why
-                they work. Then I usually end up rebuilding them.
+              <p className="text-muted">
+                I like taking complicated systems apart to understand why
+                they work, then rebuilding them simpler.
               </p>
-              <p>
-                I graduated from IIIT Jabalpur in 2026 with a B.Tech in Computer
-                Science — foundation in {about.foundations.join(", ")}. I&apos;m
-                currently an{" "}
-                <span className="text-spidey-red">SDE Intern at Classplus</span>{" "}
-                in Noida. Earlier roles at{" "}
-                <span className="text-spidey-blue">AI Talent Force (Japan)</span>{" "}
+              <p className="text-muted">
+                B.Tech Computer Science, IIIT Jabalpur (2026) — {about.foundations.join(", ")}.
+                Currently{" "}
+                <span className="text-fg">SDE Intern at Classplus</span>{" "}
+                in Noida. Previously{" "}
+                <span className="text-fg">AI Talent Force (Japan)</span>{" "}
                 and{" "}
-                <span className="text-spidey-blue">BlueStack</span> put that
-                curiosity into production — AI cybersecurity, APIs, and systems
-                that have to keep working after you ship them.
+                <span className="text-fg">BlueStack</span> — production AI
+                security, APIs, and systems that hold up after deploy.
               </p>
             </div>
 
@@ -52,7 +48,7 @@ export const AboutSection = () => {
 
             <div className="flex flex-wrap gap-2 pt-1">
               <a href={site.resumeUrl} download className="btn-system">
-                [ download resume ]
+                resume
               </a>
               <a
                 href="#contact"
@@ -66,7 +62,7 @@ export const AboutSection = () => {
                 }}
                 className="btn-system btn-system-primary"
               >
-                [ open channel ]
+                contact
               </a>
             </div>
           </div>
@@ -90,13 +86,6 @@ export const AboutSection = () => {
             <Clipping date={site.lastUpdated}>
               {site.tagline}
             </Clipping>
-
-            <p className="hand-note ml-2">
-              TODO: sleep
-            </p>
-            <p className="font-mono text-[10px] tracking-[0.1em] text-dim">
-              works on localhost
-            </p>
           </aside>
         </div>
       </ComicReveal>

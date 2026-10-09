@@ -552,15 +552,14 @@ export const WebShooterGame = () => {
           {!running && !finished && (
             <div className="absolute inset-0 flex flex-col items-center justify-center gap-3 bg-bg/80 p-4 text-center">
               <p className="font-mono text-xs text-muted">
-                The city needs you, hero. Squash 15 bugs to trigger a
-                PRODUCTION INCIDENT. 60s patrol.
+                15 bugs triggers an incident. 60s round.
               </p>
               <button
                 type="button"
                 onClick={() => startRound()}
                 className="btn-system btn-system-primary"
               >
-                [ start patrol ]
+                start
               </button>
             </div>
           )}
@@ -582,25 +581,16 @@ export const WebShooterGame = () => {
                 </p>
               )}
               {isRecord && (
-                <p className="animate-blink font-display text-sm tracking-[0.14em] text-bugle">
-                  ★ NEW HIGH SCORE ★
+                <p className="font-mono text-xs tracking-[0.14em] text-bugle">
+                  new high score
                 </p>
               )}
-              <p className="font-mono text-[10px] text-dim">
-                {bossDefeated
-                  ? "threat neutralized. the city sleeps easier."
-                  : finalScore === 0
-                    ? "even the city has off days."
-                    : finalScore > 15
-                      ? "the neighborhood is proud of you."
-                      : "decent work, hero."}
-              </p>
               <button
                 type="button"
                 onClick={() => startRound()}
                 className="btn-system btn-system-primary"
               >
-                {bossDefeated ? "[ file closed — patrol again ]" : "[ patrol again ]"}
+                retry
               </button>
             </div>
           )}

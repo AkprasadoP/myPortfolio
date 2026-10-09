@@ -3,6 +3,7 @@ import { useToast } from "@/hooks/use-toast";
 import { site } from "@/data/site";
 import { LOADING_COPY } from "@/components/ui/LoadingLabel";
 import { ComicReveal } from "@/components/ui/ComicReveal";
+import { useComicBurst, ComicBursts } from "@/components/ui/ComicBurst";
 
 export const ContactSection = () => {
   const { toast } = useToast();
@@ -12,6 +13,7 @@ export const ContactSection = () => {
     email: "",
     message: "",
   });
+  const [bursts, fireBurst] = useComicBurst();
 
   const accessKey = import.meta.env.VITE_WEB3FORMS_ACCESS_KEY;
 
@@ -77,6 +79,7 @@ export const ContactSection = () => {
 
   return (
     <section id="contact" className="scroll-mt-4 pb-4">
+      <ComicBursts bursts={bursts} />
       <ComicReveal className="panel accent-red">
         <div className="panel-header">
           <span>OPEN A CHANNEL</span>
@@ -88,6 +91,9 @@ export const ContactSection = () => {
             <p className="text-xs leading-relaxed text-dim">
               Prefer the old way? Use the addresses below. Or leave a message in
               the terminal.
+            </p>
+            <p className="text-[11px] leading-relaxed text-crt">
+              ◉ {site.availability.label} — {site.availability.note}.
             </p>
 
             <div className="space-y-3 border border-line bg-inset p-4">
@@ -189,11 +195,10 @@ export const ContactSection = () => {
                 <button
                   type="submit"
                   disabled={isSubmitting}
+                  onClick={() => !isSubmitting && fireBurst()}
                   className="btn-system btn-system-primary disabled:cursor-not-allowed disabled:opacity-50"
                 >
-                  {isSubmitting
-                    ? `[ ${LOADING_COPY} ]`
-                    : "[ send message ]"}
+                  {isSubmitting ? LOADING_COPY : "send"}
                 </button>
               </div>
             </div>

@@ -77,19 +77,22 @@ export const WebBackground = () => {
       const parallax = mouse.nx * 14;
       const swayX = Math.sin(t) * s.sway * 3 + parallax;
       ctx.beginPath();
-      ctx.strokeStyle = rgba(blueRGB, 0.13);
-      ctx.lineWidth = 1;
+      ctx.strokeStyle = rgba(blueRGB, 0.35);
+      ctx.lineWidth = 2;
+      ctx.shadowColor = rgba(blueRGB, 0.5);
+      ctx.shadowBlur = 4;
       ctx.moveTo(s.x + swayX, s.top);
       ctx.lineTo(s.x + swayX + s.lean, s.top + s.height);
       ctx.stroke();
+      ctx.shadowBlur = 0;
 
       const steps = 5;
       for (let i = 0; i <= steps; i += 1) {
         const y = s.top + (s.height * i) / steps;
         const baseX = s.x + swayX + (s.lean * i) / steps;
         ctx.beginPath();
-        ctx.strokeStyle = rgba(blueRGB, 0.075);
-        ctx.lineWidth = 0.7;
+        ctx.strokeStyle = rgba(blueRGB, 0.25);
+        ctx.lineWidth = 1.2;
         ctx.moveTo(baseX - 26 + swayX * 0.5, y);
         ctx.lineTo(baseX + 26 + swayX * 0.5, y);
         ctx.stroke();
@@ -141,9 +144,12 @@ export const WebBackground = () => {
         if (p.x < -4) p.x = width + 4;
         if (p.x > width + 4) p.x = -4;
         ctx.beginPath();
-        ctx.fillStyle = rgba(redRGB, p.alpha);
-        ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+        ctx.fillStyle = rgba(redRGB, p.alpha * 1.8);
+        ctx.shadowColor = rgba(redRGB, 0.6);
+        ctx.shadowBlur = 4;
+        ctx.arc(p.x, p.y, p.r * 1.4, 0, Math.PI * 2);
         ctx.fill();
+        ctx.shadowBlur = 0;
       });
 
       rafId = requestAnimationFrame(draw);

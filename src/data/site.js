@@ -9,6 +9,10 @@ export const site = {
   location: "Noida, India",
   currentRole: "SDE Intern @ Classplus",
   status: "ONLINE",
+  availability: {
+    label: "OPEN TO CONVERSATIONS",
+    note: "Currently interning at Classplus · typically replies within 48 hours",
+  },
   lastUpdated: "10.08.2026",
   build: "2026.08",
   email: "akprasad07mm@gmail.com",
@@ -223,7 +227,24 @@ export const leetcode = {
   ],
 };
 
+/**
+ * Case files. Optional `screenshot` per project: drop a 1280×720 PNG/JPG in
+ * /public/projects/ (e.g. "/projects/atf-weather.png") and set the path here.
+ * Without one, the readout renders a styled title card instead.
+ */
 export const projects = [
+  {
+    id: "livepulse",
+    dirname: "livepulse/",
+    title: "LivePulse — Real-Time Classroom Infrastructure",
+    description:
+      "Production-minded live-classroom backend: concurrent quiz answering with first-correct-winner election enforced by PostgreSQL row locks, idempotent retries, ordered doubt queues, presence, and reconnect recovery across horizontally scaled WebSocket instances — measured under load, covered by 250+ tests.",
+    tags: ["TypeScript", "Fastify", "PostgreSQL", "Redis", "WebSockets"],
+    demoUrl: null,
+    githubUrl: null,
+    note: "Backend complete through 11 phases · frontend in progress — source goes public with the demo.",
+    featured: true,
+  },
   {
     id: "atf-weather",
     dirname: "atf-weather/",

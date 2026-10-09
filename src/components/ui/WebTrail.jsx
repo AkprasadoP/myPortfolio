@@ -66,14 +66,17 @@ export const WebTrail = () => {
 
       for (const seg of segments) {
         const age = now - seg.t;
-        const alpha = Math.max(0, 1 - age / LIFE_MS) * 0.55;
+        const alpha = Math.max(0, 1 - age / LIFE_MS) * 0.85;
         ctx.beginPath();
         ctx.strokeStyle = rgba(spideyColors().redRGB, alpha);
-        ctx.lineWidth = 1.1;
+        ctx.lineWidth = 2;
         ctx.lineCap = "round";
+        ctx.shadowColor = rgba(spideyColors().redRGB, alpha * 0.7);
+        ctx.shadowBlur = 6;
         ctx.moveTo(seg.x1, seg.y1);
         ctx.lineTo(seg.x2, seg.y2);
         ctx.stroke();
+        ctx.shadowBlur = 0;
       }
 
       if (segments.length || now - lastMove < LIFE_MS) {
