@@ -4,7 +4,8 @@
  * leetcode.com/graphql returns everything but blocks browser CORS, and every
  * community mirror is flaky, so we fan out across three sources in parallel:
  *   1. direct GraphQL (works wherever CORS isn't enforced)
- *   2. alfa-leetcode-api mirror
+ *   2. alfa-leetcode-api mirror (split across /profile, /solved, /contest —
+ *      the root endpoint alone no longer carries solve counts)
  *   3. allorigins raw relay back to the GraphQL endpoint
  * First source to return a valid partial wins. Results are cached in
  * localStorage for TTL_MS so page loads stay instant and the section never
@@ -111,8 +112,9 @@ export const normalizeAlfa = (json) => {
   const solved = toNumber(json.totalSolved ?? json.solved?.solvedProblem);
   const ranking = toNumber(json.ranking ?? json.profile?.ranking);
   const contest = json.contest;
-  const contestRating =
+  const rawRating =
     toNumber(json.contestRating) ?? toNumber(contest?.contestRating);
+  const contestRating = rawRating != null ? Math.round(rawRating) : undefined;
 
   const partial = {
     solved,
@@ -168,10 +170,41 @@ const sources = () => [
   {
     name: "alfa",
     run: async () => {
-      const res = await fetchWithTimeout(
-        `https://alfa-leetcode-api.onrender.com/${HANDLE}`
-      );
-      return normalizeAlfa(res.ok ? await res.json() : null);
+      const get = async (path) => {
+        try {
+          const res = await fetchWithTimeout(
+            `https://alfa-leetcode-api.onrender.com/${HANDLE}${path}`
+          );
+          return res.ok ? await res.json() : null;
+        } catch {
+          return null;
+        }
+      };
+      const [profile, solved, contest] = await Promise.all([
+        get(""),
+        get("/solved"),
+        get("/contest"),
+      ]);
+      if (!profile && !solved && !contest) return null;
+
+      const pickSubs = (rows) =>
+        toNumber(rows?.find((r) => r.difficulty === "All")?.submissions);
+      const acAll = pickSubs(solved?.acSubmissionNum);
+      const totalAll = pickSubs(solved?.totalSubmissionNum);
+      return normalizeAlfa({
+        ...(profile ?? {}),
+        totalSolved: solved?.solvedProblem,
+        easySolved: solved?.easySolved,
+        mediumSolved: solved?.mediumSolved,
+        hardSolved: solved?.hardSolved,
+        acceptanceRate:
+          acAll != null && totalAll ? (acAll / totalAll) * 100 : undefined,
+        totalSubmissions: totalAll,
+        contestRating: contest?.contestRating,
+        contestAttend: contest?.contestAttend,
+        contestTopPercentage: contest?.contestTopPercentage,
+        contestGlobalRanking: contest?.contestGlobalRanking,
+      });
     },
   },
   {

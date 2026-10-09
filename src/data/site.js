@@ -163,11 +163,14 @@ export const experiences = [
 export const leetcode = {
   handle: "akprasad14",
   profileUrl: "https://leetcode.com/u/akprasad14/",
-  rank: "238,574",
+  // Snapshot refreshed 2026-10-09 against live GraphQL. The section
+  // revalidates in the browser via lib/leetcode-live.js; this is the
+  // fallback every visitor sees when all live sources fail.
+  rank: "244,723",
   location: "India · IIIT Jabalpur · Web Developer",
-  solved: 462,
-  acceptance: 62.73,
-  submissions: 872,
+  solved: 467,
+  acceptance: 62.94,
+  submissions: 877,
   pastYearSubmissions: 409,
   activeDays: 89,
   maxStreak: 6,
@@ -178,8 +181,8 @@ export const leetcode = {
     { name: "MySQL", count: 1 },
   ],
   difficulty: [
-    { level: "EASY", solved: 139, total: 958, color: "#00c2a8" },
-    { level: "MED", solved: 263, total: 2098, color: "#ffc01e" },
+    { level: "EASY", solved: 142, total: 958, color: "#00c2a8" },
+    { level: "MED", solved: 265, total: 2098, color: "#ffc01e" },
     { level: "HARD", solved: 60, total: 962, color: "#ff375f" },
   ],
   skills: [
@@ -210,9 +213,9 @@ export const leetcode = {
   ],
   contest: {
     rating: 1698,
-    globalRank: "121,200 / 877,640",
+    globalRank: "124,773 / 887,132",
     attended: 3,
-    topPct: "14.06%",
+    topPct: "14.31%",
     gauge: { min: 1350, max: 2000 },
   },
   beats: [
