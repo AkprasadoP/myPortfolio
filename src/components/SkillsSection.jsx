@@ -1,5 +1,5 @@
 import { stack } from "@/data/site";
-import { WebShooterGame } from "@/components/WebShooterGame";
+import { SectionHeading } from "@/components/ui/SectionHeading";
 import { ComicReveal } from "@/components/ui/ComicReveal";
 
 const groups = [
@@ -12,40 +12,32 @@ const groups = [
 
 export const SkillsSection = () => {
   return (
-    <section id="stack" className="scroll-mt-4">
-      <ComicReveal className="panel comic-frame accent-red">
-        <div className="panel-header">
-          <span>GADGETS / STACK</span>
-          <span>web-lab inventory</span>
-        </div>
+    <section id="stack" className="scroll-mt-24">
+      <SectionHeading ordinal="05" kicker="Gadgets" title="Stack" sub="What I reach for when building. No skill meters." />
+      <ComicReveal className="panel accent-blue">
 
-        <div className="p-5 sm:p-7">
-          <p className="mb-6 max-w-2xl font-mono text-xs leading-relaxed text-dim">
-            Configuration readout — what I reach for when building. No skill
-            meters. No progress bars. Just the gadgets on the belt.
-          </p>
-
-          <div className="space-y-0 border border-line bg-inset">
+        <div className="py-2">
+          <div>
             {groups.map((group, index) => (
               <div
                 key={group.key}
                 className={
-                  index === 0 ? "" : "border-t border-dotted border-line-strong"
+                  index === 0 ? "" : "border-t border-line"
                 }
               >
-                <div className="grid gap-3 px-4 py-4 sm:grid-cols-[140px_1fr] sm:items-start">
-                  <p className="font-mono text-[11px] tracking-[0.14em] text-spidey-red">
+                <div className="grid gap-2 px-5 py-4 sm:grid-cols-[140px_1fr] sm:items-baseline sm:px-7">
+                  <p className="font-mono text-[10.5px] tracking-[0.16em] text-dim">
                     {group.label}
                   </p>
-                  <p className="font-mono text-sm leading-7 text-fg">
-                    {group.items.join("   ")}
-                  </p>
+                  <ul className="flex flex-wrap gap-x-5 gap-y-1 text-[15px] text-fg">
+                    {group.items.map((item) => (
+                      <li key={item}>{item}</li>
+                    ))}
+                  </ul>
                 </div>
               </div>
             ))}
           </div>
-
-          <WebShooterGame />
         </div>
       </ComicReveal>
     </section>

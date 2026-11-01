@@ -1,10 +1,10 @@
 /* Global media utility — fixed top-right application chrome */
 .deck {
   position: fixed;
-  top: 2.85rem; /* below mobile title bar */
-  right: 0.5rem;
+  top: auto;
+  right: 1rem;
   left: auto;
-  bottom: auto;
+  bottom: 1rem;
   z-index: 35;
   width: min(17.5rem, calc(100vw - 1rem));
   font-family: var(--font-mono, "Courier New", monospace);
@@ -18,17 +18,16 @@
 
 .deck--expanded {
   width: min(17.5rem, calc(100vw - 1rem));
-  max-height: calc(100vh - 3.5rem);
+  max-height: calc(100vh - 5rem);
 }
 
 .deck__device {
   pointer-events: auto;
   width: 100%;
-  border: 1px solid #323238;
-  background: rgba(16, 16, 18, 0.96);
-  box-shadow:
-    2px 2px 0 rgba(0, 0, 0, 0.35),
-    0 0 0 1px rgba(0, 0, 0, 0.2);
+  border: 1px solid var(--border-strong);
+  background: rgba(13, 15, 20, 0.94);
+  backdrop-filter: blur(8px);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.45);
 }
 
 .deck__device--empty {
@@ -312,11 +311,11 @@
   cursor: not-allowed;
 }
 
-/* Desktop: below title bar + menu bar, clear of nav */
+/* Desktop: docked bottom-right, out of the reading column */
 @media (min-width: 768px) {
   .deck {
-    top: 5.15rem;
-    right: 0.75rem;
+    bottom: 1.25rem;
+    right: 1.25rem;
   }
 
   .deck--collapsed {
@@ -329,19 +328,12 @@
   }
 }
 
-@media (min-width: 1024px) {
-  .deck {
-    top: 5.15rem;
-    right: 1rem;
-  }
-}
-
 /* Compact mobile utility — stay in viewport, clear of menu button row */
 @media (max-width: 639px) {
   .deck {
-    top: 3.15rem;
-    right: 0.4rem;
-    width: min(13.75rem, calc(100vw - 4.25rem));
+    bottom: 0.75rem;
+    right: 0.75rem;
+    width: min(13.75rem, calc(100vw - 1.5rem));
   }
 
   .deck--collapsed {
@@ -350,7 +342,7 @@
 
   .deck--expanded {
     width: min(15rem, calc(100vw - 0.8rem));
-    max-height: calc(100vh - 3.5rem);
+    max-height: calc(100vh - 5rem);
   }
 
   .deck__vol span {

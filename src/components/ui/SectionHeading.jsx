@@ -1,13 +1,18 @@
 /**
- * Specimen section heading — numbered-triplet ordinal + oversized title.
- * Linear discipline: the number is small and red, the title does the work.
+ * Section heading — red mono ordinal, a quiet in-universe kicker
+ * ("case files", "patrol log"), then the plain-English title in
+ * condensed poster type. The title must make sense to a recruiter;
+ * the kicker is where the theme lives.
  */
-export const SectionHeading = ({ ordinal, title, sub }) => {
+export const SectionHeading = ({ ordinal, kicker, title, sub }) => {
   return (
     <div className="specimen-head">
       <p className="specimen-head__ordinal">{ordinal}</p>
-      <h2 className="specimen-head__title">{title}</h2>
-      {sub && <p className="specimen-head__sub">{sub}</p>}
+      <div>
+        {kicker && <p className="specimen-head__kicker">{kicker}</p>}
+        <h2 className="specimen-head__title">{title}</h2>
+        {sub && <p className="specimen-head__sub">{sub}</p>}
+      </div>
     </div>
   );
 };

@@ -1,6 +1,6 @@
 /**
  * Tiny DOM CustomEvent bus for cross-component commands
- * (palette → walkman / patrol / web-shooter).
+ * (palette → walkman / web-shooter).
  */
 
 export const emitSystem = (name, detail = {}) => {
@@ -18,7 +18,6 @@ export const onSystem = (name, handler) => {
 export const EV = {
   WALKMAN_PLAY: "system:walkman-play",
   WALKMAN_PAUSE: "system:walkman-pause",
-  PATROL_TOGGLE: "system:patrol-toggle",
   WEBSHOOTER_START: "system:webshooter-start",
   PALETTE_OPEN: "system:palette-open",
 };

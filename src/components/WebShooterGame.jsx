@@ -78,7 +78,7 @@ const formatStamp = (at) => {
   return `${mm}.${dd} ${hh}:${mi}`;
 };
 
-export const WebShooterGame = () => {
+export const WebShooterGame = ({ autoStart = false }) => {
   const canvasRef = useRef(null);
   const wrapRef = useRef(null);
   const stateRef = useRef({
@@ -501,8 +501,15 @@ export const WebShooterGame = () => {
     }
   };
 
+  // Mounted lazily from the Lab section — start immediately when the
+  // launcher (or the command palette) is what mounted us.
+  useEffect(() => {
+    if (autoStart) startRound();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   return (
-    <div className="mt-6 border border-line bg-inset">
+    <div className="border border-line bg-inset">
       <div className="panel-header" style={{ "--panel-accent": "#E62429" }}>
         <span>web_shooter.exe</span>
         <span>gadget / field demo</span>

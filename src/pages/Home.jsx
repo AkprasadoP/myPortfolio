@@ -6,41 +6,27 @@ import { SkillsSection } from "../components/SkillsSection";
 import { ExperimentsSection } from "../components/ExperimentsSection";
 import { ExperienceSection } from "../components/ExperienceSection";
 import { ProjectsSection } from "../components/ProjectsSection";
+import { OpenSourceSection } from "../components/OpenSourceSection";
 import { LeetCodeSection } from "../components/LeetCodeSection";
 import { ContactSection } from "../components/ContactSection";
 import { Footer } from "../components/Footer";
-import { WebStrand } from "../components/WebStrand";
-import { ScrollSpider } from "../components/ui/ScrollSpider";
-
-const SectionRule = () => <hr className="section-rule" />;
 
 export const Home = () => {
   return (
-    <div className="system-grain flex h-screen w-full flex-col overflow-hidden bg-bg text-fg">
+    <div className="relative z-10 flex min-h-screen w-full flex-col overflow-x-clip text-fg">
       <SystemChrome />
-      <ScrollSpider />
 
-      <main
-        id="main-scroll-area"
-        className="relative z-10 flex-1 overflow-y-auto overflow-x-hidden scroll-smooth pb-8"
-      >
-        <WebStrand />
-
-        <div className="relative z-10 mx-auto flex w-full max-w-5xl flex-col gap-8 px-3 py-6 sm:gap-10 sm:px-5 sm:py-8 md:px-8">
+      <main id="main" className="relative flex-1">
+        <div className="mx-auto flex w-full max-w-6xl flex-col gap-24 px-4 pb-16 pt-10 sm:gap-32 sm:px-6 sm:pt-16 md:px-10">
           <HeroSection />
           <StackMarquee />
           <AboutSection />
-          <SectionRule />
           <ExperienceSection />
-          <SectionRule />
-          <SkillsSection />
-          <SectionRule />
           <ProjectsSection />
-          <SectionRule />
-          <ExperimentsSection />
-          <SectionRule />
+          <OpenSourceSection />
+          <SkillsSection />
           <LeetCodeSection />
-          <SectionRule />
+          <ExperimentsSection />
           <ContactSection />
         </div>
 

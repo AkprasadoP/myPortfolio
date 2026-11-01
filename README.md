@@ -1,8 +1,8 @@
-# Ashish Prasad — Personal System
+# Ashish Prasad — Portfolio
 
-Personal workbench / portfolio for [Ashish Prasad](https://akprasad-portfolio.vercel.app/).
+Portfolio for [Ashish Prasad](https://akprasad-portfolio.vercel.app/), backend / full-stack software engineer.
 
-Retro personal-computer interface: notes, stack inventory, experiments, project directory, field log, and contact channel.
+Noir Spider-Man theme: near-black, one crimson accent, condensed poster type (Anton) and mono labels (JetBrains Mono). The theme lives in small details — section kickers, a static corner web, a few easter eggs — while every heading stays plain English.
 
 ## Stack
 
@@ -38,37 +38,28 @@ The contact form uses [Web3Forms](https://web3forms.com). The access key is load
 
 ## Sections
 
-1. HOME — identity + polaroid card  
-2. NOTES — about / notebook entry  
-3. GADGETS — tools inventory + web-shooter mini-game  
-4. FIELD TESTS — current interests + scanner feed  
-5. PROJECTS — directory + file readout  
-6. EXPERIENCE — field log  
-7. CONTACT — channel + terminal compose  
+1. Index — hero, proof strip (LeetCode + projects + internships)
+2. About — summary, measured outcomes, working motto
+3. Experience — expandable role log
+4. Work — project list + readout, then the LivePulse architecture deep dive
+5. Stack — tools by layer
+6. Problem solving — live LeetCode stats (`src/lib/leetcode-live.js`, bundled snapshot fallback)
+7. Lab — current interests + opt-in web-shooter game
+8. Contact — what I'm looking for, links, Web3Forms message form
 
-## Interactive extras
+Content lives in `src/data/site.js`; the LivePulse deep-dive copy lives in `src/data/livepulse.js`.
+
+## Interactive pieces
 
 | Component | Path | Where |
 |-----------|------|--------|
-| `WebShooterGame` | `src/components/WebShooterGame.jsx` | GADGETS panel |
-| `ScannerFeed` | `src/components/ScannerFeed.jsx` | FIELD TESTS panel |
-| `MixtapePlayer` | `src/components/MixtapePlayer.jsx` | Persistent sticky dock (App root; `/public/audio` for CC0 tracks) |
-| `WebStrand` + `useWebStrand` | `src/components/WebStrand.jsx`, `src/hooks/useWebStrand.js` | Global scroll accent |
+| `LivePulseDeepDive` | `src/components/LivePulseDeepDive.jsx` | Work — animated architecture trace, lock-race and failure-window step-throughs |
+| `WebShooterGame` | `src/components/WebShooterGame.jsx` | Lab — loads only when a visitor presses play (or `⌘K` → play game) |
+| `MixtapePlayer` | `src/components/MixtapePlayer.jsx` | Docked bottom-right (`/public/audio`) |
+| `CommandPalette` | `src/components/CommandPalette.jsx` | `⌘K` — jump to sections, résumé, music, game |
+| `SuitUp` + `KonamiWatcher` | `src/components/ui/` | Easter egg: ↑↑↓↓←→←→BA |
+| `WebNoir` | `src/components/ui/WebNoir.jsx` | Static web backdrop |
 
-## File tree (interactive pieces)
+## SEO
 
-```
-src/
-  components/
-    WebShooterGame.jsx
-    ScannerFeed.jsx
-    ScannerFeed.css
-    MixtapePlayer.jsx
-    WebStrand.jsx
-    WebStrand.css
-  hooks/
-    useWebStrand.js
-public/
-  audio/
-    README.md
-```
+`index.html` carries Open Graph / Twitter tags, a 1200×630 card (`public/og-card.jpg`) and Person JSON-LD. `public/robots.txt` and `public/sitemap.xml` are served as-is.

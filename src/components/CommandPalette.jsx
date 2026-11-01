@@ -1,24 +1,19 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { navItems, site } from "@/data/site";
-import { webSwingTo } from "@/lib/swing";
 import { emitSystem, onSystem, EV } from "@/lib/system-bus";
+import { scrollToSection } from "@/lib/scroll";
 
-const scrollToId = (id) => {
-  const element = document.getElementById(id);
-  const main = document.getElementById("main-scroll-area");
-  if (!element || !main) return;
-  webSwingTo(id);
-  main.scrollTo({ top: element.offsetTop - 8, behavior: "smooth" });
-};
+const scrollToId = scrollToSection;
 
 const GOTO_NICE = {
   home: "home",
-  notes: "notes",
-  experience: "patrol log",
-  stack: "gadgets",
-  projects: "case files",
-  experiments: "lab notes",
-  judge: "judge file",
+  notes: "about",
+  experience: "experience",
+  stack: "stack",
+  projects: "work",
+  oss: "open source",
+  experiments: "lab",
+  judge: "leetcode",
   contact: "contact",
 };
 
@@ -28,7 +23,7 @@ const buildCommands = () => [
     return {
       id: `goto-${nav.id}`,
       label: `goto ${nice}`,
-      hint: `Swing to ${nav.label}`,
+      hint: `Jump to ${nav.label.toLowerCase()}`,
       keywords: `goto ${nice} ${nav.label} ${nav.id} ${nav.code}`,
       run: () => scrollToId(nav.id),
     };
@@ -36,19 +31,12 @@ const buildCommands = () => [
   {
     id: "play-game",
     label: "play game",
-    hint: "Open Gadgets · start web_shooter.exe",
+    hint: "Open the lab · start web_shooter.exe",
     keywords: "play game web shooter patrol bugs start",
     run: () => {
-      scrollToId("stack");
-      window.setTimeout(() => emitSystem(EV.WEBSHOOTER_START), 420);
+      emitSystem(EV.WEBSHOOTER_START);
+      window.setTimeout(() => scrollToId("experiments"), 60);
     },
-  },
-  {
-    id: "toggle-patrol",
-    label: "toggle patrol",
-    hint: "Flip patrol night / inverted mode",
-    keywords: "toggle patrol mode night inverted",
-    run: () => emitSystem(EV.PATROL_TOGGLE),
   },
   {
     id: "play-music",
@@ -212,7 +200,7 @@ export const CommandPalette = () => {
       aria-modal="true"
       aria-label="Command palette"
     >
-      <div className="w-full max-w-lg border border-spidey-red bg-panel shadow-[4px_4px_0_rgba(0,0,0,0.55)]">
+      <div className="w-full max-w-lg border border-line-strong bg-panel shadow-2xl shadow-black/60">
         <div className="flex items-center justify-between border-b border-line bg-inset px-3 py-2 font-mono text-[10px] tracking-[0.14em] text-dim">
           <span className="text-spidey-red">COMMAND.EXE</span>
           <span>ESC close · ↑↓ · enter</span>
@@ -224,7 +212,7 @@ export const CommandPalette = () => {
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             onKeyDown={onInputKey}
-            placeholder="type a command… goto patrol log · play game · toggle patrol"
+            placeholder="type a command… goto work · download resume · play game"
             className="w-full border-0 bg-transparent font-mono text-sm text-cream outline-none placeholder:text-dim"
             autoComplete="off"
             spellCheck={false}
@@ -253,7 +241,7 @@ export const CommandPalette = () => {
                   ].join(" ")}
                 >
                   <span>
-                    <span className="text-spidey-blue">&gt;</span> {cmd.label}
+                    <span className="text-spidey-red">&gt;</span> {cmd.label}
                   </span>
                   <span className="truncate text-[10px] text-dim">
                     {cmd.hint}

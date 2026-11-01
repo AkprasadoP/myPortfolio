@@ -13,13 +13,9 @@ export const ExperienceSection = () => {
   };
 
   return (
-    <section id="experience" className="scroll-mt-4">
-      <SectionHeading ordinal="03" title="Patrol log" sub={`${experiences.length} entries · verified`} />
-      <ComicReveal className="panel comic-frame accent-blue">
-        <div className="panel-header">
-          <span>PATROL LOG</span>
-          <span>{experiences.length} entries · verified</span>
-        </div>
+    <section id="experience" className="scroll-mt-24">
+      <SectionHeading ordinal="02" kicker="Patrol log" title="Experience" sub={`${experiences.length} roles · most recent first`} />
+      <ComicReveal className="panel accent-red">
 
         <div className="divide-y divide-line">
           {experiences.map((exp) => {
@@ -32,12 +28,12 @@ export const ExperienceSection = () => {
                   aria-expanded={open}
                   className={`spidey-sense flex w-full items-center gap-3 border border-transparent px-4 py-3 text-left transition-colors sm:px-5 ${
                     open
-                      ? "bg-inset text-cream"
-                      : "text-muted hover:bg-inset/60 hover:text-fg"
+                      ? "bg-inset/60 text-fg"
+                      : "text-muted hover:bg-inset/40 hover:text-fg"
                   }`}
                 >
-                  <span className="shrink-0 font-mono text-[10px] text-spidey-red">
-                    [FILE]
+                  <span className="shrink-0 font-mono text-[10px] text-dim">
+                    {exp.id}
                   </span>
                   <span className="min-w-0 flex-1 truncate font-mono text-[11px] tracking-[0.04em] sm:text-sm sm:tracking-[0.06em]">
                     <span className="text-cream">
@@ -53,7 +49,7 @@ export const ExperienceSection = () => {
                     )}
                   </span>
                   {exp.current && (
-                    <span className="shrink-0 border border-crt-dim bg-[#1e2a1c] px-1.5 py-0.5 font-mono text-[10px] tracking-[0.14em] text-crt">
+                    <span className="shrink-0 border border-spidey-red/60 px-1.5 py-0.5 font-mono text-[10px] tracking-[0.14em] text-spidey-red">
                       CURRENT
                     </span>
                   )}
@@ -78,18 +74,8 @@ export const ExperienceSection = () => {
                     >
                       <div className="mb-4 flex flex-wrap items-baseline justify-between gap-2">
                         <div>
-                          <div className="flex flex-wrap items-center gap-2">
-                            <p className="font-mono text-[11px] tracking-[0.16em] text-dim">
-                              [{exp.id}]
-                            </p>
-                            {exp.current && (
-                              <span className="border border-crt-dim bg-[#1e2a1c] px-1.5 py-0.5 font-mono text-[10px] tracking-[0.14em] text-crt">
-                                CURRENT
-                              </span>
-                            )}
-                          </div>
-                          <h3 className="mt-1 font-ui text-lg tracking-wide text-cream">
-                            {exp.company.toUpperCase()}
+                          <h3 className="font-display text-3xl uppercase leading-none text-fg">
+                            {exp.company}
                           </h3>
                           <p className="mt-1 font-mono text-xs text-muted">
                             {exp.title}
@@ -99,7 +85,7 @@ export const ExperienceSection = () => {
                           <p>{exp.location}</p>
                           <p
                             className={
-                              exp.current ? "text-crt" : "text-spidey-blue"
+                              exp.current ? "text-spidey-red" : "text-muted"
                             }
                           >
                             {exp.duration}
@@ -134,9 +120,7 @@ export const ExperienceSection = () => {
                               key={item}
                               className="flex gap-2 font-body text-sm leading-relaxed text-muted"
                             >
-                              <span className="mt-0.5 font-mono text-spidey-red">
-                                *
-                              </span>
+                              <span className="mt-[0.6em] h-1 w-1 shrink-0 rotate-45 bg-spidey-red" aria-hidden="true" />
                               <span>{item}</span>
                             </li>
                           ))}

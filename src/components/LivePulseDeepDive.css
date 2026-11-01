@@ -1,0 +1,460 @@
+/* —— Tabs —— */
+.lp-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0;
+  margin: 1.75rem 0 1.5rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.lp-tab {
+  position: relative;
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.5rem;
+  padding: 0.7rem 1rem 0.75rem 0;
+  margin-right: 1.25rem;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--fg-dim);
+  background: none;
+  border: none;
+  cursor: pointer;
+  transition: color 0.15s ease;
+}
+
+.lp-tab:hover {
+  color: var(--fg);
+}
+
+.lp-tab__n {
+  font-size: 10px;
+  color: var(--fg-dim);
+}
+
+.lp-tab--active {
+  color: var(--fg);
+}
+
+.lp-tab--active .lp-tab__n {
+  color: var(--spidey-red);
+}
+
+.lp-tab--active::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 1rem;
+  bottom: -1px;
+  height: 1px;
+  background: var(--spidey-red);
+}
+
+/* —— Architecture diagram —— */
+.lp-diagram {
+  overflow-x: auto;
+  border: 1px solid var(--border);
+  background:
+    linear-gradient(var(--border) 1px, transparent 1px) 0 0 / 40px 40px,
+    linear-gradient(90deg, var(--border) 1px, transparent 1px) 0 0 / 40px 40px,
+    var(--bg-inset);
+  background-blend-mode: normal;
+}
+
+.lp-diagram svg {
+  display: block;
+  width: 100%;
+  min-width: 720px;
+  height: auto;
+  padding: 1rem;
+}
+
+.lp-node rect {
+  fill: var(--bg-panel);
+  stroke: var(--border-strong);
+  stroke-width: 1;
+  transition: stroke 0.25s ease, fill 0.25s ease;
+}
+
+.lp-node--red rect {
+  stroke: rgba(212, 42, 51, 0.55);
+}
+
+.lp-node--blue rect {
+  stroke: rgba(91, 127, 224, 0.55);
+}
+
+.lp-node--active rect {
+  stroke: var(--spidey-red);
+  fill: #160d10;
+}
+
+.lp-node__title {
+  font-family: var(--font-ui);
+  font-size: 15px;
+  font-weight: 600;
+  fill: var(--fg);
+}
+
+.lp-node__sub {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  fill: var(--fg-muted);
+}
+
+.lp-node__note {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.06em;
+  fill: var(--fg-dim);
+}
+
+.lp-node--red .lp-node__sub {
+  fill: var(--spidey-red);
+}
+
+.lp-node--blue .lp-node__sub {
+  fill: var(--spidey-blue);
+}
+
+.lp-edge line {
+  stroke: var(--border-strong);
+  stroke-width: 1.25;
+}
+
+.lp-edge--red line {
+  stroke: rgba(212, 42, 51, 0.45);
+}
+
+.lp-edge--blue line {
+  stroke: rgba(91, 127, 224, 0.5);
+  stroke-dasharray: 4 4;
+}
+
+.lp-arrowhead {
+  fill: var(--fg-dim);
+}
+
+.lp-edge__label {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  fill: var(--fg-dim);
+}
+
+.lp-packet {
+  fill: var(--spidey-red);
+  filter: drop-shadow(0 0 6px rgba(212, 42, 51, 0.9));
+}
+
+/* —— Controls & captions —— */
+.lp-controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem 1.25rem;
+  margin-top: 1rem;
+}
+
+.lp-controls--top {
+  margin: 0 0 1rem;
+  gap: 0.6rem;
+}
+
+.lp-caption {
+  flex: 1 1 18rem;
+  min-height: 2.6em;
+  font-size: 13.5px;
+  line-height: 1.55;
+  color: var(--fg-muted);
+}
+
+.lp-caption__n {
+  margin-right: 0.6rem;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--spidey-red);
+}
+
+.lp-chip {
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  letter-spacing: 0.08em;
+  color: var(--fg-dim);
+}
+
+.lp-chip b {
+  font-weight: 500;
+  color: var(--fg);
+}
+
+.lp-lede {
+  max-width: 42rem;
+  margin-bottom: 1rem;
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--fg-muted);
+}
+
+.lp-lede em {
+  font-style: normal;
+  color: var(--fg);
+}
+
+.lp-note {
+  margin-top: 1rem;
+  padding: 0.8rem 1rem;
+  border: 1px dashed var(--border-strong);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  line-height: 1.7;
+  color: var(--fg-muted);
+}
+
+/* —— Sequence (swim-lane step-through) —— */
+.lp-seq {
+  border: 1px solid var(--border);
+  background: var(--bg-inset);
+}
+
+.lp-seq__lanes {
+  display: grid;
+  grid-template-columns: 2.5rem repeat(3, 1fr);
+  border-bottom: 1px solid var(--border);
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--fg-muted);
+}
+
+.lp-seq__lanes span {
+  padding: 0.6rem 0.75rem;
+  border-left: 1px solid var(--border);
+}
+
+.lp-seq__lanes span:first-child {
+  grid-column: 2;
+}
+
+.lp-seq__rows {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.lp-seq__row {
+  display: grid;
+  grid-template-columns: 2.5rem repeat(3, 1fr);
+  align-items: center;
+  min-height: 2.4rem;
+  border-top: 1px solid rgba(27, 31, 41, 0.6);
+  opacity: 0.18;
+  transition: opacity 0.35s ease, background 0.35s ease;
+}
+
+.lp-seq__row:first-child {
+  border-top: none;
+}
+
+.lp-seq__row--shown {
+  opacity: 1;
+}
+
+.lp-seq__row--current {
+  background: rgba(212, 42, 51, 0.06);
+}
+
+.lp-seq__n {
+  padding-left: 0.75rem;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--fg-dim);
+}
+
+.lp-seq__row--current .lp-seq__n {
+  color: var(--spidey-red);
+}
+
+.lp-seq__msg {
+  grid-column: calc(var(--col) + 2);
+  margin: 0.35rem 0.6rem;
+  padding: 0.35rem 0.6rem;
+  border-left: 2px solid var(--border-strong);
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+  line-height: 1.45;
+  color: var(--fg);
+}
+
+.lp-seq__who {
+  display: none;
+}
+
+.lp-seq__msg--hot {
+  border-left-color: var(--spidey-blue);
+}
+
+.lp-seq__msg--wait {
+  border-left-color: #e0b94a;
+  color: var(--fg-muted);
+}
+
+.lp-seq__row--current .lp-seq__msg--wait {
+  animation: lp-wait 1s ease-in-out infinite;
+}
+
+.lp-seq__msg--win {
+  border-left-color: var(--crt-green);
+}
+
+.lp-seq__msg--guard {
+  border-left-color: var(--spidey-red);
+  background: rgba(212, 42, 51, 0.06);
+}
+
+.lp-seq__msg--crash {
+  border-left-color: var(--spidey-red);
+  background: rgba(212, 42, 51, 0.12);
+  color: #ff8a8f;
+}
+
+@keyframes lp-wait {
+  50% {
+    opacity: 0.45;
+  }
+}
+
+/* Narrow screens: one column, lane named inline */
+@media (max-width: 639px) {
+  .lp-seq__lanes {
+    display: none;
+  }
+
+  .lp-seq__row {
+    grid-template-columns: 2.25rem 1fr;
+  }
+
+  .lp-seq__msg {
+    grid-column: 2;
+  }
+
+  .lp-seq__who {
+    display: block;
+    margin-bottom: 0.15rem;
+    font-size: 9.5px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--fg-dim);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lp-seq__row,
+  .lp-node rect {
+    transition: none;
+  }
+  .lp-seq__row--current .lp-seq__msg--wait {
+    animation: none;
+  }
+}
+
+/* —— 3D architecture scene —— */
+.lp3d {
+  position: relative;
+  height: clamp(340px, 52vw, 500px);
+  overflow: hidden;
+  border: 1px solid var(--border);
+  background:
+    radial-gradient(ellipse 70% 60% at 60% 35%, rgba(22, 33, 61, 0.55), transparent 70%),
+    radial-gradient(ellipse 40% 40% at 75% 70%, rgba(212, 42, 51, 0.08), transparent 70%),
+    var(--bg-inset);
+}
+
+.lp3d canvas {
+  display: block;
+}
+
+.lp3d-labels {
+  position: absolute;
+  inset: 0;
+  cursor: grab;
+}
+
+.lp3d-labels:active {
+  cursor: grabbing;
+}
+
+.lp3d-label {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1px;
+  padding: 3px 7px;
+  border: 1px solid var(--border-strong);
+  background: rgba(10, 12, 16, 0.82);
+  font-family: var(--font-mono);
+  white-space: nowrap;
+  pointer-events: none;
+  transition: border-color 0.25s ease;
+}
+
+.lp3d-label b {
+  font-family: var(--font-ui);
+  font-size: 11.5px;
+  font-weight: 600;
+  color: var(--fg);
+}
+
+.lp3d-label span {
+  font-size: 9.5px;
+  letter-spacing: 0.08em;
+  color: var(--fg-dim);
+}
+
+.lp3d-label--red span {
+  color: var(--spidey-red);
+}
+
+.lp3d-label--blue span {
+  color: var(--spidey-blue);
+}
+
+.lp3d-label--active {
+  border-color: var(--spidey-red);
+}
+
+.lp3d__loading,
+.lp3d__hint {
+  position: absolute;
+  z-index: 2;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--fg-dim);
+  pointer-events: none;
+}
+
+.lp3d__loading {
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.lp3d__hint {
+  right: 0.9rem;
+  bottom: 0.75rem;
+}
+
+@media (hover: none), (pointer: coarse) {
+  .lp3d__hint {
+    display: none;
+  }
+  .lp3d-labels {
+    cursor: default;
+  }
+}
+

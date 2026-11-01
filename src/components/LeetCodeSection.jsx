@@ -3,9 +3,9 @@ import { motion, useInView } from "framer-motion";
 import { leetcode } from "@/data/site";
 import { readCachedJudge, refreshJudgeData } from "@/lib/leetcode-live";
 import { ComicReveal } from "@/components/ui/ComicReveal";
+import { SectionHeading } from "@/components/ui/SectionHeading";
 import "./LeetCodeSection.css";
 
-const STREAK_KEY = "judge-streak";
 
 const format = (value, decimals) =>
   value.toLocaleString("en-US", {
@@ -146,9 +146,9 @@ const ContestGauge = ({ contest, started }) => {
           />
           <defs>
             <linearGradient id="judge-gauge-grad" x1="0" y1="0" x2="1" y2="0">
-              <stop offset="0%" stopColor="#00c2a8" />
-              <stop offset="60%" stopColor="#ffc01e" />
-              <stop offset="100%" stopColor="#ff375f" />
+              <stop offset="0%" stopColor="#2a3f7a" />
+              <stop offset="60%" stopColor="#8a2a45" />
+              <stop offset="100%" stopColor="#d42a33" />
             </linearGradient>
           </defs>
           {[1350, 1500, 1700, 1850, 2000].map((mark) => {
@@ -188,53 +188,6 @@ const ContestGauge = ({ contest, started }) => {
   );
 };
 
-const StreakExtender = ({ maxStreak }) => {
-  const [streak, setStreak] = useState(() => {
-    try {
-      const stored = Number(window.localStorage.getItem(STREAK_KEY));
-      return Number.isFinite(stored) && stored > 0 ? stored : maxStreak;
-    } catch {
-      return maxStreak;
-    }
-  });
-  const [thwip, setThwip] = useState(0);
-
-  const extend = () => {
-    setStreak((s) => s + 1);
-    setThwip((t) => t + 1);
-    try {
-      window.localStorage.setItem(STREAK_KEY, String(streak + 1));
-    } catch {
-      /* best-effort */
-    }
-  };
-
-  return (
-    <div className="judge-streak">
-      <button type="button" className="judge-streak__btn" onClick={extend}>
-        <span className="judge-streak__fire" aria-hidden="true">
-          OPTIMIZE
-        </span>
-        <span>+ EXTEND STREAK</span>
-      </button>
-      <div className="judge-streak__meta">
-        <span>
-          CURRENT: <b className="judge-streak__num">{streak}</b>d
-          <span className="judge-streak__best"> · BEST: {maxStreak}d</span>
-        </span>
-        <span className="judge-streak__honesty">
-          local-only. leetcode knows nothing of this.
-        </span>
-      </div>
-      {thwip > 0 && (
-        <span key={thwip} className="judge-burst">
-          DAY +1!
-        </span>
-      )}
-    </div>
-  );
-};
-
 const Ticker = ({ data }) => {
   const line = [
     `${data.solved} SOLVED`,
@@ -245,7 +198,7 @@ const Ticker = ({ data }) => {
     `${data.pastYearSubmissions} THIS YEAR`,
     `${data.activeDays} ACTIVE DAYS`,
     data.mostRecentBadge.toUpperCase(),
-  ].join("  ✦  ");
+  ].join("   ·   ");
 
   return (
     <div className="judge-ticker" aria-hidden="true">
@@ -292,7 +245,8 @@ export const LeetCodeSection = () => {
   const feed = FEED_META[source] ?? FEED_META.snapshot;
 
   return (
-    <section id="judge" ref={sectionRef} className="scroll-mt-4">
+    <section id="judge" ref={sectionRef} className="scroll-mt-24">
+      <SectionHeading ordinal="06" kicker="Judge file" title="Problem solving" sub="Live from LeetCode — the automated judge keeps score." />
       <ComicReveal className="judge-panel">
         <div className="judge-header">
           <span className="judge-header__led" />
@@ -307,20 +261,13 @@ export const LeetCodeSection = () => {
 
         <div className="p-5 sm:p-7">
           <div className="mb-6 flex flex-wrap items-end justify-between gap-3">
-            <div>
-              <p className="eyebrow judge-eyebrow">PROBLEM ARCHIVE</p>
-              <h3 className="mt-1 font-display text-2xl tracking-wide text-cream sm:text-3xl">
-                JUDGE FILE
-              </h3>
-            </div>
-            <p className="max-w-sm font-mono text-xs leading-relaxed text-dim">
-              The automated judge keeps score. I keep solving. Feed pulled live
-              from{" "}
+            <p className="max-w-md font-mono text-xs leading-relaxed text-dim">
+              Stats pulled live from{" "}
               <a
                 href={data.profileUrl}
                 target="_blank"
                 rel="noreferrer"
-                className="text-judge underline decoration-dotted underline-offset-2 hover:text-cream"
+                className="text-fg underline decoration-line-strong underline-offset-4 hover:text-spidey-red"
               >
                 leetcode.com/u/{data.handle}
               </a>
@@ -402,7 +349,7 @@ export const LeetCodeSection = () => {
 
             {/* right column — skills + contest gauge */}
             <div>
-              <h4 className="judge-subhead">SKILL MATRIX · click chips to power-up</h4>
+              <h4 className="judge-subhead">SKILL MATRIX</h4>
               <SkillTiers skills={data.skills} />
 
               <div className="mt-6">
@@ -413,9 +360,9 @@ export const LeetCodeSection = () => {
           </div>
 
           {/* badges + streak */}
-          <div className="mt-8 grid gap-6 lg:grid-cols-[1fr_auto] lg:items-end">
+          <div className="mt-8">
             <div>
-              <h4 className="judge-subhead">BADGES ON THE BELT</h4>
+              <h4 className="judge-subhead">BADGES</h4>
               <div className="flex flex-wrap gap-2">
                 {data.badges.map((badge) => (
                   <span key={badge} className="judge-badge">
@@ -425,7 +372,6 @@ export const LeetCodeSection = () => {
                 <span className="judge-badge judge-badge--hot">★ MOST RECENT</span>
               </div>
             </div>
-            <StreakExtender maxStreak={data.maxStreak} />
           </div>
         </div>
       </ComicReveal>

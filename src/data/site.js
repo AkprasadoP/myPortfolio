@@ -1,20 +1,27 @@
 export const site = {
   name: "Ashish Prasad",
   handle: "AkPrasad",
-  systemTitle: "ASHISH PRASAD // PERSONAL SYSTEM",
+  systemTitle: "ASHISH PRASAD",
   role: "SOFTWARE ENGINEER",
   focus: "AI / BACKEND / SYSTEMS",
   tagline:
     "I build things. Then I figure out why they broke — before anyone else notices.",
   location: "Noida, India",
   currentRole: "SDE Intern @ Classplus",
-  status: "ONLINE",
   availability: {
-    label: "OPEN TO CONVERSATIONS",
-    note: "Currently interning at Classplus · typically replies within 48 hours",
+    label: "OPEN TO FULL-TIME ROLES",
+    note: "Backend / full-stack SDE · available now · typically replies within 48 hours",
   },
-  lastUpdated: "10.08.2026",
-  build: "2026.08",
+  lookingFor: {
+    roles: ["Backend SDE", "Full-stack SDE (backend-leaning)"],
+    start: "Available now",
+    location: "Open to relocation — India or abroad · remote works too",
+    strengths: [
+      "APIs and data models that survive production traffic",
+      "Concurrency, real-time systems, and failure handling",
+      "Security-minded engineering — auth, access control, hardening",
+    ],
+  },
   email: "akprasad07mm@gmail.com",
   resumeUrl: "/projects/AshishPrasad.pdf",
   profileImage: "/projects/profile.jpeg",
@@ -26,14 +33,15 @@ export const site = {
 };
 
 export const navItems = [
-  { id: "home", label: "HOME", href: "#home", code: "01" },
-  { id: "notes", label: "CIVILIAN FILE", href: "#notes", code: "02" },
-  { id: "experience", label: "PATROL LOG", href: "#experience", code: "03" },
-  { id: "stack", label: "GADGETS", href: "#stack", code: "04" },
-  { id: "projects", label: "CASE FILES", href: "#projects", code: "05" },
-  { id: "experiments", label: "LAB NOTES", href: "#experiments", code: "06" },
-  { id: "judge", label: "JUDGE FILE", href: "#judge", code: "07" },
-  { id: "contact", label: "OPEN CHANNEL", href: "#contact", code: "08" },
+  { id: "home", label: "INDEX", href: "#home", code: "00" },
+  { id: "notes", label: "ABOUT", href: "#notes", code: "01" },
+  { id: "experience", label: "EXPERIENCE", href: "#experience", code: "02" },
+  { id: "projects", label: "WORK", href: "#projects", code: "03" },
+  { id: "oss", label: "OPEN SOURCE", href: "#oss", code: "04" },
+  { id: "stack", label: "STACK", href: "#stack", code: "05" },
+  { id: "judge", label: "LEETCODE", href: "#judge", code: "06" },
+  { id: "experiments", label: "LAB", href: "#experiments", code: "07" },
+  { id: "contact", label: "CONTACT", href: "#contact", code: "08" },
 ];
 
 export const about = {
@@ -45,11 +53,12 @@ export const about = {
     "security",
     "distributed systems",
   ],
+  // Every number here traces back to a project or role below.
   stats: [
-    { key: "years", value: "3+", label: "years coding" },
-    { key: "projects", value: "15+", label: "projects built" },
-    { key: "tech", value: "10+", label: "technologies" },
-    { key: "internships", value: "3", label: "internships" },
+    { key: "tests", value: "250+", label: "tests · LivePulse" },
+    { key: "f1", value: "89%", label: "F1 · phishing detection" },
+    { key: "llm", value: "−60%", label: "LLM inference cost" },
+    { key: "geo", value: "+45%", label: "faster geo queries" },
   ],
 };
 
@@ -94,7 +103,7 @@ export const experiences = [
     title: "SDE Intern",
     company: "Classplus",
     location: "Noida, India",
-    duration: "CURRENT",
+    duration: "May 2026 — Present",
     current: true,
     summary:
       "Working on production application security — auditing and hardening authentication, session handling, API access control, and media delivery paths on live systems.",
@@ -157,6 +166,41 @@ export const experiences = [
       "Built modular microservices using Node.js and PostgreSQL with fault-tolerant design",
     ],
     technologies: ["Node.js", "GraphQL", "PostgreSQL", "Microservices"],
+  },
+];
+
+/**
+ * Merged upstream contributions only — open or closed-unmerged PRs stay off
+ * the page until they land. Star counts checked 2026-11-01.
+ */
+export const openSource = [
+  {
+    project: "Etherpad",
+    repo: "ether/etherpad",
+    stars: "18.6k",
+    blurb: "Real-time collaborative document editor",
+    pr: 8112,
+    url: "https://github.com/ether/etherpad/pull/8112",
+    merged: "Aug 2026",
+    title: "Fix home and post-delete redirects behind a proxy URL prefix",
+    problem:
+      "Served under a prefix like /etherpad, the Home command resolved to the domain root and post-delete redirects hardcoded “/”.",
+    fix: "One resolver for Home and every post-delete redirect, relative to the current pad URL — with regression tests for root, single- and nested-prefix deployments.",
+    tags: ["TypeScript", "Vitest", "Playwright"],
+  },
+  {
+    project: "Refine",
+    repo: "refinedev/refine",
+    stars: "36k",
+    blurb: "React framework for internal tools and admin panels",
+    pr: 7100,
+    url: "https://github.com/refinedev/refine/pull/7100",
+    merged: "Nov 2025",
+    title: "Fix useModalForm failing to open when switching edit → create",
+    problem:
+      "handleShow captured a stale action because its useCallback was missing dependencies, so the modal silently stayed closed.",
+    fix: "Completed the dependency list (action, setId, show) and added a test that reproduces the exact switch.",
+    tags: ["React", "react-hook-form", "Jest"],
   },
 ];
 
@@ -243,9 +287,10 @@ export const projects = [
     description:
       "Production-minded live-classroom backend: concurrent quiz answering with first-correct-winner election enforced by PostgreSQL row locks, idempotent retries, ordered doubt queues, presence, and reconnect recovery across horizontally scaled WebSocket instances — measured under load, covered by 250+ tests.",
     tags: ["TypeScript", "Fastify", "PostgreSQL", "Redis", "WebSockets"],
-    demoUrl: null,
-    githubUrl: null,
-    note: "Backend complete through 11 phases · frontend in progress — source goes public with the demo.",
+    demoUrl: "https://livepulse-five.vercel.app/",
+    githubUrl: "https://github.com/AkprasadoP/LivePulse",
+    deepDive: "livepulse-deep-dive",
+    screenshot: "/projects/livepulse.jpg",
     featured: true,
   },
   {
@@ -256,6 +301,7 @@ export const projects = [
       "AI weather companion blending forecasts, fashion, and travel advice. Bilingual (JP/EN) with voice recognition and AI-powered generation.",
     tags: ["React", "TypeScript", "Node.js", "Gemini AI"],
     demoUrl: "https://my-aitf.vercel.app/",
+    screenshot: "/projects/atf-weather.jpg",
     githubUrl: "https://github.com/AkprasadoP/atf-weather-assistant",
     featured: true,
   },
@@ -266,8 +312,10 @@ export const projects = [
     description:
       "AI-assisted platform protecting against phishing emails and deepfake voice attacks with hybrid detection pipeline and Chrome extension.",
     tags: ["Python", "FastAPI", "React", "Gemini LLM"],
-    demoUrl: "https://cyberx-atf.duckdns.org/",
+    // cyberx-atf.duckdns.org stopped responding (checked 2026-11-01)
+    demoUrl: null,
     githubUrl: "https://github.com/AkprasadoP/atf-cyberx",
+    note: "Live demo currently offline — source on GitHub.",
     featured: true,
   },
   {
@@ -297,7 +345,9 @@ export const projects = [
     description:
       "Full-featured social platform with real-time chat, post interactions, authentication, and responsive UI.",
     tags: ["MongoDB", "Express", "React", "Socket.io"],
-    demoUrl: "https://alphaio.onrender.com/",
+    // alphaio.onrender.com returns 404 (checked 2026-11-01)
+    demoUrl: null,
     githubUrl: "https://github.com/AkprasadoP/alphaio",
+    note: "Live demo currently offline — source on GitHub.",
   },
 ];
